@@ -1,0 +1,18 @@
+# Exclude folders you don't want in the repository
+Proposal/
+SME Materials/
+archive/
+.claude/
+
+# Exclude system files
+.DS_Store
+Thumbs.db
+*.tmp
+*.temp
+
+# Exclude backup files
+*.bak
+*~
+
+# Exclude log files
+*.log

@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Group-to-Individual Problem Simulator - Ivey Business School</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Georgia:wght@400;700&display=swap');
+        
+        body {
+            font-family: 'GeistSans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #034638 0%, #045a49 100%);
+            min-height: 100vh;
+            color: #000000;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(3, 70, 56, 0.3);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #034638;
+        }
+        
+        h1 {
+            font-family: 'GeistSans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: #034638;
+            margin-bottom: 10px;
+            font-size: 2.2em;
+            font-weight: 400;
+        }
+        
+        .subtitle {
+            color: #582C83;
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .ivey-credit {
+            color: #63666A;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+        
+        h2 {
+            font-family: 'GeistSans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: #034638;
+            border-left: 4px solid #582C83;
+            padding-left: 15px;
+            margin-top: 30px;
+        }
+        
+        h3 {
+            color: #582C83;
+            font-family: 'GeistSans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+        
+        .podcast-quote {
+            background: linear-gradient(135deg, #582C83 0%, #6b3fa0 100%);
+            color: #ffffff;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 25px 0;
+            font-style: italic;
+        }
+        
+        .podcast-quote strong {
+            color: #ffffff;
+        }
+        
+        .scenario-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 25px 0;
+        }
+        
+        .scenario-btn {
+            background: linear-gradient(135deg, #034638 0%, #045a49 100%);
+            color: #ffffff;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .scenario-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(3, 70, 56, 0.3);
+            border-color: #582C83;
+        }
+        
+        .scenario-btn.active {
+            background: linear-gradient(135deg, #582C83 0%, #6b3fa0 100%);
+        }
+        
+        .simulation-area {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        .group-panel, .individual-panel {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            border: 2px solid #63666A;
+        }
+        
+        .group-panel {
+            border-color: #034638;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+        
+        .individual-panel {
+            border-color: #582C83;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+        
+        .panel-header {
+            text-align: center;
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'GeistSans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+        
+        .group-panel .panel-header {
+            background: #034638;
+            color: #ffffff;
+        }
+        
+        .individual-panel .panel-header {
+            background: #582C83;
+            color: #ffffff;
+        }
+        
+        .data-visualization {
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 4px 8px rgba(3, 70, 56, 0.1);
+            border: 1px solid #63666A;
+        }
+        
+        .data-visualization h4 {
+            color: #034638;
+            font-family: 'GeistSans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            margin-top: 0;
+        }
+        
+        .stat-display {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            background: #ffffff;
+            border-radius: 8px;
+            margin: 8px 0;
+            border-left: 4px solid #034638;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .stat-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #034638;
+            font-family: 'GeistSans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+        
+        .individual-card {
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 18px;
+            margin: 15px 0;
+            border: 2px solid #63666A;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .individual-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(3, 70, 56, 0.2);
+        }
+        
+        .individual-card.selected {
+            border-color: #582C83;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+        
+        .individual-card.correct {
+            border-color: #28a745;
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+        }
+        
+        .individual-card.incorrect {
+            border-color: #dc3545;
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+        }
+        
+        .controls {
+            text-align: center;
+            margin: 25px 0;
+        }
+        
+        .control-btn {
+            background: linear-gradient(135deg, #034638 0%, #045a49 100%);
+            color: #ffffff;
+            border: none;
+            padding: 12px 25px;
+            margin: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .control-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(3, 70, 56, 0.3);
+        }
+        
+        .control-btn.danger {
+            background: #dc3545;
+        }
+        
+        .control-btn.danger:hover {
+            background: #c82333;
+        }
+        
+        .control-btn.small {
+            padding: 8px 15px;
+            font-size: 0.85em;
+            background: #582C83;
+        }
+        
+        .control-btn.small:hover {
+            background: #6b3fa0;
+        }
+        
+        .results-display {
+            background: linear-gradient(135deg, #034638 0%, #045a49 100%);
+            color: #ffffff;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 25px 0;
+            text-align: center;
+        }
+        
+        .results-display h4 {
+            color: #ffffff;
+            font-family: 'GeistSans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            margin-top: 0;
+        }
+        
+        .success { color: #28a745; }
+        .error { color: #dc3545; }
+        
+        .insight-box {
+            background: linear-gradient(135deg, #582C83 0%, #6b3fa0 100%);
+            color: #ffffff;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+        
+        .insight-box h3 {
+            color: #ffffff;
+            font-family: 'GeistSans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            margin-top: 0;
+        }
+        
+        .height-chart {
+            display: flex;
+            align-items: end;
+            justify-content: space-around;
+            height: 200px;
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .height-bar {
+            width: 40px;
+            background: linear-gradient(to top, #034638 0%, #045a49 100%);
+            border-radius: 6px 6px 0 0;
+            display: flex;
+            align-items: end;
+            justify-content: center;
+            color: #ffffff;
+            font-weight: bold;
+            font-size: 0.85em;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        
+        .performance-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 25px 0;
+        }
+        
+        .metric-card {
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 18px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(3, 70, 56, 0.1);
+            border: 2px solid #034638;
+        }
+        
+        .metric-value {
+            font-size: 2em;
+            font-weight: bold;
+            margin: 15px 0;
+            color: #034638;
+            font-family: 'GeistSans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+        
+        .challenge-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border: 2px solid #034638;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+        
+        .challenge-section h3 {
+            color: #034638;
+            font-family: 'GeistSans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            margin-top: 0;
+        }
+        
+        .reflection-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border: 2px solid #582C83;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+        
+        .reflection-section h3 {
+            color: #582C83;
+            font-family: 'GeistSans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            margin-top: 0;
+        }
+        
+        .reflection-section ol {
+            color: #63666A;
+            line-height: 1.6;
+        }
+        
+        .reflection-section li {
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 25px;
+            border-top: 2px solid #63666A;
+            color: #63666A;
+        }
+        
+        .ivey-branding {
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Group-to-Individual Problem Simulator</h1>
+            <div class="subtitle">Experience Professor Cyprian's Height Analogy</div>
+            <div class="ivey-credit">Fundamentals of AI for Business | Ivey Business School</div>
+        </div>
+        
+        <div class="podcast-quote">
+            <strong>Professor Lauren Cyprian:</strong> "Scientific results from testing a technology often come from examining groups of people. But the justice system requires decisions about individual cases... Imagine research accurately identifies that men on average are taller than women, but then assume the tall woman must be a man because her height matches the height of an average male."
+        </div>
+
+        <div class="challenge-section">
+            <h3>🎯 Your Challenge</h3>
+            <p>You're building AI systems that must make individual decisions based on group patterns. Experience firsthand why this creates fundamental fairness problems that go beyond technical solutions.</p>
+        </div>
+
+        <div class="scenario-selector">
+            <button class="scenario-btn active" onclick="setScenario('height')" id="height-btn">📏 Height Example</button>
+            <button class="scenario-btn" onclick="setScenario('hiring')" id="hiring-btn">💼 Hiring Algorithm</button>
+            <button class="scenario-btn" onclick="setScenario('lending')" id="lending-btn">💰 Credit Scoring</button>
+            <button class="scenario-btn" onclick="setScenario('medical')" id="medical-btn">🏥 Medical Diagnosis</button>
+        </div>
+
+        <div class="simulation-area">
+            <div class="group-panel">
+                <div class="panel-header">📊 Group-Level Data</div>
+                <div class="data-visualization">
+                    <h4 id="group-title">Height Distribution by Gender</h4>
+                    <div class="height-chart" id="group-chart"></div>
+                    <div id="group-stats"></div>
+                </div>
+                
+                <div class="data-visualization">
+                    <h4>Algorithm Training Results</h4>
+                    <div class="performance-metrics" id="group-performance">
+                        <div class="metric-card">
+                            <div class="metric-value" id="group-accuracy">87%</div>
+                            <div>Overall Accuracy</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value" id="confidence-level">95%</div>
+                            <div>Confidence Level</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="individual-panel">
+                <div class="panel-header">👤 Individual Decision Making</div>
+                <div class="data-visualization">
+                    <h4 id="individual-title">Make Predictions for These Individuals:</h4>
+                    <div id="individuals-container"></div>
+                </div>
+                
+                <div class="controls">
+                    <button class="control-btn" onclick="checkAnswers()">Check My Predictions</button>
+                    <button class="control-btn" onclick="showAlgorithmPredictions()">Show Algorithm Predictions</button>
+                    <button class="control-btn danger" onclick="resetIndividuals()">Reset</button>
+                </div>
+                
+                <div class="results-display" id="results" style="display: none;"></div>
+            </div>
+        </div>
+
+        <div class="insight-box">
+            <h3>💡 Current Insight</h3>
+            <p id="current-insight">Click on individuals above to make predictions, then see how group patterns can mislead individual decisions.</p>
+        </div>
+
+        <div class="reflection-section">
+            <h3>🤔 Reflection Questions</h3>
+            <ol id="reflection-questions">
+                <li>How accurate were your individual predictions compared to the algorithm's?</li>
+                <li>What individual factors couldn't be captured by the group patterns?</li>
+                <li>How does this relate to fairness in AI systems?</li>
+                <li>What are the business implications of these prediction errors?</li>
+            </ol>
+        </div>
+
+        <div class="footer">
+            <div class="ivey-branding">
+                <strong>Ivey Business School | Western University</strong><br>
+                Fundamentals of AI for Business | Professor Yasser Rahrovani
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentScenario = 'height';
+        let individuals = [];
+        let userPredictions = {};
+        let algorithmPredictions = {};
+        let showingResults = false;
+
+        const scenarios = {
+            height: {
+                title: "Height Distribution by Gender",
+                individualTitle: "Predict Gender Based on Height:",
+                groupA: { name: "Men", avg: 175, std: 7, color: "#034638" },
+                groupB: { name: "Women", avg: 162, std: 6, color: "#582C83" },
+                individuals: [
+                    { id: 1, value: 168, truth: "Women", details: "Sarah, 168cm, Basketball player" },
+                    { id: 2, value: 171, truth: "Men", details: "Alex, 171cm, Gymnast" },
+                    { id: 3, value: 165, truth: "Men", details: "Jordan, 165cm, Jockey" },
+                    { id: 4, value: 169, truth: "Women", details: "Morgan, 169cm, Volleyball player" },
+                    { id: 5, value: 167, truth: "Women", details: "Taylor, 167cm, Model" }
+                ],
+                unit: "cm",
+                questions: [
+                    "How many incorrect predictions did you make based on group averages?",
+                    "What individual factors (profession, genetics) couldn't be captured by gender alone?",
+                    "How does this relate to using demographic data in hiring or lending?",
+                    "What are the fairness implications when an algorithm makes these errors systematically?"
+                ]
+            },
+            hiring: {
+                title: "Job Performance by Education Level",
+                individualTitle: "Predict Job Success Based on Education:",
+                groupA: { name: "College Grad", avg: 78, std: 12, color: "#034638" },
+                groupB: { name: "High School", avg: 65, std: 15, color: "#582C83" },
+                individuals: [
+                    { id: 1, value: 85, truth: "High School", details: "Marcus, HS grad, 10 years experience" },
+                    { id: 2, value: 62, truth: "College Grad", details: "Emma, College grad, career changer" },
+                    { id: 3, value: 79, truth: "High School", details: "Fatima, HS grad, self-taught coder" },
+                    { id: 4, value: 71, truth: "College Grad", details: "David, College grad, recent graduate" },
+                    { id: 5, value: 88, truth: "High School", details: "Rosa, HS grad, military background" }
+                ],
+                unit: "% performance",
+                questions: [
+                    "How often did high-performing high school graduates get misclassified?",
+                    "What factors beyond education level affect job performance?",
+                    "How might this bias affect hiring decisions and diversity?",
+                    "What legal and ethical issues arise from education-based screening?"
+                ]
+            },
+            lending: {
+                title: "Default Rates by Neighborhood Income",
+                individualTitle: "Predict Loan Default Risk:",
+                groupA: { name: "High Income Area", avg: 12, std: 8, color: "#034638" },
+                groupB: { name: "Low Income Area", avg: 28, std: 12, color: "#582C83" },
+                individuals: [
+                    { id: 1, value: 8, truth: "Low Income Area", details: "Maria, stable job, excellent credit history" },
+                    { id: 2, value: 35, truth: "High Income Area", details: "James, recent divorce, job instability" },
+                    { id: 3, value: 15, truth: "Low Income Area", details: "Ahmed, small business owner, growing income" },
+                    { id: 4, value: 25, truth: "High Income Area", details: "Lisa, high debt-to-income ratio" },
+                    { id: 5, value: 9, truth: "Low Income Area", details: "Roberto, teacher with stable income" }
+                ],
+                unit: "% default risk",
+                questions: [
+                    "How many qualified low-income applicants would be wrongly rejected?",
+                    "What individual factors matter more than neighborhood income?",
+                    "How does this perpetuate economic inequality?",
+                    "What are the regulatory implications of zip-code based lending?"
+                ]
+            },
+            medical: {
+                title: "Heart Disease Risk by Age Group",
+                individualTitle: "Predict Heart Disease Risk:",
+                groupA: { name: "Over 60", avg: 35, std: 15, color: "#034638" },
+                groupB: { name: "Under 40", avg: 8, std: 6, color: "#582C83" },
+                individuals: [
+                    { id: 1, value: 42, truth: "Under 40", details: "Mike, 35, smoker, family history" },
+                    { id: 2, value: 12, truth: "Over 60", details: "Helen, 68, marathon runner, healthy diet" },
+                    { id: 3, value: 28, truth: "Under 40", details: "Sarah, 38, diabetes, high stress job" },
+                    { id: 4, value: 18, truth: "Over 60", details: "Robert, 65, active lifestyle, no risk factors" },
+                    { id: 5, value: 45, truth: "Under 40", details: "Chris, 32, genetic condition" }
+                ],
+                unit: "% risk",
+                questions: [
+                    "How might age-based assumptions delay diagnosis for young patients?",
+                    "What individual risk factors are more important than age?",
+                    "How could this bias affect healthcare resource allocation?",
+                    "What are the life-and-death consequences of these prediction errors?"
+                ]
+            }
+        };
+
+        function setScenario(scenarioName) {
+            document.querySelectorAll('.scenario-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(scenarioName + '-btn').classList.add('active');
+            
+            currentScenario = scenarioName;
+            const scenario = scenarios[scenarioName];
+            
+            document.getElementById('group-title').textContent = scenario.title;
+            document.getElementById('individual-title').textContent = scenario.individualTitle;
+            
+            updateGroupChart(scenario);
+            updateGroupStats(scenario);
+            createIndividuals(scenario);
+            updateReflectionQuestions(scenario);
+            
+            userPredictions = {};
+            algorithmPredictions = {};
+            showingResults = false;
+            document.getElementById('results').style.display = 'none';
+            
+            updateInsight("Select individuals above to make your predictions based on the group patterns you see.");
+        }
+
+        function updateGroupChart(scenario) {
+            const chart = document.getElementById('group-chart');
+            const groupA = scenario.groupA;
+            const groupB = scenario.groupB;
+            
+            chart.innerHTML = `
+                <div style="text-align: center;">
+                    <div class="height-bar" style="height: 120px; background: ${groupA.color}; margin: 0 20px;">
+                        ${groupA.avg}
+                    </div>
+                    <div style="margin-top: 10px; font-weight: bold; color: #034638;">${groupA.name}</div>
+                </div>
+                <div style="text-align: center;">
+                    <div class="height-bar" style="height: ${Math.round((groupB.avg / groupA.avg) * 120)}px; background: ${groupB.color}; margin: 0 20px;">
+                        ${groupB.avg}
+                    </div>
+                    <div style="margin-top: 10px; font-weight: bold; color: #582C83;">${groupB.name}</div>
+                </div>
+            `;
+        }
+
+        function updateGroupStats(scenario) {
+            const stats = document.getElementById('group-stats');
+            const groupA = scenario.groupA;
+            const groupB = scenario.groupB;
+            
+            stats.innerHTML = `
+                <div class="stat-display">
+                    <span style="color: #034638; font-weight: 600;">${groupA.name} Average:</span>
+                    <span class="stat-value">${groupA.avg}${scenario.unit}</span>
+                </div>
+                <div class="stat-display">
+                    <span style="color: #582C83; font-weight: 600;">${groupB.name} Average:</span>
+                    <span class="stat-value">${groupB.avg}${scenario.unit}</span>
+                </div>
+                <div class="stat-display">
+                    <span style="color: #63666A; font-weight: 600;">Difference:</span>
+                    <span class="stat-value">${Math.abs(groupA.avg - groupB.avg)}${scenario.unit}</span>
+                </div>
+            `;
+        }
+
+        function createIndividuals(scenario) {
+            const container = document.getElementById('individuals-container');
+            container.innerHTML = '';
+            
+            scenario.individuals.forEach((individual, index) => {
+                const card = document.createElement('div');
+                card.className = 'individual-card';
+                card.id = `individual-${individual.id}`;
+                card.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong style="color: #034638;">${individual.details}</strong>
+                            <br>
+                            <span style="color: #63666A;">${individual.value}${scenario.unit}</span>
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            <button onclick="makePrediction(${individual.id}, '${scenario.groupA.name}')" 
+                                    class="control-btn small">
+                                ${scenario.groupA.name}
+                            </button>
+                            <button onclick="makePrediction(${individual.id}, '${scenario.groupB.name}')" 
+                                    class="control-btn small" style="background: #582C83;">
+                                ${scenario.groupB.name}
+                            </button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+                
+                algorithmPredictions[individual.id] = predictBasedOnGroupAverage(individual, scenario);
+            });
+        }
+
+        function predictBasedOnGroupAverage(individual, scenario) {
+            const groupA = scenario.groupA;
+            const groupB = scenario.groupB;
+            
+            const distanceToA = Math.abs(individual.value - groupA.avg);
+            const distanceToB = Math.abs(individual.value - groupB.avg);
+            
+            return distanceToA < distanceToB ? groupA.name : groupB.name;
+        }
+
+        function makePrediction(individualId, prediction) {
+            userPredictions[individualId] = prediction;
+            
+            const card = document.getElementById(`individual-${individualId}`);
+            card.classList.add('selected');
+            
+            const totalPredictions = Object.keys(userPredictions).length;
+            const totalIndividuals = scenarios[currentScenario].individuals.length;
+            
+            if (totalPredictions === totalIndividuals) {
+                updateInsight("Great! You've made predictions for all individuals. Click 'Check My Predictions' to see how you did.");
+            } else {
+                updateInsight(`Progress: ${totalPredictions}/${totalIndividuals} predictions made. Keep going!`);
+            }
+        }
+
+        function checkAnswers() {
+            const scenario = scenarios[currentScenario];
+            let userCorrect = 0;
+            let algorithmCorrect = 0;
+            let results = [];
+            
+            scenario.individuals.forEach(individual => {
+                const userPred = userPredictions[individual.id];
+                const algoPred = algorithmPredictions[individual.id];
+                const truth = individual.truth;
+                
+                const userRight = userPred === truth;
+                const algoRight = algoPred === truth;
+                
+                if (userRight) userCorrect++;
+                if (algoRight) algorithmCorrect++;
+                
+                const card = document.getElementById(`individual-${individual.id}`);
+                if (userPred) {
+                    card.classList.remove('selected');
+                    card.classList.add(userRight ? 'correct' : 'incorrect');
+                }
+                
+                results.push({
+                    individual,
+                    userPred,
+                    algoPred,
+                    truth,
+                    userRight,
+                    algoRight
+                });
+            });
+            
+            displayResults(userCorrect, algorithmCorrect, scenario.individuals.length, results);
+            showingResults = true;
+        }
+
+        function displayResults(userCorrect, algorithmCorrect, total, results) {
+            const resultsDiv = document.getElementById('results');
+            
+            resultsDiv.innerHTML = `
+                <h4>Prediction Results</h4>
+                <div class="performance-metrics">
+                    <div class="metric-card">
+                        <div class="metric-value" style="color: ${userCorrect >= algorithmCorrect ? '#28a745' : '#dc3545'};">
+                            ${userCorrect}/${total}
+                        </div>
+                        <div>Your Accuracy</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" style="color: ${algorithmCorrect > userCorrect ? '#28a745' : '#dc3545'};">
+                            ${algorithmCorrect}/${total}
+                        </div>
+                        <div>Algorithm Accuracy</div>
+                    </div>
+                </div>
+                
+                <div style="text-align: left; margin-top: 15px;">
+                    <h5 style="color: #ffffff;">Individual Analysis:</h5>
+                    ${results.map(r => `
+                        <div style="margin: 8px 0; padding: 8px; background: ${r.userRight ? '#d4edda' : '#f8d7da'}; border-radius: 4px; font-size: 0.9em; color: #000;">
+                            <strong>${r.individual.details}</strong><br>
+                            Truth: ${r.truth} | You predicted: ${r.userPred || 'No prediction'} | Algorithm: ${r.algoPred}
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            
+            resultsDiv.style.display = 'block';
+            
+            const errors = results.filter(r => !r.algoRight);
+            const biasPattern = analyzeBiasPattern(errors);
+            updateInsight(biasPattern);
+        }
+
+        function analyzeBiasPattern(errors) {
+            if (errors.length === 0) {
+                return "Perfect accuracy! But remember, this is unusual - real-world group patterns often mislead individual predictions.";
+            }
+            
+            const errorDescriptions = errors.map(e => 
+                `${e.individual.details.split(',')[0]} was misclassified because the algorithm relied on group averages instead of individual factors.`
+            ).join(' ');
+            
+            return `Key insight: ${errors.length} individuals were misclassified by the algorithm. ${errorDescriptions} This demonstrates how group-level patterns can systematically disadvantage individuals who don't fit the average.`;
+        }
+
+        function showAlgorithmPredictions() {
+            const scenario = scenarios[currentScenario];
+            
+            scenario.individuals.forEach(individual => {
+                const prediction = algorithmPredictions[individual.id];
+                const card = document.getElementById(`individual-${individual.id}`);
+                
+                const existing = card.querySelector('.algo-prediction');
+                if (existing) existing.remove();
+                
+                const indicator = document.createElement('div');
+                indicator.className = 'algo-prediction';
+                indicator.style.cssText = 'background: #034638; color: white; padding: 8px; border-radius: 4px; margin-top: 10px; font-size: 0.8em; text-align: center;';
+                indicator.textContent = `Algorithm predicts: ${prediction}`;
+                
+                card.appendChild(indicator);
+            });
+            
+            updateInsight("Algorithm predictions shown. Notice how it purely uses group averages - closer to which group average = prediction for that group. This ignores individual factors!");
+        }
+
+        function resetIndividuals() {
+            userPredictions = {};
+            algorithmPredictions = {};
+            showingResults = false;
+            
+            const cards = document.querySelectorAll('.individual-card');
+            cards.forEach(card => {
+                card.className = 'individual-card';
+                const algoPred = card.querySelector('.algo-prediction');
+                if (algoPred) algoPred.remove();
+            });
+            
+            document.getElementById('results').style.display = 'none';
+            
+            const scenario = scenarios[currentScenario];
+            scenario.individuals.forEach(individual => {
+                algorithmPredictions[individual.id] = predictBasedOnGroupAverage(individual, scenario);
+            });
+            
+            updateInsight("Reset complete. Make new predictions based on the group patterns shown above.");
+        }
+
+        function updateReflectionQuestions(scenario) {
+            const questionsDiv = document.getElementById('reflection-questions');
+            questionsDiv.innerHTML = scenario.questions.map((q, i) => `<li>${q}</li>`).join('');
+        }
+
+        function updateInsight(text) {
+            document.getElementById('current-insight').textContent = text;
+        }
+
+        setScenario('height');
+    </script>
+</body>
+</html>
