@@ -1,0 +1,1437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ML Development Cycle Simulator - Ivey Business School</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Georgia:wght@400;700&display=swap');
+        
+        body {
+            font-family: 'GeistSans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #034638 0%, #045a49 100%);
+            min-height: 100vh;
+            color: #000000;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 20px 40px rgba(3, 70, 56, 0.3);
+        }
+        
+        .main-layout {
+            display: grid;
+            grid-template-rows: auto auto 1fr auto;  /* header, pipeline, dashboard, footer */
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .pipeline-header {
+            /* Pipeline spans full width at top */
+            grid-column: 1 / -1;
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 15px;
+            margin: 10px 0;
+            border: 2px solid #034638;
+        }
+        
+        .dashboard-main {
+            /* Main content area with controls and results */
+            display: grid;
+            grid-template-columns: 35% 65%;
+            gap: 20px;
+            padding: 0 20px;
+            overflow: hidden;
+            height: 100%;
+        }
+        
+        .controls-section {
+            /* Left side - compact controls */
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            border: 2px solid #034638;
+            overflow-y: auto;
+            height: 100%;
+        }
+        
+        .results-section {
+            /* Right side - live results grid */
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            border: 2px solid #034638;
+            overflow-y: auto;
+            height: 100%;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #034638;
+        }
+        
+        h1 {
+            font-family: 'GeistSans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: #034638;
+            margin-bottom: 8px;
+            font-size: 1.8em;
+            font-weight: 500;
+        }
+        
+        .subtitle {
+            color: #582C83;
+            font-size: 1.05em;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        
+        .ivey-credit {
+            color: #63666A;
+            font-size: 0.85em;
+            margin-top: 8px;
+        }
+        
+        h2 {
+            font-family: 'GeistSans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: #034638;
+            border-left: 4px solid #582C83;
+            padding-left: 15px;
+            margin-top: 30px;
+        }
+        
+        h3 {
+            color: #582C83;
+            font-family: 'GeistSans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+        
+        .pipeline {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+        }
+        
+        .pipeline::-webkit-scrollbar {
+            height: 6px;
+        }
+        
+        .pipeline::-webkit-scrollbar-track {
+            background: #e9ecef;
+            border-radius: 3px;
+        }
+        
+        .pipeline::-webkit-scrollbar-thumb {
+            background: #034638;
+            border-radius: 3px;
+        }
+        
+        .stage {
+            flex: 1;
+            min-width: 140px;
+            max-width: 160px;
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 10px 8px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid #63666A;
+            cursor: pointer;
+        }
+        
+        .stage p {
+            font-size: 0.8em;
+            margin: 5px 0 0 0;
+            color: #666;
+            line-height: 1.2;
+        }
+        
+        .stage h3 {
+            font-size: 0.9em;
+            margin: 5px 0;
+        }
+        
+        .stage:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(3, 70, 56, 0.2);
+        }
+        
+        .stage.active {
+            border-color: #034638;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+        
+        .stage.biased {
+            border-color: #dc2626;
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            color: #7f1d1d;
+            animation: pulse-red 1.5s ease-in-out infinite alternate;
+            position: relative;
+        }
+        
+        .stage.biased::after {
+            content: "🚨 BIAS SOURCE";
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #dc2626;
+            color: white;
+            font-size: 0.7em;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 12px;
+            z-index: 10;
+        }
+        
+        .stage.cascaded {
+            border-color: #f59e0b;
+            background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%);
+            color: #92400e;
+            animation: pulse-orange 2s ease-in-out infinite alternate;
+            position: relative;
+        }
+        
+        .stage.cascaded::after {
+            content: "⚠️ AFFECTED";
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #f59e0b;
+            color: white;
+            font-size: 0.7em;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 12px;
+            z-index: 10;
+        }
+        
+        @keyframes pulse-red {
+            from { box-shadow: 0 0 5px #dc2626; }
+            to { box-shadow: 0 0 15px #dc2626, 0 0 25px rgba(220, 38, 38, 0.5); }
+        }
+        
+        @keyframes pulse-orange {
+            from { box-shadow: 0 0 3px #f59e0b; }
+            to { box-shadow: 0 0 12px #f59e0b, 0 0 20px rgba(245, 158, 11, 0.4); }
+        }
+        
+        .stage h3 {
+            margin-top: 0;
+            color: #034638;
+            font-size: 1em;
+            font-family: 'GeistSans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+        
+        .stage-number {
+            background: #582C83;
+            color: #ffffff;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 8px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        
+        .biased .stage-number {
+            background: #dc3545;
+        }
+        
+        .arrow {
+            font-size: 2em;
+            color: #582C83;
+            align-self: center;
+            margin: 0 5px;
+        }
+        
+        .control-panel {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border-radius: 12px;
+            padding: 18px;
+            margin: 20px 0;
+            border: 2px solid #034638;
+        }
+        
+        .control-panel h3 {
+            color: #034638;
+            font-family: 'GeistSans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            margin-top: 0;
+        }
+        
+        .bias-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 15px;
+        }
+        
+        .bias-control {
+            background: #ffffff;
+            padding: 10px 12px;
+            border-radius: 6px;
+            box-shadow: 0 1px 3px rgba(3, 70, 56, 0.1);
+            border: 1px solid #d1d5db;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .compact-bias-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+        }
+        
+        .stage-icon {
+            font-size: 1.1em;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .stage-label {
+            font-size: 0.85em;
+            font-weight: 600;
+            color: #374151;
+            min-width: 60px;
+            flex-shrink: 0;
+        }
+        
+        .mini-slider {
+            flex: 1;
+            height: 6px;
+            border-radius: 3px;
+            background: #e5e7eb;
+            outline: none;
+            -webkit-appearance: none;
+            margin: 0 8px;
+        }
+        
+        .mini-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #582C83;
+            cursor: pointer;
+            border: 2px solid #fff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+        
+        .mini-slider::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #582C83;
+            cursor: pointer;
+            border: 2px solid #fff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+        
+        .bias-value {
+            font-size: 0.9em;
+            font-weight: bold;
+            color: #dc2626;
+            min-width: 30px;
+            text-align: center;
+        }
+        
+        .bias-category {
+            margin: 15px 0 10px 0;
+            padding: 8px 0;
+            border-bottom: 2px solid #e5e7eb;
+        }
+        
+        .bias-category h4 {
+            margin: 0;
+            color: #034638;
+            font-size: 0.95em;
+            font-weight: 600;
+        }
+        
+        .bias-control h4 {
+            color: #034638;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'GeistSans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+        
+        .bias-slider {
+            width: 100%;
+            margin: 12px 0;
+            height: 8px;
+            border-radius: 5px;
+            background: #63666A;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        .bias-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #582C83;
+            cursor: pointer;
+        }
+        
+        .bias-slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #582C83;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .impact-display {
+            margin-top: 30px;
+            background: linear-gradient(135deg, #034638 0%, #045a49 100%);
+            color: #ffffff;
+            border-radius: 12px;
+            padding: 25px;
+        }
+        
+        .impact-display h3 {
+            color: #ffffff;
+            font-family: 'GeistSans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            margin-top: 0;
+        }
+        
+        .impact-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .metric-card {
+            background: #ffffff;
+            color: #034638;
+            padding: 18px;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid #582C83;
+        }
+        
+        .metric-value {
+            font-size: 1.8em;
+            font-weight: bold;
+            margin: 10px 0;
+            font-family: 'GeistSans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+        
+        .good { color: #28a745; }
+        .warning { color: #ffc107; }
+        .danger { color: #dc3545; }
+        
+        .all-scenarios-display {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .all-scenarios-display h3 {
+            color: #034638;
+            font-family: 'GeistSans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            margin: 0 0 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        
+        .scenarios-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            flex: 1;
+            align-content: start;
+        }
+        
+        .scenario-impact-card {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+            min-height: 140px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .scenario-impact-card.high-bias {
+            border-color: #dc3545;
+            box-shadow: 0 4px 8px rgba(220, 53, 69, 0.2);
+        }
+        
+        .scenario-impact-card.medium-bias {
+            border-color: #ffc107;
+            box-shadow: 0 4px 8px rgba(255, 193, 7, 0.2);
+        }
+        
+        .scenario-impact-card.low-bias {
+            border-color: #28a745;
+            box-shadow: 0 4px 8px rgba(40, 167, 69, 0.2);
+        }
+        
+        .scenario-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .scenario-icon {
+            font-size: 1.5em;
+            margin-right: 12px;
+        }
+        
+        .scenario-name {
+            font-weight: 600;
+            color: #034638;
+            font-size: 0.95em;
+        }
+        
+        .base-accuracy {
+            font-size: 0.8em;
+            color: #666;
+        }
+        
+        .scenario-metrics {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0;
+        }
+        
+        .mini-metric {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .mini-value {
+            display: block;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #034638;
+        }
+        
+        .mini-label {
+            font-size: 0.75em;
+            color: #666;
+            margin-top: 2px;
+        }
+        
+        .scenario-insight {
+            background: #f8f9fa;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            color: #495057;
+            border-left: 3px solid #034638;
+            margin-top: 8px;
+            line-height: 1.3;
+        }
+        
+        .scenario-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 25px 0;
+        }
+        
+        .scenario-btn {
+            background: linear-gradient(135deg, #034638 0%, #045a49 100%);
+            color: #ffffff;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .scenario-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(3, 70, 56, 0.3);
+            border-color: #582C83;
+        }
+        
+        .scenario-btn.active {
+            background: linear-gradient(135deg, #582C83 0%, #6a3090 100%);
+            border-color: #FFC72C;
+            box-shadow: 0 4px 8px rgba(88, 44, 131, 0.4);
+            transform: translateY(-1px);
+        }
+        
+        .reset-btn {
+            background: #63666A;
+            color: #ffffff;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 10px;
+            font-weight: 600;
+        }
+        
+        .reset-btn:hover {
+            background: #495057;
+        }
+        
+        /* Responsive Design for Better Screen Usage */
+        @media (max-width: 1400px) {
+            .scenarios-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+            
+            .scenario-impact-card {
+                padding: 12px;
+            }
+            
+            .scenario-name {
+                font-size: 0.9em;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .scenarios-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            
+            .pipeline {
+                flex-direction: column;
+            }
+            
+            .stage {
+                min-width: auto;
+                margin: 5px 0;
+            }
+            
+            .scenario-buttons {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+        }
+        
+        .insights-box {
+            background: linear-gradient(135deg, #582C83 0%, #6b3fa0 100%);
+            color: #ffffff;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+        
+        .insights-box h3 {
+            color: #ffffff;
+            font-family: 'GeistSans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            margin-top: 0;
+        }
+        
+        .bias-explanation {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border-left: 4px solid #034638;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .bias-explanation.show {
+            display: block;
+        }
+        
+        .bias-explanation h4 {
+            color: #034638;
+            font-family: 'GeistSans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            margin-top: 0;
+        }
+        
+        .learning-objectives {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border: 2px solid #034638;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+        
+        .learning-objectives h3 {
+            color: #034638;
+            font-family: 'GeistSans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            margin-top: 0;
+        }
+        
+        .learning-objectives ul {
+            color: #63666A;
+            line-height: 1.6;
+        }
+        
+        .learning-objectives li {
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 25px;
+            border-top: 2px solid #63666A;
+            color: #63666A;
+        }
+        
+        .ivey-branding {
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="main-layout">
+            <div class="header">
+                <h1>ML Development Cycle Simulator</h1>
+                <div class="subtitle">Experience How Bias Cascades Through the Development Pipeline</div>
+                <div class="ivey-credit">Fundamentals of AI for Business | Ivey Business School</div>
+            </div>
+
+            <div class="pipeline-header">
+                <div class="pipeline">
+                    <div class="stage" id="stage1" onclick="selectStage(1)">
+                        <div class="stage-number">1</div>
+                        <h3>Data Collection</h3>
+                        <p>Gathering training data</p>
+                    </div>
+                    <div class="arrow">→</div>
+                    
+                    <div class="stage" id="stage2" onclick="selectStage(2)">
+                        <div class="stage-number">2</div>
+                        <h3>Data Preparation</h3>
+                        <p>Cleaning & processing</p>
+                    </div>
+                    <div class="arrow">→</div>
+                    
+                    <div class="stage" id="stage3" onclick="selectStage(3)">
+                        <div class="stage-number">3</div>
+                        <h3>Model Training</h3>
+                        <p>Algorithm learning</p>
+                    </div>
+                    <div class="arrow">→</div>
+                    
+                    <div class="stage" id="stage4" onclick="selectStage(4)">
+                        <div class="stage-number">4</div>
+                        <h3>Validation</h3>
+                        <p>Testing performance</p>
+                    </div>
+                    <div class="arrow">→</div>
+                    
+                    <div class="stage" id="stage5" onclick="selectStage(5)">
+                        <div class="stage-number">5</div>
+                        <h3>Post-processing</h3>
+                        <p>Threshold setting</p>
+                    </div>
+                    <div class="arrow">→</div>
+                    
+                    <div class="stage" id="stage6" onclick="selectStage(6)">
+                        <div class="stage-number">6</div>
+                        <h3>Deployment</h3>
+                        <p>Real-world use</p>
+                    </div>
+                    <div class="arrow">→</div>
+                    
+                    <div class="stage" id="stage7" onclick="selectStage(7)">
+                        <div class="stage-number">7</div>
+                        <h3>Monitoring</h3>
+                        <p>Continuous validation</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-main">
+                <div class="controls-section">
+                    <h3 style="font-size: 1.1em; margin: 0 0 15px 0; color: #034638;">🎛️ Bias Controls</h3>
+                    <div class="bias-controls">
+                        <div class="bias-control">
+                            <div class="compact-bias-control">
+                                <span class="stage-icon">📊</span>
+                                <span class="stage-label">Data</span>
+                                <input type="range" class="mini-slider" id="bias1" min="0" max="10" value="0" oninput="updateSimulation()">
+                                <span class="bias-value" id="bias1Value">0</span>
+                            </div>
+                        </div>
+                
+                <div class="bias-control">
+                    <h4><span>🧹</span> Stage 2: Data Preparation</h4>
+                    <div style="background: #f8fafc; padding: 10px; border-radius: 6px; border: 2px dashed #d1d5db; margin: 10px 0;">
+                        <div style="font-weight: bold; margin-bottom: 8px; color: #374151;">
+                            Bias Level: <span id="bias2Value" style="color: #dc2626; font-size: 1.2em;">0</span>/10
+                        </div>
+                        <input type="range" class="bias-slider" id="bias2" min="0" max="10" value="0" oninput="updateSimulation()">
+                    </div>
+                </div>
+                
+                <div class="bias-control">
+                    <h4><span>🤖</span> Stage 3: Model Training</h4>
+                    <div style="background: #f8fafc; padding: 10px; border-radius: 6px; border: 2px dashed #d1d5db; margin: 10px 0;">
+                        <div style="font-weight: bold; margin-bottom: 8px; color: #374151;">
+                            Bias Level: <span id="bias3Value" style="color: #dc2626; font-size: 1.2em;">0</span>/10
+                        </div>
+                        <input type="range" class="bias-slider" id="bias3" min="0" max="10" value="0" oninput="updateSimulation()">
+                    </div>
+                </div>
+                
+                <div class="bias-control">
+                    <h4><span>✅</span> Stage 4: Validation</h4>
+                    <div style="background: #f8fafc; padding: 10px; border-radius: 6px; border: 2px dashed #d1d5db; margin: 10px 0;">
+                        <div style="font-weight: bold; margin-bottom: 8px; color: #374151;">
+                            Bias Level: <span id="bias4Value" style="color: #dc2626; font-size: 1.2em;">0</span>/10
+                        </div>
+                        <input type="range" class="bias-slider" id="bias4" min="0" max="10" value="0" oninput="updateSimulation()">
+                    </div>
+                </div>
+                
+                <div class="bias-control">
+                    <h4><span>⚙️</span> Stage 5: Post-processing</h4>
+                    <div style="background: #f8fafc; padding: 10px; border-radius: 6px; border: 2px dashed #d1d5db; margin: 10px 0;">
+                        <div style="font-weight: bold; margin-bottom: 8px; color: #374151;">
+                            Bias Level: <span id="bias5Value" style="color: #dc2626; font-size: 1.2em;">0</span>/10
+                        </div>
+                        <input type="range" class="bias-slider" id="bias5" min="0" max="10" value="0" oninput="updateSimulation()">
+                    </div>
+                </div>
+                
+                <div class="bias-control">
+                    <h4><span>🚀</span> Stage 6: Deployment</h4>
+                    <div style="background: #f8fafc; padding: 10px; border-radius: 6px; border: 2px dashed #d1d5db; margin: 10px 0;">
+                        <div style="font-weight: bold; margin-bottom: 8px; color: #374151;">
+                            Bias Level: <span id="bias6Value" style="color: #dc2626; font-size: 1.2em;">0</span>/10
+                        </div>
+                        <input type="range" class="bias-slider" id="bias6" min="0" max="10" value="0" oninput="updateSimulation()">
+                    </div>
+                </div>
+                
+                <div class="bias-control">
+                    <h4><span>📈</span> Stage 7: Monitoring</h4>
+                    <div style="background: #f8fafc; padding: 10px; border-radius: 6px; border: 2px dashed #d1d5db; margin: 10px 0;">
+                        <div style="font-weight: bold; margin-bottom: 8px; color: #374151;">
+                            Bias Level: <span id="bias7Value" style="color: #dc2626; font-size: 1.2em;">0</span>/10
+                        </div>
+                        <input type="range" class="bias-slider" id="bias7" min="0" max="10" value="0" oninput="updateSimulation()">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="pipeline">
+            <div class="stage" id="stage1" onclick="selectStage(1)">
+                <div class="stage-number">1</div>
+                <h3>Data Collection</h3>
+                <p>Gathering training data</p>
+            </div>
+            <div class="arrow">→</div>
+            
+            <div class="stage" id="stage2" onclick="selectStage(2)">
+                <div class="stage-number">2</div>
+                <h3>Data Preparation</h3>
+                <p>Cleaning & processing</p>
+            </div>
+            <div class="arrow">→</div>
+            
+            <div class="stage" id="stage3" onclick="selectStage(3)">
+                <div class="stage-number">3</div>
+                <h3>Model Training</h3>
+                <p>Algorithm learning</p>
+            </div>
+            <div class="arrow">→</div>
+            
+            <div class="stage" id="stage4" onclick="selectStage(4)">
+                <div class="stage-number">4</div>
+                <h3>Validation</h3>
+                <p>Testing performance</p>
+            </div>
+            <div class="arrow">→</div>
+            
+            <div class="stage" id="stage5" onclick="selectStage(5)">
+                <div class="stage-number">5</div>
+                <h3>Post-processing</h3>
+                <p>Threshold setting</p>
+            </div>
+            <div class="arrow">→</div>
+            
+            <div class="stage" id="stage6" onclick="selectStage(6)">
+                <div class="stage-number">6</div>
+                <h3>Deployment</h3>
+                <p>Real-world use</p>
+            </div>
+            <div class="arrow">→</div>
+            
+            <div class="stage" id="stage7" onclick="selectStage(7)">
+                <div class="stage-number">7</div>
+                <h3>Monitoring</h3>
+                <p>Continuous validation</p>
+            </div>
+        </div>
+
+        <div class="all-scenarios-display">
+            <h3 style="font-size: 1.2em; margin-bottom: 8px;">📊 All Systems Impact Assessment</h3>
+            <p style="color: #666; font-size: 0.85em; margin-bottom: 15px;">See how the same bias sliders affect different industries simultaneously</p>
+            
+            <div class="scenarios-grid">
+                <div class="scenario-impact-card" id="medical-impact">
+                    <div class="scenario-header">
+                        <span class="scenario-icon">🏥</span>
+                        <div>
+                            <div class="scenario-name">Medical Diagnosis AI</div>
+                            <div class="base-accuracy">Base: 82%</div>
+                        </div>
+                    </div>
+                    <div class="scenario-metrics">
+                        <div class="mini-metric">
+                            <span class="mini-value" id="medical-bias">0%</span>
+                            <span class="mini-label">Bias</span>
+                        </div>
+                        <div class="mini-metric">
+                            <span class="mini-value" id="medical-accuracy">82%</span>
+                            <span class="mini-label">Accuracy</span>
+                        </div>
+                        <div class="mini-metric">
+                            <span class="mini-value" id="medical-fairness">100%</span>
+                            <span class="mini-label">Fairness</span>
+                        </div>
+                    </div>
+                    <div class="scenario-insight" id="medical-insight">System operating with minimal bias</div>
+                </div>
+
+                <div class="scenario-impact-card" id="lending-impact">
+                    <div class="scenario-header">
+                        <span class="scenario-icon">💰</span>
+                        <div>
+                            <div class="scenario-name">Credit Scoring AI</div>
+                            <div class="base-accuracy">Base: 75%</div>
+                        </div>
+                    </div>
+                    <div class="scenario-metrics">
+                        <div class="mini-metric">
+                            <span class="mini-value" id="lending-bias">0%</span>
+                            <span class="mini-label">Bias</span>
+                        </div>
+                        <div class="mini-metric">
+                            <span class="mini-value" id="lending-accuracy">75%</span>
+                            <span class="mini-label">Accuracy</span>
+                        </div>
+                        <div class="mini-metric">
+                            <span class="mini-value" id="lending-fairness">100%</span>
+                            <span class="mini-label">Fairness</span>
+                        </div>
+                    </div>
+                    <div class="scenario-insight" id="lending-insight">System operating with minimal bias</div>
+                </div>
+
+                <div class="scenario-impact-card" id="hiring-impact">
+                    <div class="scenario-header">
+                        <span class="scenario-icon">🏢</span>
+                        <div>
+                            <div class="scenario-name">AI Hiring Algorithm</div>
+                            <div class="base-accuracy">Base: 71%</div>
+                        </div>
+                    </div>
+                    <div class="scenario-metrics">
+                        <div class="mini-metric">
+                            <span class="mini-value" id="hiring-bias">0%</span>
+                            <span class="mini-label">Bias</span>
+                        </div>
+                        <div class="mini-metric">
+                            <span class="mini-value" id="hiring-accuracy">71%</span>
+                            <span class="mini-label">Accuracy</span>
+                        </div>
+                        <div class="mini-metric">
+                            <span class="mini-value" id="hiring-fairness">100%</span>
+                            <span class="mini-label">Fairness</span>
+                        </div>
+                    </div>
+                    <div class="scenario-insight" id="hiring-insight">System operating with minimal bias</div>
+                </div>
+
+                <div class="scenario-impact-card" id="compas-impact">
+                    <div class="scenario-header">
+                        <span class="scenario-icon">⚖️</span>
+                        <div>
+                            <div class="scenario-name">COMPAS Algorithm</div>
+                            <div class="base-accuracy">Base: 68%</div>
+                        </div>
+                    </div>
+                    <div class="scenario-metrics">
+                        <div class="mini-metric">
+                            <span class="mini-value" id="compas-bias">0%</span>
+                            <span class="mini-label">Bias</span>
+                        </div>
+                        <div class="mini-metric">
+                            <span class="mini-value" id="compas-accuracy">68%</span>
+                            <span class="mini-label">Accuracy</span>
+                        </div>
+                        <div class="mini-metric">
+                            <span class="mini-value" id="compas-fairness">100%</span>
+                            <span class="mini-label">Fairness</span>
+                        </div>
+                    </div>
+                    <div class="scenario-insight" id="compas-insight">System operating with minimal bias</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="insights-box">
+            <h3>💡 Current Insight</h3>
+            <p id="currentInsight">System is operating with minimal bias. All metrics are healthy.</p>
+        </div>
+        
+        <div style="text-align: center; margin: 30px 0;">
+            <button class="reset-btn" onclick="resetAll()">🔄 Reset All Bias Sliders</button>
+        </div>
+
+        <!-- Bias Explanations -->
+        <div class="bias-explanation" id="explanation1">
+            <h4>📊 Data Collection Bias (Stage 1)</h4>
+            <p><strong>What happens:</strong> Your training data doesn't represent the real population you'll serve.</p>
+            <p><strong>COMPAS Example:</strong> Over-representation of Black defendants due to historical over-policing creates skewed training data.</p>
+            <p><strong>Business Impact:</strong> Model learns from biased historical patterns and perpetuates them.</p>
+        </div>
+
+        <div class="bias-explanation" id="explanation2">
+            <h4>🧹 Data Preparation Bias (Stage 2)</h4>
+            <p><strong>What happens:</strong> Cleaning and processing choices introduce or amplify bias.</p>
+            <p><strong>COMPAS Example:</strong> Using arrest records as proxy for criminal behavior, despite biased policing practices.</p>
+            <p><strong>Business Impact:</strong> Proxy variables may not equally represent concepts across different groups.</p>
+        </div>
+
+        <div class="bias-explanation" id="explanation3">
+            <h4>🤖 Model Training Bias (Stage 3)</h4>
+            <p><strong>What happens:</strong> Algorithm design choices favor some groups over others.</p>
+            <p><strong>COMPAS Example:</strong> Optimizing for overall accuracy led to better performance on majority group.</p>
+            <p><strong>Business Impact:</strong> Technical optimization choices determine who benefits from your AI system.</p>
+        </div>
+
+        <div class="bias-explanation" id="explanation4">
+            <h4>✅ Validation Bias (Stage 4)</h4>
+            <p><strong>What happens:</strong> Testing doesn't adequately check for fairness across groups.</p>
+            <p><strong>COMPAS Example:</strong> Focus on overall accuracy rather than examining performance differences by race.</p>
+            <p><strong>Business Impact:</strong> Bias problems go undetected until they become public crises.</p>
+        </div>
+
+        <div class="bias-explanation" id="explanation5">
+            <h4>⚙️ Post-processing Bias (Stage 5)</h4>
+            <p><strong>What happens:</strong> Decision thresholds affect different groups unequally.</p>
+            <p><strong>COMPAS Example:</strong> Risk score thresholds for "high/medium/low" categories impacted racial groups differently.</p>
+            <p><strong>Business Impact:</strong> Same algorithm can produce different outcomes based on threshold choices.</p>
+        </div>
+
+        <div class="bias-explanation" id="explanation6">
+            <h4>🚀 Deployment Bias (Stage 6)</h4>
+            <p><strong>What happens:</strong> Real-world usage differs from intended design.</p>
+            <p><strong>COMPAS Example:</strong> Judges used scores inconsistently - some heavily relied on them, others ignored them.</p>
+            <p><strong>Business Impact:</strong> Even unbiased algorithms create unfair outcomes if deployed inconsistently.</p>
+        </div>
+
+        <div class="bias-explanation" id="explanation7">
+            <h4>📈 Monitoring Bias (Stage 7)</h4>
+            <p><strong>What happens:</strong> Feedback loops reinforce and amplify existing bias.</p>
+            <p><strong>COMPAS Example:</strong> Biased predictions lead to biased interventions, creating more biased data for future training.</p>
+            <p><strong>Business Impact:</strong> Small initial biases compound into systematic unfairness over time.</p>
+        </div>
+
+
+        <div class="footer">
+            <div class="ivey-branding">
+                <strong>Ivey Business School | Western University</strong><br>
+                Fundamentals of AI for Business | Professor Yasser Rahrovani
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStage = 0;
+        let currentScenario = 'medical';
+        
+        // Initialize the page
+        window.onload = function() {
+            // Set the default scenario as active
+            setScenario('medical');
+            // Ensure all scenarios are updated on page load
+            updateAllScenarios();
+        };
+
+        function selectStage(stageNum) {
+            for (let i = 1; i <= 7; i++) {
+                document.getElementById(`stage${i}`).classList.remove('active');
+                document.getElementById(`explanation${i}`).classList.remove('show');
+            }
+            
+            document.getElementById(`stage${stageNum}`).classList.add('active');
+            document.getElementById(`explanation${stageNum}`).classList.add('show');
+            currentStage = stageNum;
+        }
+
+        function getScenarioConfig(scenario) {
+            const configs = {
+                medical: {
+                    name: "Medical Diagnosis AI",
+                    baseAccuracy: 82,  // Medical AI typically has high accuracy
+                    biassensitivity: 2.5,  // More sensitive to bias
+                    accuracyPenalty: 2.0,  // Heavy accuracy penalty
+                    fairnessPenalty: 4.0,  // Major fairness issues
+                    trustPenalty: 3.0,
+                    stageMultipliers: {
+                        1: 2.0,  // Data collection is CRITICAL - wrong populations = disaster
+                        2: 1.2,
+                        3: 1.0,
+                        4: 1.8,  // Validation bias is huge - FDA compliance
+                        5: 1.1,
+                        6: 1.4,  // Deployment critical for medical
+                        7: 1.0
+                    }
+                },
+                lending: {
+                    name: "Credit Scoring Algorithm", 
+                    baseAccuracy: 75,  // Moderate accuracy
+                    biassensitivity: 2.0,
+                    accuracyPenalty: 1.5,
+                    fairnessPenalty: 3.5,  // Major legal compliance issues
+                    trustPenalty: 2.8,
+                    stageMultipliers: {
+                        1: 1.3,
+                        2: 2.0,  // Data prep is everything - proxy variables
+                        3: 1.4,
+                        4: 1.2,
+                        5: 1.6,  // Threshold setting matters a lot
+                        6: 1.2,
+                        7: 1.0
+                    }
+                },
+                compas: {
+                    name: "COMPAS Recidivism Algorithm",
+                    baseAccuracy: 68,  // Matches real COMPAS performance
+                    biassensitivity: 2.2,
+                    accuracyPenalty: 1.8,
+                    fairnessPenalty: 3.8,  // The fairness debate is the whole point
+                    trustPenalty: 3.2,
+                    stageMultipliers: {
+                        1: 1.8,  // Historical data bias
+                        2: 1.6,  // Arrest records as proxies
+                        3: 1.2,
+                        4: 1.0,  // Limited evaluation
+                        5: 1.3,
+                        6: 2.0,  // Deployment bias - judges use it differently
+                        7: 1.4   // Feedback loops
+                    }
+                },
+                hiring: {
+                    name: "AI Hiring Algorithm",
+                    baseAccuracy: 71,
+                    biassensitivity: 1.8,
+                    accuracyPenalty: 1.6,
+                    fairnessPenalty: 3.2,
+                    trustPenalty: 2.5,
+                    stageMultipliers: {
+                        1: 1.4,  // Historical hiring data
+                        2: 1.3,
+                        3: 1.2,
+                        4: 1.1,
+                        5: 1.2,
+                        6: 1.3,
+                        7: 2.2   // Monitoring often completely ignored
+                    }
+                }
+            };
+            
+            return configs[scenario] || configs.medical;  // Default to medical
+        }
+
+        function updateSimulation() {
+            let totalBias = 0;
+            let biasedStages = 0;
+            
+            // Get scenario-specific parameters
+            const scenarioConfig = getScenarioConfig(currentScenario);
+            
+            // First, reset all stages to clean state
+            for (let i = 1; i <= 7; i++) {
+                document.getElementById(`stage${i}`).classList.remove('biased', 'cascaded');
+            }
+            
+            // Then apply bias and cascade effects
+            for (let i = 1; i <= 7; i++) {
+                const biasValue = parseInt(document.getElementById(`bias${i}`).value);
+                document.getElementById(`bias${i}Value`).textContent = biasValue;
+                
+                if (biasValue > 0) {
+                    // This stage has direct bias
+                    document.getElementById(`stage${i}`).classList.add('biased');
+                    biasedStages++;
+                    
+                    // Apply scenario-specific stage multipliers
+                    const stageMultiplier = scenarioConfig.stageMultipliers[i] || 1.0;
+                    totalBias += biasValue * stageMultiplier * (1 + (i - 1) * 0.1);
+                    
+                    // CASCADE EFFECT: All downstream stages get affected
+                    for (let j = i + 1; j <= 7; j++) {
+                        if (!document.getElementById(`stage${j}`).classList.contains('biased')) {
+                            document.getElementById(`stage${j}`).classList.add('cascaded');
+                        }
+                    }
+                }
+            }
+            
+            const cascadeMultiplier = Math.min(1 + (biasedStages * 0.3), 3);
+            totalBias *= cascadeMultiplier;
+            
+            const overallBiasPercent = Math.min(Math.round(totalBias * scenarioConfig.biassensitivity), 100);
+            const accuracy = Math.max(30, scenarioConfig.baseAccuracy - Math.round(totalBias * scenarioConfig.accuracyPenalty));
+            const fairnessScore = Math.max(0, 100 - Math.round(totalBias * scenarioConfig.fairnessPenalty));
+            const trustScore = Math.max(10, 95 - Math.round(totalBias * scenarioConfig.trustPenalty));
+            
+            // Old single-scenario display removed - now using multi-scenario view
+            
+            updateInsight(overallBiasPercent, biasedStages, totalBias);
+            
+            // Update all scenarios simultaneously
+            updateAllScenarios();
+        }
+        
+        function updateAllScenarios() {
+            const scenarios = ['medical', 'lending', 'hiring', 'compas'];
+            
+            scenarios.forEach(scenario => {
+                const config = getScenarioConfig(scenario);
+                let scenarioBias = 0;
+                let scenarioBiasedStages = 0;
+                
+                // Calculate bias for this specific scenario
+                for (let i = 1; i <= 7; i++) {
+                    const biasValue = parseInt(document.getElementById(`bias${i}`).value);
+                    if (biasValue > 0) {
+                        scenarioBiasedStages++;
+                        const stageMultiplier = config.stageMultipliers[i] || 1.0;
+                        scenarioBias += biasValue * stageMultiplier * (1 + (i - 1) * 0.1);
+                    }
+                }
+                
+                const cascadeMultiplier = Math.min(1 + (scenarioBiasedStages * 0.3), 3);
+                scenarioBias *= cascadeMultiplier;
+                
+                const biasPercent = Math.min(Math.round(scenarioBias * config.biassensitivity), 100);
+                const accuracy = Math.max(30, config.baseAccuracy - Math.round(scenarioBias * config.accuracyPenalty));
+                const fairnessScore = Math.max(0, 100 - Math.round(scenarioBias * config.fairnessPenalty));
+                
+                // Debug logging (remove after testing)
+                if (scenarioBias > 0) {
+                    console.log(`${scenario}: bias=${scenarioBias}, biasPercent=${biasPercent}, accuracy=${accuracy}`);
+                }
+                
+                // Update scenario-specific displays - with error checking
+                const biasElement = document.getElementById(`${scenario}-bias`);
+                const accuracyElement = document.getElementById(`${scenario}-accuracy`);
+                const fairnessElement = document.getElementById(`${scenario}-fairness`);
+                const insightElement = document.getElementById(`${scenario}-insight`);
+                const cardElement = document.getElementById(`${scenario}-impact`);
+                
+                if (biasElement) biasElement.textContent = biasPercent + '%';
+                if (accuracyElement) accuracyElement.textContent = accuracy + '%';
+                if (fairnessElement) fairnessElement.textContent = fairnessScore + '%';
+                
+                // Update scenario insights
+                if (insightElement) {
+                    const insight = getScenarioInsight(scenario, biasPercent, scenarioBiasedStages);
+                    insightElement.textContent = insight;
+                }
+                
+                // Update card styling based on bias level
+                if (cardElement) {
+                    cardElement.classList.remove('high-bias', 'medium-bias', 'low-bias');
+                    
+                    if (biasPercent >= 40) {
+                        cardElement.classList.add('high-bias');
+                    } else if (biasPercent >= 20) {
+                        cardElement.classList.add('medium-bias');
+                    } else if (biasPercent > 0) {
+                        cardElement.classList.add('low-bias');
+                    }
+                }
+                
+                // Update metric value colors
+                if (biasElement) updateScenarioMetricColors(`${scenario}-bias`, biasPercent, true);
+                if (accuracyElement) updateScenarioMetricColors(`${scenario}-accuracy`, accuracy, false);
+                if (fairnessElement) updateScenarioMetricColors(`${scenario}-fairness`, fairnessScore, false);
+            });
+        }
+        
+        function getScenarioInsight(scenario, biasPercent, biasedStages) {
+            if (biasPercent === 0) {
+                return '✅ System operating with minimal bias';
+            } else if (biasPercent <= 15) {
+                return '⚠️ Low bias detected. Monitor closely';
+            } else if (biasPercent <= 35) {
+                return '🚨 Moderate bias present. Action needed';
+            } else if (biasPercent <= 60) {
+                return '💥 High bias detected! Discriminatory results likely';
+            } else {
+                return '🔥 Critical bias levels! Serious ethical and legal risks';
+            }
+        }
+        
+        function updateScenarioMetricColors(elementId, value, isReverse) {
+            const element = document.getElementById(elementId);
+            element.classList.remove('good', 'warning', 'danger');
+            
+            if (isReverse) {
+                // For bias - lower is better
+                if (value <= 15) {
+                    element.classList.add('good');
+                } else if (value <= 35) {
+                    element.classList.add('warning');
+                } else {
+                    element.classList.add('danger');
+                }
+            } else {
+                // For accuracy/fairness - higher is better
+                if (value >= 75) {
+                    element.classList.add('good');
+                } else if (value >= 50) {
+                    element.classList.add('warning');
+                } else {
+                    element.classList.add('danger');
+                }
+            }
+        }
+
+        function updateMetricColors(elementId, value, reverse) {
+            const element = document.getElementById(elementId);
+            element.className = 'metric-value ';
+            
+            if (reverse) {
+                if (value <= 10) element.classList.add('good');
+                else if (value <= 30) element.classList.add('warning');
+                else element.classList.add('danger');
+            } else {
+                if (value >= 80) element.classList.add('good');
+                else if (value >= 60) element.classList.add('warning');
+                else element.classList.add('danger');
+            }
+        }
+
+        function updateInsight(biasPercent, biasedStages, rawBias) {
+            const config = getScenarioConfig(currentScenario);
+            let insight = `${config.name}: `;
+            
+            if (biasPercent === 0) {
+                insight += '✅ System operating with minimal bias.';
+            } else if (biasPercent <= 15) {
+                insight += '⚠️ Low bias detected. Monitor closely.';
+            } else if (biasPercent <= 35) {
+                insight += '🚨 Moderate bias present. Action needed.';
+            } else if (biasPercent <= 60) {
+                insight += '💥 High bias detected! Discriminatory results likely.';
+            } else {
+                insight += '🔥 Critical bias levels! Serious ethical and legal risks.';
+            }
+            
+            // Add scenario-specific insights
+            const scenarioInsights = getScenarioSpecificInsights();
+            insight += scenarioInsights;
+            
+            document.getElementById('currentInsight').textContent = insight;
+        }
+
+        function getScenarioSpecificInsights() {
+            const stage1Bias = parseInt(document.getElementById('bias1').value);
+            const stage2Bias = parseInt(document.getElementById('bias2').value);
+            const stage4Bias = parseInt(document.getElementById('bias4').value);
+            const stage6Bias = parseInt(document.getElementById('bias6').value);
+            const stage7Bias = parseInt(document.getElementById('bias7').value);
+            
+            let insight = '';
+            
+            switch(currentScenario) {
+                case 'medical':
+                    if (stage1Bias >= 6) insight += ' 🏥 Data collection bias = wrong patient populations = medical disaster.';
+                    if (stage4Bias >= 6) insight += ' 🔬 Validation bias violates FDA requirements.';
+                    if (stage6Bias >= 6) insight += ' ⚕️ Deployment bias creates unequal healthcare access.';
+                    break;
+                    
+                case 'lending':
+                    if (stage2Bias >= 6) insight += ' 💳 Data preparation bias = discriminatory proxy variables.';
+                    if (stage1Bias >= 6) insight += ' 📊 Historical lending data perpetuates redlining practices.';
+                    if (stage6Bias >= 6) insight += ' ⚖️ Deployment inconsistencies trigger regulatory violations.';
+                    break;
+                    
+                case 'compas':
+                    if (stage1Bias >= 6) insight += ' 🏛️ Historical justice data bakes in decades of biased policing.';
+                    if (stage6Bias >= 6) insight += ' ⚖️ Judicial deployment bias = inconsistent justice across courtrooms.';
+                    if (stage2Bias >= 6) insight += ' 🎯 Arrest records as crime proxies = measurement bias.';
+                    if (stage7Bias >= 6) insight += ' 🔄 Monitoring bias creates vicious cycles of injustice.';
+                    break;
+                    
+                case 'hiring':
+                    if (stage7Bias >= 6) insight += ' 👁️ No hiring bias monitoring = invisible discrimination.';
+                    if (stage1Bias >= 6) insight += ' 📋 Historical hiring data perpetuates past discrimination.';
+                    if (stage6Bias >= 6) insight += ' 🤝 Recruiter deployment bias varies by candidate demographics.';
+                    break;
+            }
+            
+            return insight;
+        }
+
+        function setScenario(scenario) {
+            resetAll();
+            currentScenario = scenario;
+            
+            // Update visual feedback for scenario buttons
+            document.querySelectorAll('.scenario-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Find and activate the clicked button
+            const activeBtn = document.querySelector(`[onclick="setScenario('${scenario}')"]`);
+            if (activeBtn) {
+                activeBtn.classList.add('active');
+            }
+            
+            // Update the scenario display
+            const config = getScenarioConfig(scenario);
+            document.getElementById('currentInsight').textContent = `Selected: ${config.name}. Base accuracy: ${config.baseAccuracy}%. Move sliders to see how bias affects this specific industry.`;
+            
+            updateSimulation();
+        }
+
+        function resetAll() {
+            for (let i = 1; i <= 7; i++) {
+                document.getElementById(`bias${i}`).value = 0;
+                document.getElementById(`stage${i}`).classList.remove('active', 'biased');
+                document.getElementById(`explanation${i}`).classList.remove('show');
+            }
+            currentStage = 0;
+            updateSimulation();
+        }
+
+        updateSimulation();
+    </script>
+</body>
+</html>
