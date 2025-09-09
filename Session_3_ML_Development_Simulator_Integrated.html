@@ -84,7 +84,7 @@
             gap: 10px;
             flex-wrap: nowrap;
             overflow-x: auto;
-            padding: 10px 0;
+            padding: 25px 0 10px 0;
         }
         
         .pipeline::-webkit-scrollbar {
@@ -130,14 +130,13 @@
         .stage.biased {
             border-color: #dc2626;
             background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
-            animation: pulse-red 2s ease-in-out infinite alternate;
             position: relative;
         }
         
         .stage.biased::before {
             content: "🚨 BIAS DETECTED";
             position: absolute;
-            top: -12px;
+            top: -18px;
             left: 50%;
             transform: translateX(-50%);
             background: #dc2626;
@@ -148,18 +147,19 @@
             border-radius: 12px;
             z-index: 10;
             white-space: nowrap;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
         
         .stage.cascaded {
             border-color: #f59e0b;
             background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%);
-            animation: pulse-orange 2.5s ease-in-out infinite alternate;
+            position: relative;
         }
         
         .stage.cascaded::before {
             content: "⚠️ CASCADE EFFECT";
             position: absolute;
-            top: -12px;
+            top: -18px;
             left: 50%;
             transform: translateX(-50%);
             background: #f59e0b;
@@ -170,17 +170,9 @@
             border-radius: 12px;
             z-index: 10;
             white-space: nowrap;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
         
-        @keyframes pulse-red {
-            from { box-shadow: 0 0 10px rgba(220, 38, 38, 0.3); }
-            to { box-shadow: 0 0 20px rgba(220, 38, 38, 0.6), 0 0 30px rgba(220, 38, 38, 0.3); }
-        }
-        
-        @keyframes pulse-orange {
-            from { box-shadow: 0 0 8px rgba(245, 158, 11, 0.3); }
-            to { box-shadow: 0 0 16px rgba(245, 158, 11, 0.5), 0 0 24px rgba(245, 158, 11, 0.2); }
-        }
         
         .stage-number {
             background: #582C83;
@@ -198,16 +190,10 @@
         
         .biased .stage-number {
             background: #dc3545;
-            animation: pulse-number 1.5s ease-in-out infinite alternate;
         }
         
         .cascaded .stage-number {
             background: #f59e0b;
-        }
-        
-        @keyframes pulse-number {
-            from { transform: scale(1); }
-            to { transform: scale(1.1); }
         }
         
         .stage h3 {
@@ -325,12 +311,6 @@
         
         .bias-dot.active {
             background: #dc2626;
-            animation: dot-pulse 1s ease-in-out infinite alternate;
-        }
-        
-        @keyframes dot-pulse {
-            from { opacity: 0.7; }
-            to { opacity: 1; }
         }
         
         .arrow {
