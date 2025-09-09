@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fundamentals of AI for Business - Ivey Business School</title>
+    
+    <!-- Automatic redirect to the integrated simulator -->
+    <meta http-equiv="refresh" content="0;url=Session_3_ML_Development_Simulator_Integrated.html">
+    
+    <!-- Fallback JavaScript redirect -->
+    <script>
+        window.location.replace("Session_3_ML_Development_Simulator_Integrated.html");
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #034638 0%, #045a49 100%);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        
+        .loading-container {
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .fallback-link {
+            display: block;
+            color: #FFC72C;
+            text-decoration: none;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        
+        .fallback-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-container">
+        <div class="spinner"></div>
+        <h2>Loading ML Development Simulator...</h2>
+        <p>Redirecting to the interactive pipeline experience</p>
+        
+        <!-- Fallback link in case redirects don't work -->
+        <noscript>
+            <p>If you are not redirected automatically, <a href="Session_3_ML_Development_Simulator_Integrated.html" class="fallback-link">click here to access the simulator</a>.</p>
+        </noscript>
+        
+        <p style="font-size: 0.8em; margin-top: 20px; opacity: 0.8;">
+            <strong>Ivey Business School</strong><br>
+            Fundamentals of AI for Business
+        </p>
+    </div>
+    
+    <!-- Fallback timeout redirect -->
+    <script>
+        // If redirect doesn't work after 3 seconds, show a manual link
+        setTimeout(function() {
+            if (window.location.pathname.endsWith('index.html') || window.location.pathname === '/funai/') {
+                document.querySelector('.loading-container').innerHTML = `
+                    <h2>Redirect Issue Detected</h2>
+                    <p>Please click the link below to access the simulator:</p>
+                    <a href="Session_3_ML_Development_Simulator_Integrated.html" class="fallback-link" style="font-size: 1.2em;">
+                        → Open ML Development Simulator
+                    </a>
+                    <p style="font-size: 0.8em; margin-top: 20px; opacity: 0.8;">
+                        <strong>Ivey Business School</strong><br>
+                        Fundamentals of AI for Business
+                    </p>
+                `;
+            }
+        }, 3000);
+    </script>
+</body>
+</html>
