@@ -3,99 +3,310 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fundamentals of AI for Business - Ivey Business School</title>
-    
-    <!-- Automatic redirect to the integrated simulator -->
-    <meta http-equiv="refresh" content="0;url=Session_3_ML_Development_Simulator_Integrated.html">
-    
-    <!-- Fallback JavaScript redirect -->
-    <script>
-        window.location.replace("Session_3_ML_Development_Simulator_Integrated.html");
-    </script>
-    
+    <title>AI Bias Simulator Suite - Ivey Business School</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Georgia:wght@400;700&display=swap');
+        
+        * {
+            box-sizing: border-box;
+        }
+        
         body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #034638 0%, #045a49 100%);
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            font-family: Arial, sans-serif;
             margin: 0;
-            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #034638 0%, #045a49 100%);
+            min-height: 100vh;
+            color: #ffffff;
         }
         
-        .loading-container {
-            padding: 40px;
-            background: rgba(255, 255, 255, 0.1);
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
-            backdrop-filter: blur(10px);
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            color: #000000;
         }
         
-        .spinner {
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-top: 3px solid white;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 3px solid #034638;
         }
         
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        h1 {
+            font-family: Georgia, serif;
+            color: #034638;
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            font-weight: 400;
         }
         
-        .fallback-link {
+        .subtitle {
+            color: #582C83;
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .description {
+            color: #63666A;
+            font-size: 1.1em;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .simulators-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .simulator-card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 25px;
+            border: 3px solid #e5e7eb;
+            transition: all 0.3s ease;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .simulator-card:hover {
+            transform: translateY(-5px);
+            border-color: #034638;
+            box-shadow: 0 8px 16px rgba(3, 70, 56, 0.2);
+        }
+        
+        .simulator-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
             display: block;
-            color: #FFC72C;
-            text-decoration: none;
-            margin-top: 20px;
-            font-weight: bold;
         }
         
-        .fallback-link:hover {
-            text-decoration: underline;
+        .simulator-title {
+            font-family: Georgia, serif;
+            color: #034638;
+            font-size: 1.4em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .simulator-description {
+            color: #63666A;
+            font-size: 0.95em;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            min-height: 80px;
+        }
+        
+        .simulator-features {
+            list-style: none;
+            padding: 0;
+            margin: 15px 0;
+            font-size: 0.85em;
+            color: #582C83;
+        }
+        
+        .simulator-features li {
+            margin: 5px 0;
+        }
+        
+        .simulator-features li::before {
+            content: "✓ ";
+            font-weight: bold;
+            color: #034638;
+        }
+        
+        .launch-btn {
+            background: linear-gradient(135deg, #034638 0%, #045a49 100%);
+            color: #ffffff;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.1em;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        
+        .launch-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(3, 70, 56, 0.3);
+            text-decoration: none;
+            color: #ffffff;
+        }
+        
+        .launch-btn:focus {
+            outline: 3px solid #582C83;
+            outline-offset: 2px;
+        }
+        
+        .featured {
+            border-color: #582C83;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+        
+        .featured .simulator-title {
+            color: #582C83;
+        }
+        
+        .featured .launch-btn {
+            background: linear-gradient(135deg, #582C83 0%, #6b3fa0 100%);
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 2px solid #e5e7eb;
+            color: #63666A;
+        }
+        
+        .ivey-branding {
+            font-weight: 600;
+            font-size: 1.1em;
+            color: #034638;
+        }
+        
+        .course-info {
+            margin: 10px 0;
+            font-size: 0.95em;
+        }
+        
+        .instructions {
+            background: linear-gradient(135deg, #582C83 0%, #6b3fa0 100%);
+            color: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 30px 0;
+        }
+        
+        .instructions h3 {
+            color: #ffffff;
+            margin: 0 0 15px 0;
+            font-family: Georgia, serif;
+        }
+        
+        .instructions p {
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            .simulators-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="loading-container">
-        <div class="spinner"></div>
-        <h2>Loading ML Development Simulator...</h2>
-        <p>Redirecting to the interactive pipeline experience</p>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 AI Bias Simulator Suite</h1>
+            <div class="subtitle">Interactive Learning Tools for AI Ethics & Business</div>
+            <div class="description">
+                Experience how bias emerges in AI systems through hands-on simulations. 
+                Each simulator demonstrates critical concepts from the COMPAS case study and real-world AI deployment challenges.
+            </div>
+        </div>
         
-        <!-- Fallback link in case redirects don't work -->
-        <noscript>
-            <p>If you are not redirected automatically, <a href="Session_3_ML_Development_Simulator_Integrated.html" class="fallback-link">click here to access the simulator</a>.</p>
-        </noscript>
+        <div class="instructions">
+            <h3>📚 How to Use These Simulators</h3>
+            <p><strong>Start with any simulator that interests you.</strong> Each one is self-contained and teaches different aspects of AI bias:</p>
+            <p>• <strong>Click and explore</strong> - All simulators are designed for hands-on interaction</p>
+            <p>• <strong>No prior knowledge required</strong> - Built for business students, not technical experts</p>
+            <p>• <strong>Mobile-friendly</strong> - Works on phones, tablets, and desktops</p>
+            <p>• <strong>Self-guided learning</strong> - Each simulator includes instructions and real-time insights</p>
+        </div>
         
-        <p style="font-size: 0.8em; margin-top: 20px; opacity: 0.8;">
-            <strong>Ivey Business School</strong><br>
-            Fundamentals of AI for Business
-        </p>
+        <div class="simulators-grid">
+            <div class="simulator-card featured">
+                <div class="simulator-icon">🔄</div>
+                <div class="simulator-title">ML Development Cycle</div>
+                <div class="simulator-description">
+                    Experience how bias cascades through the 7-stage ML development process. Inject bias at different stages and watch effects multiply across the pipeline.
+                </div>
+                <ul class="simulator-features">
+                    <li>7-stage interactive pipeline</li>
+                    <li>Real-time cascade visualization</li>
+                    <li>4 industry scenarios (Medical, Lending, Hiring, COMPAS)</li>
+                    <li>Bias multiplier effects demonstration</li>
+                </ul>
+                <a href="Session_3_ML_Development_Simulator_Integrated.html" class="launch-btn">Launch Simulator</a>
+            </div>
+            
+            <div class="simulator-card">
+                <div class="simulator-icon">⚖️</div>
+                <div class="simulator-title">Fairness Trade-offs</div>
+                <div class="simulator-description">
+                    Explore the ProPublica vs. Northpointe debate. Discover why "equal treatment" and "equal accuracy" cannot both be achieved simultaneously.
+                </div>
+                <ul class="simulator-features">
+                    <li>COMPAS algorithm recreation</li>
+                    <li>Real-time fairness calculations</li>
+                    <li>Interactive base rate adjustment</li>
+                    <li>Mathematical impossibility demonstration</li>
+                </ul>
+                <a href="Session_3_Fairness_Simulator_Integrated.html" class="launch-btn">Launch Simulator</a>
+            </div>
+            
+            <div class="simulator-card">
+                <div class="simulator-icon">🧪</div>
+                <div class="simulator-title">Validation Strategy</div>
+                <div class="simulator-description">
+                    Learn why external validation is "shockingly rare but critical." See how internal validation creates false confidence in AI performance.
+                </div>
+                <ul class="simulator-features">
+                    <li>3-stage validation process</li>
+                    <li>Performance degradation visualization</li>
+                    <li>Data quality impact analysis</li>
+                    <li>Distribution shift effects</li>
+                </ul>
+                <a href="Session_3_Validation_Strategy_Simulator_Integrated.html" class="launch-btn">Launch Simulator</a>
+            </div>
+            
+            <div class="simulator-card">
+                <div class="simulator-icon">👥</div>
+                <div class="simulator-title">Group-to-Individual Problem</div>
+                <div class="simulator-description">
+                    Experience why group patterns mislead individual predictions. Make predictions yourself and discover the fundamental challenge of statistical AI.
+                </div>
+                <ul class="simulator-features">
+                    <li>4 real-world scenarios</li>
+                    <li>Interactive prediction challenges</li>
+                    <li>Group vs. individual pattern analysis</li>
+                    <li>Algorithm comparison insights</li>
+                </ul>
+                <a href="Session_3_Group_Individual_Simulator_Integrated.html" class="launch-btn">Launch Simulator</a>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <div class="ivey-branding">Ivey Business School | Western University</div>
+            <div class="course-info">Fundamentals of AI for Business | Professor Yasser Rahrovani</div>
+            <div class="course-info" style="font-size: 0.85em; margin-top: 15px;">
+                These simulators complement the COMPAS case study and demonstrate key concepts in AI bias, 
+                fairness, and validation for business decision-makers.
+            </div>
+        </div>
     </div>
-    
-    <!-- Fallback timeout redirect -->
-    <script>
-        // If redirect doesn't work after 3 seconds, show a manual link
-        setTimeout(function() {
-            if (window.location.pathname.endsWith('index.html') || window.location.pathname === '/funai/') {
-                document.querySelector('.loading-container').innerHTML = `
-                    <h2>Redirect Issue Detected</h2>
-                    <p>Please click the link below to access the simulator:</p>
-                    <a href="Session_3_ML_Development_Simulator_Integrated.html" class="fallback-link" style="font-size: 1.2em;">
-                        → Open ML Development Simulator
-                    </a>
-                    <p style="font-size: 0.8em; margin-top: 20px; opacity: 0.8;">
-                        <strong>Ivey Business School</strong><br>
-                        Fundamentals of AI for Business
-                    </p>
-                `;
-            }
-        }, 3000);
-    </script>
 </body>
 </html>
