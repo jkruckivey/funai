@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COMPAS Fairness Simulator - Ivey Business School</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Georgia:wght@400;700&display=swap');
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 15px;
+            background: #034638;
+            min-height: 100vh;
+            color: #000000;
+        }
+        
+        .container {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 20px 40px rgba(3, 70, 56, 0.2);
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            min-height: calc(100vh - 30px);
+            gap: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #034638;
+        }
+        
+        h1 {
+            font-family: Georgia, serif;
+            color: #034638;
+            margin: 0 0 5px 0;
+            font-size: 1.8em;
+            font-weight: 400;
+        }
+        
+        .subtitle {
+            color: #582C83;
+            font-size: 1em;
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            overflow: hidden;
+        }
+        
+        .controls-section {
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            gap: 15px;
+        }
+        
+        .challenge-prompt {
+            background: linear-gradient(135deg, #034638 0%, #045a49 100%);
+            color: #ffffff;
+            border-radius: 8px;
+            padding: 15px;
+            border-left: 4px solid #582C83;
+        }
+        
+        .challenge-prompt h3 {
+            color: #ffffff;
+            margin: 0 0 8px 0;
+            font-size: 1.1em;
+            font-family: Georgia, serif;
+        }
+        
+        .challenge-prompt p {
+            margin: 5px 0;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+        
+        .controls-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .control-group {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #63666A;
+        }
+        
+        .control-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #034638;
+            font-size: 0.9em;
+        }
+        
+        input[type="range"] {
+            width: 100%;
+            margin: 8px 0;
+            height: 6px;
+            border-radius: 3px;
+            background: #63666A;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #582C83;
+            cursor: pointer;
+        }
+        
+        input[type="range"]::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #582C83;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .current-value {
+            font-weight: bold;
+            color: #582C83;
+            font-size: 0.9em;
+        }
+        
+        .scenario-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+        
+        .scenario-btn {
+            background: linear-gradient(135deg, #034638 0%, #045a49 100%);
+            color: #ffffff;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.8em;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .scenario-btn:hover {
+            border-color: #582C83;
+            transform: translateY(-2px);
+        }
+        
+        .results-section {
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            gap: 15px;
+        }
+        
+        .metrics-display {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .metric-card {
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .propublica-metric {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border: 2px solid #034638;
+        }
+        
+        .northpointe-metric {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border: 2px solid #582C83;
+        }
+        
+        .metric-card h4 {
+            font-family: Georgia, serif;
+            margin: 0 0 8px 0;
+            font-size: 1em;
+        }
+        
+        .propublica-metric h4 {
+            color: #034638;
+        }
+        
+        .northpointe-metric h4 {
+            color: #582C83;
+        }
+        
+        .metric-value {
+            font-size: 2em;
+            font-weight: bold;
+            margin: 8px 0;
+            font-family: Georgia, serif;
+        }
+        
+        .propublica-metric .metric-value {
+            color: #034638;
+        }
+        
+        .northpointe-metric .metric-value {
+            color: #582C83;
+        }
+        
+        .metric-label {
+            font-size: 0.85em;
+            font-weight: 600;
+            color: #63666A;
+            margin-bottom: 8px;
+        }
+        
+        .fairness-verdict {
+            padding: 6px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.9em;
+        }
+        
+        .fair { 
+            background: #d4edda; 
+            border: 1px solid #034638; 
+            color: #034638; 
+        }
+        .unfair { 
+            background: #f8d7da; 
+            border: 1px solid #dc3545; 
+            color: #721c24; 
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #ffffff;
+            font-size: 0.85em;
+        }
+        
+        .data-table th, .data-table td {
+            border: 1px solid #63666A;
+            padding: 8px;
+            text-align: center;
+        }
+        
+        .data-table th {
+            background: #034638;
+            color: #ffffff;
+            font-weight: 600;
+            font-family: Georgia, serif;
+        }
+        
+        .data-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .insight-box {
+            background: linear-gradient(135deg, #582C83 0%, #6b3fa0 100%);
+            color: #ffffff;
+            border-radius: 8px;
+            padding: 15px;
+        }
+        
+        .insight-box h4 {
+            color: #ffffff;
+            margin: 0 0 8px 0;
+            font-family: Georgia, serif;
+            font-size: 1em;
+        }
+        
+        .insight-box p {
+            margin: 0;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+        
+        .footer {
+            text-align: center;
+            padding-top: 15px;
+            border-top: 2px solid #63666A;
+            color: #63666A;
+            font-size: 0.8em;
+            font-weight: 500;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .controls-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .metrics-display {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>COMPAS Fairness Simulator</h1>
+            <div class="subtitle">Experience the ProPublica vs. Northpointe Dilemma | Ivey Business School</div>
+        </div>
+        
+        <div class="main-content">
+            <div class="controls-section">
+                <div class="challenge-prompt">
+                    <h3>🎯 Your Challenge</h3>
+                    <p>You're the Chief AI Officer for a state court system. Should COMPAS optimize for <strong>equal treatment</strong> (ProPublica) or <strong>equal accuracy</strong> (Northpointe)?</p>
+                </div>
+                
+                <div class="controls-grid">
+                    <div class="control-group">
+                        <label for="baseRateBlack">Black Defendants Recidivism Rate:</label>
+                        <input type="range" id="baseRateBlack" min="30" max="70" value="51" oninput="updateSimulation()">
+                        <div>Current: <span id="baseRateBlackValue" class="current-value">51%</span></div>
+                    </div>
+                    <div class="control-group">
+                        <label for="baseRateWhite">White Defendants Recidivism Rate:</label>
+                        <input type="range" id="baseRateWhite" min="20" max="60" value="39" oninput="updateSimulation()">
+                        <div>Current: <span id="baseRateWhiteValue" class="current-value">39%</span></div>
+                    </div>
+                    <div class="control-group">
+                        <label for="algorithmBias">Algorithm Bias Level:</label>
+                        <input type="range" id="algorithmBias" min="0" max="20" value="5" oninput="updateSimulation()">
+                        <div>Current: <span id="algorithmBiasValue" class="current-value">5%</span> bias</div>
+                    </div>
+                    <div class="control-group">
+                        <label for="sampleSize">Sample Size:</label>
+                        <input type="range" id="sampleSize" min="1000" max="5000" value="2000" step="500" oninput="updateSimulation()">
+                        <div>Current: <span id="sampleSizeValue" class="current-value">2000</span> cases</div>
+                    </div>
+                </div>
+                
+                <div class="scenario-buttons">
+                    <button class="scenario-btn" onclick="setScenario('compas')">⚖️ COMPAS Data</button>
+                    <button class="scenario-btn" onclick="setScenario('equal')">📊 Equal Rates</button>
+                    <button class="scenario-btn" onclick="setScenario('extreme')">📈 Extreme Gap</button>
+                    <button class="scenario-btn" onclick="setScenario('hiring')">💼 Hiring AI</button>
+                </div>
+            </div>
+            
+            <div class="results-section">
+                <div class="metrics-display">
+                    <div class="metric-card propublica-metric">
+                        <h4>ProPublica: Error Rate Balance</h4>
+                        <div class="metric-value" id="fprDifference">12%</div>
+                        <div class="metric-label">False Positive Rate Difference</div>
+                        <div class="fairness-verdict" id="propublicaVerdict">❌ UNFAIR</div>
+                    </div>
+                    
+                    <div class="metric-card northpointe-metric">
+                        <h4>Northpointe: Predictive Parity</h4>
+                        <div class="metric-value" id="ppvDifference">4%</div>
+                        <div class="metric-label">Accuracy Difference</div>
+                        <div class="fairness-verdict" id="northpointeVerdict">✅ FAIR</div>
+                    </div>
+                </div>
+                
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>Black</th>
+                            <th>White</th>
+                            <th>Gap</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>False Positive Rate</strong></td>
+                            <td id="fprBlack">45%</td>
+                            <td id="fprWhite">23%</td>
+                            <td id="fprDiff">22%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>False Negative Rate</strong></td>
+                            <td id="fnrBlack">28%</td>
+                            <td id="fnrWhite">48%</td>
+                            <td id="fnrDiff">20%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Positive Predictive Value</strong></td>
+                            <td id="ppvBlack">63%</td>
+                            <td id="ppvWhite">59%</td>
+                            <td id="ppvDiff">4%</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="insight-box">
+                    <h4>💡 Key Insight</h4>
+                    <p id="currentInsight">With different base rates (51% vs 39%), perfect fairness across all metrics is mathematically impossible. You must choose your priority!</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <strong>Ivey Business School | Western University</strong> • Fundamentals of AI for Business • Professor Yasser Rahrovani
+        </div>
+    </div>
+
+    <script>
+        function updateSimulation() {
+            const baseRateBlack = parseInt(document.getElementById('baseRateBlack').value);
+            const baseRateWhite = parseInt(document.getElementById('baseRateWhite').value);
+            const algorithmBias = parseInt(document.getElementById('algorithmBias').value);
+            const sampleSize = parseInt(document.getElementById('sampleSize').value);
+            
+            // Update display values
+            document.getElementById('baseRateBlackValue').textContent = baseRateBlack + '%';
+            document.getElementById('baseRateWhiteValue').textContent = baseRateWhite + '%';
+            document.getElementById('algorithmBiasValue').textContent = algorithmBias + '%';
+            document.getElementById('sampleSizeValue').textContent = sampleSize.toLocaleString();
+            
+            // Calculate metrics based on mathematical relationships
+            const fprBlack = Math.max(5, Math.min(60, 25 + (baseRateBlack - baseRateWhite) * 1.5 + algorithmBias));
+            const fprWhite = Math.max(5, Math.min(60, 25 - (baseRateBlack - baseRateWhite) * 0.5));
+            
+            const fnrBlack = Math.max(10, Math.min(70, 40 - (baseRateBlack - baseRateWhite) * 1.2));
+            const fnrWhite = Math.max(10, Math.min(70, 40 + (baseRateBlack - baseRateWhite) * 1.8));
+            
+            const ppvBlack = Math.max(50, Math.min(80, 60 + (baseRateBlack - 45) * 0.8));
+            const ppvWhite = Math.max(50, Math.min(80, 60 + (baseRateWhite - 35) * 0.6));
+            
+            // Update table
+            document.getElementById('fprBlack').textContent = Math.round(fprBlack) + '%';
+            document.getElementById('fprWhite').textContent = Math.round(fprWhite) + '%';
+            document.getElementById('fprDiff').textContent = Math.round(Math.abs(fprBlack - fprWhite)) + '%';
+            
+            document.getElementById('fnrBlack').textContent = Math.round(fnrBlack) + '%';
+            document.getElementById('fnrWhite').textContent = Math.round(fnrWhite) + '%';
+            document.getElementById('fnrDiff').textContent = Math.round(Math.abs(fnrBlack - fnrWhite)) + '%';
+            
+            document.getElementById('ppvBlack').textContent = Math.round(ppvBlack) + '%';
+            document.getElementById('ppvWhite').textContent = Math.round(ppvWhite) + '%';
+            document.getElementById('ppvDiff').textContent = Math.round(Math.abs(ppvBlack - ppvWhite)) + '%';
+            
+            // Update main metrics
+            const fprDifference = Math.abs(fprBlack - fprWhite);
+            const ppvDifference = Math.abs(ppvBlack - ppvWhite);
+            
+            document.getElementById('fprDifference').textContent = Math.round(fprDifference) + '%';
+            document.getElementById('ppvDifference').textContent = Math.round(ppvDifference) + '%';
+            
+            // Determine fairness verdicts
+            const propublicaFair = fprDifference < 10;
+            const northpointeFair = ppvDifference < 8;
+            
+            document.getElementById('propublicaVerdict').innerHTML = propublicaFair ? '✅ FAIR' : '❌ UNFAIR';
+            document.getElementById('propublicaVerdict').className = 'fairness-verdict ' + (propublicaFair ? 'fair' : 'unfair');
+            
+            document.getElementById('northpointeVerdict').innerHTML = northpointeFair ? '✅ FAIR' : '❌ UNFAIR';
+            document.getElementById('northpointeVerdict').className = 'fairness-verdict ' + (northpointeFair ? 'fair' : 'unfair');
+            
+            // Update insight
+            let insight = '';
+            if (baseRateBlack === baseRateWhite) {
+                insight = '🎯 Equal base rates make fairness across all metrics achievable! This is why representation matters in training data.';
+            } else if (Math.abs(baseRateBlack - baseRateWhite) > 20) {
+                insight = '⚠️ Extreme base rate differences make fairness trade-offs unavoidable. This reflects deep societal inequalities that AI cannot solve alone.';
+            } else if (propublicaFair && northpointeFair) {
+                insight = '🎉 Rare scenario: Both fairness definitions are satisfied! This happens when base rates are similar and bias is low.';
+            } else {
+                insight = `💭 Trade-off active: You can achieve ${propublicaFair ? 'equal treatment' : 'equal accuracy'} but not both. This is the mathematical reality behind the COMPAS debate.`;
+            }
+            
+            document.getElementById('currentInsight').textContent = insight;
+        }
+        
+        function setScenario(scenario) {
+            switch(scenario) {
+                case 'compas':
+                    document.getElementById('baseRateBlack').value = 51;
+                    document.getElementById('baseRateWhite').value = 39;
+                    document.getElementById('algorithmBias').value = 5;
+                    break;
+                case 'equal':
+                    document.getElementById('baseRateBlack').value = 45;
+                    document.getElementById('baseRateWhite').value = 45;
+                    document.getElementById('algorithmBias').value = 2;
+                    break;
+                case 'extreme':
+                    document.getElementById('baseRateBlack').value = 65;
+                    document.getElementById('baseRateWhite').value = 25;
+                    document.getElementById('algorithmBias').value = 10;
+                    break;
+                case 'hiring':
+                    document.getElementById('baseRateBlack').value = 35;
+                    document.getElementById('baseRateWhite').value = 55;
+                    document.getElementById('algorithmBias').value = 8;
+                    break;
+            }
+            updateSimulation();
+        }
+        
+        // Initialize
+        updateSimulation();
+    </script>
+</body>
+</html>
