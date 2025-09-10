@@ -567,6 +567,19 @@
             font-weight: 500;
         }
         
+        /* Screen reader only text */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        
         /* Responsive Design */
         @media (max-width: 1600px) {
             .results-content {
@@ -615,26 +628,39 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="main-layout">
+    <div class="container" role="main" aria-labelledby="main-title">
+        <div class="main-layout" role="application" aria-label="Machine learning development cycle simulator">
             <div class="pipeline-section">
                 <div class="pipeline-header">
-                    <h2>🔄 ML Development Pipeline</h2>
+                    <h2 id="main-title">🔄 ML Development Pipeline</h2>
                     <p class="pipeline-subtitle">Click stages for details • Adjust sliders to inject bias • Watch cascade effects</p>
                 </div>
                 
-                <div class="pipeline">
-                    <div class="stage" id="stage1" onclick="selectStage(1)">
+                <div class="pipeline" role="group" aria-labelledby="main-title" aria-describedby="pipeline-instructions">
+                    <div id="pipeline-instructions" class="sr-only">Interactive pipeline with 7 stages. Click on each stage to learn more, then adjust bias sliders to see cascade effects across the development cycle.</div>
+                    <div class="stage" id="stage1" onclick="selectStage(1)" role="button" tabindex="0" aria-labelledby="stage1-title" aria-describedby="stage1-desc">
                         <div class="stage-number">1</div>
-                        <h3>Data Collection</h3>
-                        <p>Gathering training data</p>
+                        <h3 id="stage1-title">Data Collection</h3>
+                        <p id="stage1-desc">Gathering training data</p>
                         <div class="stage-controls">
                             <div class="bias-control-integrated">
                                 <span class="bias-label">Bias:</span>
-                                <input type="range" class="stage-slider" id="bias1" min="0" max="10" value="0" oninput="updateSimulation()">
+                                <input type="range" 
+                                       class="stage-slider" 
+                                       id="bias1" 
+                                       min="0" 
+                                       max="10" 
+                                       value="0" 
+                                       oninput="updateSimulation()"
+                                       aria-label="Data collection bias level"
+                                       aria-describedby="bias1Value"
+                                       aria-valuemin="0"
+                                       aria-valuemax="10"
+                                       aria-valuenow="0"
+                                       role="slider">
                             </div>
                             <div class="bias-display">
-                                <span class="bias-value" id="bias1Value">0/10</span>
+                                <span class="bias-value" id="bias1Value" aria-live="polite">0/10</span>
                                 <div class="bias-indicator" id="indicator1">
                                     <div class="bias-dot"></div>
                                     <div class="bias-dot"></div>
@@ -653,17 +679,29 @@
                     
                     <div class="arrow">→</div>
                     
-                    <div class="stage" id="stage2" onclick="selectStage(2)">
+                    <div class="stage" id="stage2" onclick="selectStage(2)" role="button" tabindex="0" aria-labelledby="stage2-title" aria-describedby="stage2-desc">
                         <div class="stage-number">2</div>
-                        <h3>Data Preparation</h3>
-                        <p>Cleaning & processing</p>
+                        <h3 id="stage2-title">Data Preparation</h3>
+                        <p id="stage2-desc">Cleaning & processing</p>
                         <div class="stage-controls">
                             <div class="bias-control-integrated">
                                 <span class="bias-label">Bias:</span>
-                                <input type="range" class="stage-slider" id="bias2" min="0" max="10" value="0" oninput="updateSimulation()">
+                                <input type="range" 
+                                       class="stage-slider" 
+                                       id="bias2" 
+                                       min="0" 
+                                       max="10" 
+                                       value="0" 
+                                       oninput="updateSimulation()"
+                                       aria-label="Data preparation bias level"
+                                       aria-describedby="bias2Value"
+                                       aria-valuemin="0"
+                                       aria-valuemax="10"
+                                       aria-valuenow="0"
+                                       role="slider">
                             </div>
                             <div class="bias-display">
-                                <span class="bias-value" id="bias2Value">0/10</span>
+                                <span class="bias-value" id="bias2Value" aria-live="polite">0/10</span>
                                 <div class="bias-indicator" id="indicator2">
                                     <div class="bias-dot"></div>
                                     <div class="bias-dot"></div>
