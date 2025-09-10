@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ML Validation Strategy Simulator - Ivey Business School</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Georgia:wght@400;700&display=swap');
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 15px;
+            background: #034638;
+            min-height: 100vh;
+            color: #000000;
+        }
+        
+        .container {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 20px 40px rgba(3, 70, 56, 0.2);
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            min-height: calc(100vh - 30px);
+            gap: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #034638;
+        }
+        
+        h1 {
+            font-family: Georgia, serif;
+            color: #034638;
+            margin: 0 0 5px 0;
+            font-size: 1.8em;
+            font-weight: 400;
+        }
+        
+        .subtitle {
+            color: #582C83;
+            font-size: 1em;
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            overflow: hidden;
+        }
+        
+        .validation-section {
+            display: grid;
+            grid-template-rows: auto 1fr;
+            gap: 15px;
+        }
+        
+        .scenario-controls {
+            background: linear-gradient(135deg, #034638 0%, #045a49 100%);
+            color: #ffffff;
+            border-radius: 8px;
+            padding: 15px;
+            border-left: 4px solid #582C83;
+        }
+        
+        .scenario-controls h3 {
+            color: #ffffff;
+            margin: 0 0 10px 0;
+            font-size: 1.1em;
+            font-family: Georgia, serif;
+        }
+        
+        .scenario-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .scenario-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            border: none;
+            padding: 12px 16px;
+            min-height: 44px;
+            min-width: 44px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85em;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        
+        .scenario-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: #ffffff;
+        }
+        
+        .scenario-btn:focus {
+            outline: 3px solid #ffffff;
+            outline-offset: 2px;
+        }
+        
+        .scenario-btn.active {
+            background: #582C83;
+            border-color: #582C83;
+        }
+        
+        .validation-stages {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+        
+        .validation-stage {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            border: 3px solid #e5e7eb;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .validation-stage:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        }
+        
+        .validation-stage:focus {
+            outline: 3px solid #582C83;
+            outline-offset: 2px;
+        }
+        
+        .validation-stage.active {
+            border-color: #034638;
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+        }
+        
+        .validation-stage.completed {
+            border-color: #16a34a;
+            background: linear-gradient(135deg, #f0fdf4 0%, #bbf7d0 100%);
+        }
+        
+        .validation-stage.failed {
+            border-color: #dc2626;
+            background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%);
+        }
+        
+        .step-counter {
+            position: absolute;
+            top: -15px;
+            left: 15px;
+            background: #034638;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        
+        .stage-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #034638;
+        }
+        
+        .stage-icon {
+            font-size: 1.5em;
+            margin-right: 8px;
+        }
+        
+        .stage-description {
+            color: #63666A;
+            margin-bottom: 15px;
+            line-height: 1.4;
+            font-size: 0.85em;
+            flex-grow: 1;
+        }
+        
+        .performance-indicator {
+            background: white;
+            border-radius: 6px;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .performance-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin: 5px 0;
+            font-family: Georgia, serif;
+        }
+        
+        .performance-label {
+            font-size: 0.8em;
+            color: #63666A;
+        }
+        
+        .good { color: #16a34a; }
+        .warning { color: #d97706; }
+        .danger { color: #dc2626; }
+        
+        .validation-button {
+            background: linear-gradient(135deg, #034638 0%, #582C83 100%);
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            min-height: 44px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        
+        .validation-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .validation-button:focus {
+            outline: 3px solid #582C83;
+            outline-offset: 2px;
+        }
+        
+        .validation-button:disabled {
+            background: #e5e7eb;
+            color: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .controls-section {
+            display: grid;
+            grid-template-rows: auto 1fr;
+            gap: 15px;
+        }
+        
+        .data-quality-panel {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .data-quality-panel h4 {
+            color: #034638;
+            margin: 0 0 15px 0;
+            font-family: Georgia, serif;
+            font-size: 1.1em;
+        }
+        
+        .data-controls {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .control-group {
+            background: white;
+            padding: 12px;
+            border-radius: 6px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .control-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #034638;
+            font-size: 0.9em;
+        }
+        
+        input[type="range"] {
+            width: 100%;
+            margin: 8px 0;
+            height: 8px;
+            border-radius: 4px;
+            background: #63666A;
+            outline: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+        
+        input[type="range"]::-webkit-slider-track {
+            height: 8px;
+            border-radius: 4px;
+            background: #63666A;
+        }
+        
+        input[type="range"]::-moz-range-track {
+            height: 8px;
+            border-radius: 4px;
+            background: #63666A;
+            border: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #582C83;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(88, 44, 131, 0.3);
+            transition: all 0.2s ease;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb:hover {
+            background: #6b3fa0;
+            box-shadow: 0 4px 12px rgba(88, 44, 131, 0.4);
+            transform: scale(1.1);
+        }
+        
+        input[type="range"]::-moz-range-thumb {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #582C83;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 6px rgba(88, 44, 131, 0.3);
+            transition: all 0.2s ease;
+        }
+        
+        input[type="range"]::-moz-range-thumb:hover {
+            background: #6b3fa0;
+            box-shadow: 0 4px 12px rgba(88, 44, 131, 0.4);
+            transform: scale(1.1);
+        }
+        
+        .slider-value {
+            text-align: center;
+            font-weight: bold;
+            color: #582C83;
+            font-size: 0.9em;
+        }
+        
+        .insights-panel {
+            background: linear-gradient(135deg, #582C83 0%, #6b3fa0 100%);
+            color: #ffffff;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        
+        .insights-panel h4 {
+            color: #ffffff;
+            margin: 0 0 10px 0;
+            font-family: Georgia, serif;
+            font-size: 1em;
+        }
+        
+        .insights-panel p {
+            margin: 0;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+        
+        .footer {
+            text-align: center;
+            padding-top: 15px;
+            border-top: 2px solid #63666A;
+            color: #63666A;
+            font-size: 0.8em;
+            font-weight: 500;
+        }
+        
+        /* Screen reader only text */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .validation-stages {
+                grid-template-columns: 1fr;
+            }
+            
+            .scenario-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" role="main" aria-labelledby="main-title">
+        <div class="header">
+            <h1 id="main-title">ML Validation Strategy Simulator</h1>
+            <div class="subtitle">Experience why external validation is critical | Ivey Business School</div>
+        </div>
+        
+        <div class="main-content" role="application" aria-label="Interactive validation strategy simulation">
+            <div class="validation-section" role="region" aria-labelledby="validation-heading">
+                <div class="scenario-controls" role="group" aria-label="Scenario selection">
+                    <h3 id="validation-heading">🎯 Select AI System</h3>
+                    <div class="scenario-buttons" role="group" aria-label="AI system scenarios">
+                        <button class="scenario-btn active" 
+                                onclick="setScenario('compas')" 
+                                id="compas-btn"
+                                aria-describedby="compas-desc">
+                            ⚖️ COMPAS
+                            <span class="sr-only" id="compas-desc">Criminal justice recidivism prediction algorithm</span>
+                        </button>
+                        <button class="scenario-btn" 
+                                onclick="setScenario('hiring')" 
+                                id="hiring-btn"
+                                aria-describedby="hiring-desc">
+                            💼 Hiring AI
+                            <span class="sr-only" id="hiring-desc">Resume screening and candidate evaluation system</span>
+                        </button>
+                        <button class="scenario-btn" 
+                                onclick="setScenario('medical')" 
+                                id="medical-btn"
+                                aria-describedby="medical-desc">
+                            🏥 Medical
+                            <span class="sr-only" id="medical-desc">Medical diagnosis and treatment recommendation system</span>
+                        </button>
+                        <button class="scenario-btn" 
+                                onclick="setScenario('fraud')" 
+                                id="fraud-btn"
+                                aria-describedby="fraud-desc">
+                            🛡️ Fraud Detection
+                            <span class="sr-only" id="fraud-desc">Financial transaction fraud detection system</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="validation-stages" role="group" aria-label="Three-stage validation process">
+                    <div class="validation-stage" 
+                         id="internal-validation" 
+                         onclick="selectStage('internal')" 
+                         role="button" 
+                         tabindex="0" 
+                         aria-labelledby="internal-title" 
+                         aria-describedby="internal-desc">
+                        <div class="step-counter" aria-hidden="true">1</div>
+                        <div class="stage-header">
+                            <span class="stage-icon" aria-hidden="true">📊</span>
+                            <span id="internal-title">Internal Validation</span>
+                        </div>
+                        <div class="stage-description" id="internal-desc">
+                            Split your data 70/30. Train on one part, test on the other.
+                        </div>
+                        <div class="performance-indicator" aria-live="polite">
+                            <div class="performance-value" id="internal-accuracy">--</div>
+                            <div class="performance-label">Accuracy</div>
+                        </div>
+                        <button class="validation-button" 
+                                onclick="runInternalValidation()" 
+                                id="internal-btn" 
+                                disabled
+                                aria-describedby="internal-accuracy">
+                            Run Internal Test
+                        </button>
+                    </div>
+                    
+                    <div class="validation-stage" 
+                         id="cross-validation" 
+                         onclick="selectStage('cross')" 
+                         role="button" 
+                         tabindex="0" 
+                         aria-labelledby="cross-title" 
+                         aria-describedby="cross-desc">
+                        <div class="step-counter" aria-hidden="true">2</div>
+                        <div class="stage-header">
+                            <span class="stage-icon" aria-hidden="true">🔄</span>
+                            <span id="cross-title">Cross-Validation</span>
+                        </div>
+                        <div class="stage-description" id="cross-desc">
+                            Create hundreds of train/test splits for robust estimates.
+                        </div>
+                        <div class="performance-indicator" aria-live="polite">
+                            <div class="performance-value" id="cross-accuracy">--</div>
+                            <div class="performance-label">Average Accuracy</div>
+                        </div>
+                        <button class="validation-button" 
+                                onclick="runCrossValidation()" 
+                                id="cross-btn" 
+                                disabled
+                                aria-describedby="cross-accuracy">
+                            Run Cross-Validation
+                        </button>
+                    </div>
+                    
+                    <div class="validation-stage" 
+                         id="external-validation" 
+                         onclick="selectStage('external')" 
+                         role="button" 
+                         tabindex="0" 
+                         aria-labelledby="external-title" 
+                         aria-describedby="external-desc">
+                        <div class="step-counter" aria-hidden="true">3</div>
+                        <div class="stage-header">
+                            <span class="stage-icon" aria-hidden="true">🌍</span>
+                            <span id="external-title">External Validation</span>
+                        </div>
+                        <div class="stage-description" id="external-desc">
+                            Test on completely independent data from different locations/times.
+                        </div>
+                        <div class="performance-indicator" aria-live="polite">
+                            <div class="performance-value" id="external-accuracy">--</div>
+                            <div class="performance-label">True Performance</div>
+                        </div>
+                        <button class="validation-button" 
+                                onclick="runExternalValidation()" 
+                                id="external-btn" 
+                                disabled
+                                aria-describedby="external-accuracy">
+                            Run External Test
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="controls-section" role="region" aria-labelledby="controls-heading">
+                <div class="data-quality-panel">
+                    <h4 id="controls-heading">📊 Data Quality Settings</h4>
+                    <div class="data-controls" role="group" aria-label="Data quality parameters">
+                        <div class="control-group">
+                            <label for="data-size">Dataset Size:</label>
+                            <input type="range" 
+                                   id="data-size" 
+                                   min="100" 
+                                   max="10000" 
+                                   value="5000" 
+                                   step="100"
+                                   oninput="updateDataSettings()"
+                                   aria-label="Dataset size for training and validation"
+                                   aria-describedby="data-size-value"
+                                   aria-valuemin="100"
+                                   aria-valuemax="10000"
+                                   aria-valuenow="5000"
+                                   role="slider">
+                            <div class="slider-value" id="data-size-value" aria-live="polite">5000 samples</div>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label for="noise-level">Data Noise Level:</label>
+                            <input type="range" 
+                                   id="noise-level" 
+                                   min="0" 
+                                   max="50" 
+                                   value="10"
+                                   oninput="updateDataSettings()"
+                                   aria-label="Percentage of noise in training data"
+                                   aria-describedby="noise-level-value"
+                                   aria-valuemin="0"
+                                   aria-valuemax="50"
+                                   aria-valuenow="10"
+                                   role="slider">
+                            <div class="slider-value" id="noise-level-value" aria-live="polite">10% noise</div>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label for="distribution-shift">Distribution Shift:</label>
+                            <input type="range" 
+                                   id="distribution-shift" 
+                                   min="0" 
+                                   max="30" 
+                                   value="5"
+                                   oninput="updateDataSettings()"
+                                   aria-label="Percentage difference between training and test data distributions"
+                                   aria-describedby="distribution-shift-value"
+                                   aria-valuemin="0"
+                                   aria-valuemax="30"
+                                   aria-valuenow="5"
+                                   role="slider">
+                            <div class="slider-value" id="distribution-shift-value" aria-live="polite">5% shift</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="insights-panel" role="complementary" aria-labelledby="insights-heading">
+                    <h4 id="insights-heading">💡 Key Insight</h4>
+                    <p id="current-insight" aria-live="polite">
+                        Select a scenario and adjust data quality settings to see how validation strategies reveal true model performance. External validation often shows the harsh reality of real-world deployment.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <strong>Ivey Business School | Western University</strong> • Fundamentals of AI for Business • Professor Yasser Rahrovani
+        </div>
+    </div>
+
+    <script>
+        let currentScenario = 'compas';
+        let currentStage = null;
+        
+        // Scenario configurations
+        const scenarios = {
+            compas: {
+                name: 'COMPAS Algorithm',
+                baseAccuracy: 65,
+                internalBoost: 12,
+                crossValidationDrop: 8,
+                externalDrop: 22,
+                description: 'Criminal justice recidivism prediction'
+            },
+            hiring: {
+                name: 'Hiring AI System',
+                baseAccuracy: 78,
+                internalBoost: 15,
+                crossValidationDrop: 5,
+                externalDrop: 18,
+                description: 'Resume screening and candidate evaluation'
+            },
+            medical: {
+                name: 'Medical Diagnosis AI',
+                baseAccuracy: 82,
+                internalBoost: 10,
+                crossValidationDrop: 3,
+                externalDrop: 25,
+                description: 'Medical diagnosis and treatment recommendations'
+            },
+            fraud: {
+                name: 'Fraud Detection System',
+                baseAccuracy: 88,
+                internalBoost: 8,
+                crossValidationDrop: 4,
+                externalDrop: 15,
+                description: 'Financial transaction fraud detection'
+            }
+        };
+        
+        function updateDataSettings() {
+            const dataSize = parseInt(document.getElementById('data-size').value);
+            const noiseLevel = parseInt(document.getElementById('noise-level').value);
+            const distributionShift = parseInt(document.getElementById('distribution-shift').value);
+            
+            // Update ARIA attributes
+            const dataSizeSlider = document.getElementById('data-size');
+            const noiseLevelSlider = document.getElementById('noise-level');
+            const distributionShiftSlider = document.getElementById('distribution-shift');
+            
+            if (dataSizeSlider) dataSizeSlider.setAttribute('aria-valuenow', dataSize);
+            if (noiseLevelSlider) noiseLevelSlider.setAttribute('aria-valuenow', noiseLevel);
+            if (distributionShiftSlider) distributionShiftSlider.setAttribute('aria-valuenow', distributionShift);
+            
+            // Update display values
+            const dataSizeValue = document.getElementById('data-size-value');
+            const noiseLevelValue = document.getElementById('noise-level-value');
+            const distributionShiftValue = document.getElementById('distribution-shift-value');
+            
+            if (dataSizeValue) dataSizeValue.textContent = dataSize.toLocaleString() + ' samples';
+            if (noiseLevelValue) noiseLevelValue.textContent = noiseLevel + '% noise';
+            if (distributionShiftValue) distributionShiftValue.textContent = distributionShift + '% shift';
+            
+            updateInsights();
+        }
+        
+        function setScenario(scenarioId) {
+            currentScenario = scenarioId;
+            
+            // Update button states
+            document.querySelectorAll('.scenario-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(scenarioId + '-btn').classList.add('active');
+            
+            // Reset validation stages
+            resetValidationStages();
+            updateInsights();
+        }
+        
+        function selectStage(stageId) {
+            currentStage = stageId;
+            
+            // Update stage states
+            document.querySelectorAll('.validation-stage').forEach(stage => {
+                stage.classList.remove('active');
+            });
+            document.getElementById(stageId + '-validation').classList.add('active');
+            
+            // Enable the appropriate button
+            document.getElementById(stageId + '-btn').disabled = false;
+            updateInsights();
+        }
+        
+        function runInternalValidation() {
+            const scenario = scenarios[currentScenario];
+            const dataSize = parseInt(document.getElementById('data-size').value);
+            const noiseLevel = parseInt(document.getElementById('noise-level').value);
+            
+            // Calculate performance based on data quality
+            const sizeBonus = Math.min(10, (dataSize - 1000) / 1000 * 2);
+            const noisePenalty = noiseLevel / 2;
+            const accuracy = Math.max(50, Math.min(95, 
+                scenario.baseAccuracy + scenario.internalBoost + sizeBonus - noisePenalty
+            ));
+            
+            document.getElementById('internal-accuracy').textContent = Math.round(accuracy) + '%';
+            document.getElementById('internal-accuracy').className = 'performance-value ' + 
+                (accuracy > 80 ? 'good' : accuracy > 70 ? 'warning' : 'danger');
+            
+            document.getElementById('internal-validation').classList.add('completed');
+            document.getElementById('cross-btn').disabled = false;
+            
+            updateInsights();
+        }
+        
+        function runCrossValidation() {
+            const scenario = scenarios[currentScenario];
+            const dataSize = parseInt(document.getElementById('data-size').value);
+            const noiseLevel = parseInt(document.getElementById('noise-level').value);
+            
+            const sizeBonus = Math.min(8, (dataSize - 1000) / 1000 * 1.5);
+            const noisePenalty = noiseLevel / 2;
+            const accuracy = Math.max(45, Math.min(90, 
+                scenario.baseAccuracy + scenario.internalBoost - scenario.crossValidationDrop + sizeBonus - noisePenalty
+            ));
+            
+            document.getElementById('cross-accuracy').textContent = Math.round(accuracy) + '%';
+            document.getElementById('cross-accuracy').className = 'performance-value ' + 
+                (accuracy > 75 ? 'good' : accuracy > 65 ? 'warning' : 'danger');
+            
+            document.getElementById('cross-validation').classList.add('completed');
+            document.getElementById('external-btn').disabled = false;
+            
+            updateInsights();
+        }
+        
+        function runExternalValidation() {
+            const scenario = scenarios[currentScenario];
+            const dataSize = parseInt(document.getElementById('data-size').value);
+            const noiseLevel = parseInt(document.getElementById('noise-level').value);
+            const distributionShift = parseInt(document.getElementById('distribution-shift').value);
+            
+            const sizeBonus = Math.min(5, (dataSize - 1000) / 1000 * 1);
+            const noisePenalty = noiseLevel / 2;
+            const shiftPenalty = distributionShift * 1.2;
+            const accuracy = Math.max(30, Math.min(85, 
+                scenario.baseAccuracy - scenario.externalDrop + sizeBonus - noisePenalty - shiftPenalty
+            ));
+            
+            document.getElementById('external-accuracy').textContent = Math.round(accuracy) + '%';
+            document.getElementById('external-accuracy').className = 'performance-value ' + 
+                (accuracy > 70 ? 'good' : accuracy > 50 ? 'warning' : 'danger');
+            
+            if (accuracy < 60) {
+                document.getElementById('external-validation').classList.add('failed');
+            } else {
+                document.getElementById('external-validation').classList.add('completed');
+            }
+            
+            updateInsights();
+        }
+        
+        function resetValidationStages() {
+            document.querySelectorAll('.validation-stage').forEach(stage => {
+                stage.classList.remove('active', 'completed', 'failed');
+            });
+            
+            document.querySelectorAll('.validation-button').forEach(btn => {
+                btn.disabled = true;
+            });
+            
+            document.querySelectorAll('.performance-value').forEach(val => {
+                val.textContent = '--';
+                val.className = 'performance-value';
+            });
+            
+            currentStage = null;
+        }
+        
+        function updateInsights() {
+            const scenario = scenarios[currentScenario];
+            const noiseLevel = parseInt(document.getElementById('noise-level').value);
+            const distributionShift = parseInt(document.getElementById('distribution-shift').value);
+            
+            let insight = '';
+            
+            if (currentStage === null) {
+                insight = `${scenario.name}: Click on Stage 1 to begin validation. Each stage reveals different aspects of model performance.`;
+            } else if (currentStage === 'internal') {
+                insight = `Internal validation often shows inflated performance. The same data used for training gives optimistic results.`;
+            } else if (currentStage === 'cross') {
+                insight = `Cross-validation provides more realistic estimates by using multiple train/test splits from the same dataset.`;
+            } else if (currentStage === 'external') {
+                insight = `External validation reveals true generalization. Distribution shift (${distributionShift}%) and noise (${noiseLevel}%) dramatically impact real-world performance.`;
+            }
+            
+            const insightElement = document.getElementById('current-insight');
+            if (insightElement) insightElement.textContent = insight;
+        }
+        
+        // Add keyboard navigation support
+        function addKeyboardSupport() {
+            document.addEventListener('keydown', (e) => {
+                if (e.target.classList.contains('validation-stage') || e.target.classList.contains('scenario-btn')) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        e.target.click();
+                    }
+                }
+            });
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            updateDataSettings();
+            updateInsights();
+            addKeyboardSupport();
+        });
+    </script>
+</body>
+</html>
