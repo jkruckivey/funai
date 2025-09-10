@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Group-to-Individual Problem Simulator - Ivey Business School</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Georgia:wght@400;700&display=swap');
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 15px;
+            background: #034638;
+            min-height: 100vh;
+            color: #000000;
+        }
+        
+        .container {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 20px 40px rgba(3, 70, 56, 0.2);
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            min-height: calc(100vh - 30px);
+            gap: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #034638;
+        }
+        
+        h1 {
+            font-family: Georgia, serif;
+            color: #034638;
+            margin: 0 0 5px 0;
+            font-size: 1.8em;
+            font-weight: 400;
+        }
+        
+        .subtitle {
+            color: #582C83;
+            font-size: 1em;
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            overflow: hidden;
+        }
+        
+        .scenario-controls {
+            background: linear-gradient(135deg, #034638 0%, #045a49 100%);
+            color: #ffffff;
+            border-radius: 8px;
+            padding: 15px;
+            border-left: 4px solid #582C83;
+            margin-bottom: 15px;
+        }
+        
+        .scenario-controls h3 {
+            color: #ffffff;
+            margin: 0 0 10px 0;
+            font-size: 1.1em;
+            font-family: Georgia, serif;
+        }
+        
+        .scenario-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+        
+        .scenario-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            border: none;
+            padding: 12px 16px;
+            min-height: 44px;
+            min-width: 44px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85em;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        
+        .scenario-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: #ffffff;
+        }
+        
+        .scenario-btn:focus {
+            outline: 3px solid #ffffff;
+            outline-offset: 2px;
+        }
+        
+        .scenario-btn.active {
+            background: #582C83;
+            border-color: #582C83;
+        }
+        
+        .group-panel {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            border: 2px solid #034638;
+            margin-bottom: 15px;
+        }
+        
+        .individual-panel {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            border: 2px solid #582C83;
+        }
+        
+        .panel-header {
+            background: #034638;
+            color: #ffffff;
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 1.1em;
+            margin: -15px -15px 15px -15px;
+            font-family: Georgia, serif;
+        }
+        
+        .individual-panel .panel-header {
+            background: #582C83;
+        }
+        
+        .data-visualization {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            box-shadow: 0 2px 4px rgba(3, 70, 56, 0.1);
+            border: 1px solid #e5e7eb;
+        }
+        
+        .data-visualization h4 {
+            color: #034638;
+            margin: 0 0 15px 0;
+            font-family: Georgia, serif;
+            font-size: 1em;
+        }
+        
+        .height-chart {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        
+        .chart-column {
+            text-align: center;
+        }
+        
+        .chart-header {
+            font-weight: bold;
+            color: #034638;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+        }
+        
+        .chart-bar {
+            width: 100%;
+            height: 40px;
+            background: linear-gradient(135deg, #034638 0%, #045a49 100%);
+            border-radius: 4px;
+            margin: 5px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.85em;
+        }
+        
+        .chart-bar.female {
+            background: linear-gradient(135deg, #582C83 0%, #6b3fa0 100%);
+        }
+        
+        .performance-metrics {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 15px 0;
+        }
+        
+        .metric-card {
+            background: #ffffff;
+            border-radius: 6px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border: 1px solid #e5e7eb;
+        }
+        
+        .metric-value {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #034638;
+            font-family: Georgia, serif;
+            margin-bottom: 5px;
+        }
+        
+        .metric-label {
+            font-size: 0.85em;
+            color: #63666A;
+            font-weight: 600;
+        }
+        
+        .individuals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        .individual-card {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 15px;
+            border: 2px solid #e5e7eb;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-align: center;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .individual-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(3, 70, 56, 0.2);
+        }
+        
+        .individual-card:focus {
+            outline: 3px solid #582C83;
+            outline-offset: 2px;
+        }
+        
+        .individual-card.selected {
+            border-color: #582C83;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+        
+        .individual-card.correct {
+            border-color: #28a745;
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+        }
+        
+        .individual-card.incorrect {
+            border-color: #dc3545;
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+        }
+        
+        .individual-name {
+            font-weight: bold;
+            color: #034638;
+            font-size: 1.1em;
+            margin-bottom: 8px;
+        }
+        
+        .individual-details {
+            color: #63666A;
+            font-size: 0.9em;
+            line-height: 1.4;
+            margin-bottom: 10px;
+        }
+        
+        .prediction-buttons {
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+        }
+        
+        .pred-btn {
+            background: #e5e7eb;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8em;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            min-height: 32px;
+            min-width: 32px;
+        }
+        
+        .pred-btn:hover {
+            background: #d1d5db;
+        }
+        
+        .pred-btn:focus {
+            outline: 2px solid #582C83;
+            outline-offset: 1px;
+        }
+        
+        .pred-btn.selected {
+            background: #582C83;
+            color: white;
+        }
+        
+        .pred-btn.high {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .pred-btn.low {
+            background: #28a745;
+            color: white;
+        }
+        
+        .controls {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .control-btn {
+            background: linear-gradient(135deg, #034638 0%, #045a49 100%);
+            color: #ffffff;
+            border: none;
+            padding: 12px 20px;
+            margin: 6px;
+            min-height: 44px;
+            min-width: 44px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+        
+        .control-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(3, 70, 56, 0.3);
+        }
+        
+        .control-btn:focus {
+            outline: 3px solid #582C83;
+            outline-offset: 2px;
+        }
+        
+        .control-btn.danger {
+            background: #dc3545;
+        }
+        
+        .control-btn.danger:hover {
+            background: #c82333;
+            box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+        }
+        
+        .results-display {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-left: 4px solid #582C83;
+        }
+        
+        .results-display h4 {
+            color: #582C83;
+            margin: 0 0 10px 0;
+            font-family: Georgia, serif;
+        }
+        
+        .insight-box {
+            background: linear-gradient(135deg, #582C83 0%, #6b3fa0 100%);
+            color: #ffffff;
+            border-radius: 8px;
+            padding: 15px;
+        }
+        
+        .insight-box h3 {
+            color: #ffffff;
+            margin: 0 0 10px 0;
+            font-family: Georgia, serif;
+            font-size: 1.1em;
+        }
+        
+        .insight-box p {
+            margin: 0;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+        
+        .footer {
+            text-align: center;
+            padding-top: 15px;
+            border-top: 2px solid #63666A;
+            color: #63666A;
+            font-size: 0.8em;
+            font-weight: 500;
+        }
+        
+        /* Screen reader only text */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .height-chart {
+                grid-template-columns: 1fr;
+            }
+            
+            .performance-metrics {
+                grid-template-columns: 1fr;
+            }
+            
+            .individuals-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .scenario-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" role="main" aria-labelledby="main-title">
+        <div class="header">
+            <h1 id="main-title">Group-to-Individual Problem Simulator</h1>
+            <div class="subtitle">Experience why group patterns can mislead individual predictions | Ivey Business School</div>
+        </div>
+        
+        <div class="main-content" role="application" aria-label="Interactive group-to-individual problem demonstration">
+            <div class="left-section">
+                <div class="scenario-controls" role="group" aria-label="Scenario selection">
+                    <h3>🎯 Select Scenario</h3>
+                    <div class="scenario-buttons" role="group" aria-label="Problem domain scenarios">
+                        <button class="scenario-btn active" 
+                                onclick="setScenario('height')" 
+                                id="height-btn"
+                                aria-describedby="height-desc">
+                            📏 Height Prediction
+                            <span class="sr-only" id="height-desc">Predict individual heights based on gender</span>
+                        </button>
+                        <button class="scenario-btn" 
+                                onclick="setScenario('income')" 
+                                id="income-btn"
+                                aria-describedby="income-desc">
+                            💰 Income Prediction
+                            <span class="sr-only" id="income-desc">Predict individual incomes based on demographics</span>
+                        </button>
+                        <button class="scenario-btn" 
+                                onclick="setScenario('medical')" 
+                                id="medical-btn"
+                                aria-describedby="medical-desc">
+                            🏥 Medical Risk
+                            <span class="sr-only" id="medical-desc">Predict individual medical risks based on group data</span>
+                        </button>
+                        <button class="scenario-btn" 
+                                onclick="setScenario('credit')" 
+                                id="credit-btn"
+                                aria-describedby="credit-desc">
+                            🏦 Credit Scoring
+                            <span class="sr-only" id="credit-desc">Predict individual creditworthiness from group patterns</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="group-panel" role="region" aria-labelledby="group-heading">
+                    <div class="panel-header" id="group-heading">📊 Group-Level Data</div>
+                    <div class="data-visualization">
+                        <h4 id="group-title">Height Distribution by Gender</h4>
+                        <div class="height-chart" id="group-chart" role="img" aria-describedby="chart-description">
+                            <div class="chart-column">
+                                <div class="chart-header">👨 Men</div>
+                                <div class="chart-bar">Average: 5'10"</div>
+                                <div class="chart-bar">Range: 5'4"-6'4"</div>
+                            </div>
+                            <div class="chart-column">
+                                <div class="chart-header">👩 Women</div>
+                                <div class="chart-bar female">Average: 5'5"</div>
+                                <div class="chart-bar female">Range: 5'0"-5'10"</div>
+                            </div>
+                        </div>
+                        <div id="chart-description" class="sr-only">Bar chart showing height distributions with men averaging 5 feet 10 inches and women averaging 5 feet 5 inches</div>
+                    </div>
+                    
+                    <div class="data-visualization">
+                        <h4>Algorithm Training Results</h4>
+                        <div class="performance-metrics" id="group-performance" role="group" aria-label="Algorithm performance metrics">
+                            <div class="metric-card">
+                                <div class="metric-value" id="group-accuracy" aria-live="polite">87%</div>
+                                <div class="metric-label">Overall Accuracy</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value" id="group-samples" aria-live="polite">10,000</div>
+                                <div class="metric-label">Training Samples</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="right-section">
+                <div class="individual-panel" role="region" aria-labelledby="individual-heading">
+                    <div class="panel-header" id="individual-heading">👤 Individual Decision Making</div>
+                    <div class="data-visualization">
+                        <h4 id="individual-title">Make Predictions for These Individuals:</h4>
+                        <div id="individuals-container" 
+                             class="individuals-grid" 
+                             role="group" 
+                             aria-label="Individual prediction cases"
+                             aria-describedby="prediction-instructions">
+                            <!-- Individual cards will be populated by JavaScript -->
+                        </div>
+                        <div id="prediction-instructions" class="sr-only">Click on each individual case and select whether you predict high or low values based on the group patterns you observed</div>
+                    </div>
+                    
+                    <div class="controls">
+                        <button class="control-btn" 
+                                onclick="checkAnswers()" 
+                                id="check-btn"
+                                aria-describedby="check-description">
+                            Check My Predictions
+                        </button>
+                        <button class="control-btn" 
+                                onclick="showAlgorithmPredictions()" 
+                                id="algorithm-btn"
+                                aria-describedby="algorithm-description">
+                            Show Algorithm Predictions
+                        </button>
+                        <button class="control-btn danger" 
+                                onclick="resetIndividuals()"
+                                aria-describedby="reset-description">
+                            Reset
+                        </button>
+                        <div class="sr-only">
+                            <span id="check-description">Check your predictions against the actual individual data</span>
+                            <span id="algorithm-description">See what the group-trained algorithm predicted for each individual</span>
+                            <span id="reset-description">Clear all predictions and start over</span>
+                        </div>
+                    </div>
+                    
+                    <div class="results-display" id="results" style="display: none;" role="region" aria-live="polite"></div>
+                </div>
+                
+                <div class="insight-box" role="complementary" aria-labelledby="insights-heading">
+                    <h3 id="insights-heading">💡 Key Insight</h3>
+                    <p id="current-insight" aria-live="polite">
+                        Select a scenario and make predictions for individuals. Discover how group patterns can mislead when applied to specific people.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <strong>Ivey Business School | Western University</strong> • Fundamentals of AI for Business • Professor Yasser Rahrovani
+        </div>
+    </div>
+
+    <script>
+        let currentScenario = 'height';
+        let individuals = [];
+        let userPredictions = {};
+        let showingResults = false;
+        
+        const scenarios = {
+            height: {
+                title: 'Height Distribution by Gender',
+                groupData: {
+                    male: { avg: "5'10\"", range: "5'4\"-6'4\"" },
+                    female: { avg: "5'5\"", range: "5'0\"-5'10\"" }
+                },
+                accuracy: 87,
+                samples: 10000,
+                individuals: [
+                    { name: 'Alex Chen', details: 'Gender: Male\\nAge: 25', actual: 'low', prediction: 'high' },
+                    { name: 'Jordan Smith', details: 'Gender: Female\\nAge: 30', actual: 'high', prediction: 'low' },
+                    { name: 'Taylor Brown', details: 'Gender: Male\\nAge: 35', actual: 'low', prediction: 'high' },
+                    { name: 'Morgan Davis', details: 'Gender: Female\\nAge: 28', actual: 'high', prediction: 'low' },
+                    { name: 'Casey Wilson', details: 'Gender: Male\\nAge: 22', actual: 'low', prediction: 'high' }
+                ],
+                insight: 'While men are taller on average, many individual women are taller than many individual men. Group patterns create misleading individual predictions.'
+            },
+            income: {
+                title: 'Income Distribution by Education',
+                groupData: {
+                    college: { avg: '$75K', range: '$45K-$120K' },
+                    highschool: { avg: '$45K', range: '$25K-$80K' }
+                },
+                accuracy: 72,
+                samples: 15000,
+                individuals: [
+                    { name: 'Sam Rodriguez', details: 'Education: High School\\nAge: 45\\nExperience: 25 years', actual: 'high', prediction: 'low' },
+                    { name: 'Jamie Lee', details: 'Education: College\\nAge: 24\\nExperience: 2 years', actual: 'low', prediction: 'high' },
+                    { name: 'Riley Park', details: 'Education: High School\\nAge: 35\\nExperience: 15 years', actual: 'high', prediction: 'low' },
+                    { name: 'Avery Johnson', details: 'Education: College\\nAge: 26\\nExperience: 3 years', actual: 'low', prediction: 'high' }
+                ],
+                insight: 'Education correlates with income on average, but individual factors like experience, industry, and skills create many exceptions to group patterns.'
+            },
+            medical: {
+                title: 'Heart Disease Risk by Age Group',
+                groupData: {
+                    older: { avg: '35%', range: '20%-55%' },
+                    younger: { avg: '12%', range: '5%-25%' }
+                },
+                accuracy: 78,
+                samples: 8000,
+                individuals: [
+                    { name: 'Pat Martinez', details: 'Age: 65\\nLifestyle: Very Active\\nFamily History: None', actual: 'low', prediction: 'high' },
+                    { name: 'Drew Thompson', details: 'Age: 35\\nLifestyle: Sedentary\\nFamily History: Strong', actual: 'high', prediction: 'low' },
+                    { name: 'Quinn Taylor', details: 'Age: 70\\nLifestyle: Active\\nFamily History: Minimal', actual: 'low', prediction: 'high' },
+                    { name: 'Sage White', details: 'Age: 40\\nLifestyle: Poor Diet\\nFamily History: Extensive', actual: 'high', prediction: 'low' }
+                ],
+                insight: 'Age is a risk factor for heart disease, but individual lifestyle and genetic factors often override group-based age predictions.'
+            },
+            credit: {
+                title: 'Credit Risk by Income Level',
+                groupData: {
+                    highincome: { avg: '5%', range: '2%-12%' },
+                    lowincome: { avg: '25%', range: '15%-40%' }
+                },
+                accuracy: 81,
+                samples: 12000,
+                individuals: [
+                    { name: 'River Adams', details: 'Income: $120K\\nDebt: High\\nPayment History: Poor', actual: 'high', prediction: 'low' },
+                    { name: 'Phoenix Garcia', details: 'Income: $35K\\nDebt: Low\\nPayment History: Excellent', actual: 'low', prediction: 'high' },
+                    { name: 'Sage Mitchell', details: 'Income: $95K\\nDebt: Very High\\nPayment History: Inconsistent', actual: 'high', prediction: 'low' },
+                    { name: 'Ocean Clark', details: 'Income: $28K\\nDebt: Minimal\\nPayment History: Perfect', actual: 'low', prediction: 'high' }
+                ],
+                insight: 'Income correlates with credit risk, but individual debt management and payment behavior are better predictors than group income patterns.'
+            }
+        };
+        
+        function setScenario(scenarioId) {
+            currentScenario = scenarioId;
+            const scenario = scenarios[scenarioId];
+            
+            // Update button states
+            document.querySelectorAll('.scenario-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(scenarioId + '-btn').classList.add('active');
+            
+            // Update group data display
+            document.getElementById('group-title').textContent = scenario.title;
+            document.getElementById('group-accuracy').textContent = scenario.accuracy + '%';
+            document.getElementById('group-samples').textContent = scenario.samples.toLocaleString();
+            
+            // Update chart
+            updateChart(scenario);
+            
+            // Reset individuals
+            resetIndividuals();
+            loadIndividuals();
+            updateInsights();
+        }
+        
+        function updateChart(scenario) {
+            const chartContainer = document.getElementById('group-chart');
+            const keys = Object.keys(scenario.groupData);
+            
+            chartContainer.innerHTML = `
+                <div class="chart-column">
+                    <div class="chart-header">${getGroupLabel(keys[0])}</div>
+                    <div class="chart-bar">Average: ${scenario.groupData[keys[0]].avg}</div>
+                    <div class="chart-bar">Range: ${scenario.groupData[keys[0]].range}</div>
+                </div>
+                <div class="chart-column">
+                    <div class="chart-header">${getGroupLabel(keys[1])}</div>
+                    <div class="chart-bar female">Average: ${scenario.groupData[keys[1]].avg}</div>
+                    <div class="chart-bar female">Range: ${scenario.groupData[keys[1]].range}</div>
+                </div>
+            `;
+        }
+        
+        function getGroupLabel(key) {
+            const labels = {
+                male: '👨 Men', female: '👩 Women',
+                college: '🎓 College', highschool: '📚 High School',
+                older: '👴 Older (60+)', younger: '🧑 Younger (20-40)',
+                highincome: '💰 High Income', lowincome: '💸 Low Income'
+            };
+            return labels[key] || key;
+        }
+        
+        function loadIndividuals() {
+            const scenario = scenarios[currentScenario];
+            const container = document.getElementById('individuals-container');
+            individuals = scenario.individuals;
+            userPredictions = {};
+            
+            container.innerHTML = individuals.map((person, index) => `
+                <div class="individual-card" 
+                     id="person-${index}" 
+                     onclick="selectIndividual(${index})"
+                     role="button"
+                     tabindex="0"
+                     aria-labelledby="name-${index}"
+                     aria-describedby="details-${index}">
+                    <div class="individual-name" id="name-${index}">${person.name}</div>
+                    <div class="individual-details" id="details-${index}">${person.details.replace(/\\n/g, '<br>')}</div>
+                    <div class="prediction-buttons">
+                        <button class="pred-btn" onclick="makePrediction(${index}, 'high', event)" aria-label="Predict high value">High</button>
+                        <button class="pred-btn" onclick="makePrediction(${index}, 'low', event)" aria-label="Predict low value">Low</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function makePrediction(personIndex, prediction, event) {
+            event.stopPropagation();
+            userPredictions[personIndex] = prediction;
+            
+            // Update button states
+            const card = document.getElementById(`person-${personIndex}`);
+            const buttons = card.querySelectorAll('.pred-btn');
+            buttons.forEach(btn => btn.classList.remove('selected'));
+            event.target.classList.add('selected');
+            
+            card.classList.add('selected');
+            updateInsights();
+        }
+        
+        function selectIndividual(index) {
+            // Focus management for accessibility
+            const card = document.getElementById(`person-${index}`);
+            card.focus();
+        }
+        
+        function checkAnswers() {
+            showingResults = true;
+            let correct = 0;
+            let total = 0;
+            
+            individuals.forEach((person, index) => {
+                const card = document.getElementById(`person-${index}`);
+                const userPred = userPredictions[index];
+                
+                if (userPred) {
+                    total++;
+                    if (userPred === person.actual) {
+                        correct++;
+                        card.classList.add('correct');
+                        card.classList.remove('incorrect');
+                    } else {
+                        card.classList.add('incorrect');
+                        card.classList.remove('correct');
+                    }
+                }
+            });
+            
+            const accuracy = total > 0 ? Math.round((correct / total) * 100) : 0;
+            const results = document.getElementById('results');
+            results.innerHTML = `
+                <h4>Your Results</h4>
+                <p><strong>Accuracy: ${accuracy}% (${correct}/${total})</strong></p>
+                <p>This demonstrates the challenge of applying group patterns to individuals. Even with clear group differences, individual cases often defy group-based predictions.</p>
+            `;
+            results.style.display = 'block';
+            updateInsights();
+        }
+        
+        function showAlgorithmPredictions() {
+            individuals.forEach((person, index) => {
+                const card = document.getElementById(`person-${index}`);
+                const buttons = card.querySelectorAll('.pred-btn');
+                
+                buttons.forEach(btn => btn.classList.remove('selected', 'high', 'low'));
+                
+                if (person.prediction === 'high') {
+                    buttons[0].classList.add('selected', 'high');
+                } else {
+                    buttons[1].classList.add('selected', 'low');
+                }
+                
+                // Show if algorithm was correct
+                if (person.prediction === person.actual) {
+                    card.classList.add('correct');
+                    card.classList.remove('incorrect');
+                } else {
+                    card.classList.add('incorrect');
+                    card.classList.remove('correct');
+                }
+            });
+            
+            const results = document.getElementById('results');
+            results.innerHTML = `
+                <h4>Algorithm Predictions</h4>
+                <p>The algorithm made predictions based on group patterns. Notice how many individual cases don't fit the group-based predictions.</p>
+                <p><strong>This is the core of the Group-to-Individual Problem:</strong> What's true for groups may not apply to specific individuals.</p>
+            `;
+            results.style.display = 'block';
+            updateInsights();
+        }
+        
+        function resetIndividuals() {
+            showingResults = false;
+            userPredictions = {};
+            
+            document.querySelectorAll('.individual-card').forEach(card => {
+                card.classList.remove('selected', 'correct', 'incorrect');
+            });
+            
+            document.querySelectorAll('.pred-btn').forEach(btn => {
+                btn.classList.remove('selected', 'high', 'low');
+            });
+            
+            document.getElementById('results').style.display = 'none';
+            updateInsights();
+        }
+        
+        function updateInsights() {
+            const scenario = scenarios[currentScenario];
+            const predictionCount = Object.keys(userPredictions).length;
+            
+            let insight = '';
+            
+            if (predictionCount === 0) {
+                insight = `${scenario.title.split(' ')[0]} Scenario: Make predictions for each individual based on the group patterns shown above.`;
+            } else if (predictionCount < individuals.length) {
+                insight = `You've made ${predictionCount}/${individuals.length} predictions. Continue predicting, then check your results to see the group-to-individual problem in action.`;
+            } else if (!showingResults) {
+                insight = 'All predictions made! Click "Check My Predictions" to see how group patterns can mislead individual decisions.';
+            } else {
+                insight = scenario.insight;
+            }
+            
+            const insightElement = document.getElementById('current-insight');
+            if (insightElement) insightElement.textContent = insight;
+        }
+        
+        // Add keyboard navigation support
+        function addKeyboardSupport() {
+            document.addEventListener('keydown', (e) => {
+                if (e.target.classList.contains('individual-card') || e.target.classList.contains('scenario-btn')) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        e.target.click();
+                    }
+                }
+            });
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            setScenario('height');
+            addKeyboardSupport();
+        });
+    </script>
+</body>
+</html>
