@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ML Bias Framework Explorer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background: #f5f5f5;
+            color: #374151;
+            line-height: 1.6;
+            font-size: 16px;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 0;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 1.5rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 1rem;
+            margin-top: 2rem;
+        }
+
+        p {
+            color: #6b7280;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Bias Framework Cards */
+        .bias-category {
+            background: #2d5a5a;
+            color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .category-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: white;
+        }
+
+        .bias-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+        }
+
+        .bias-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            padding: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .bias-name {
+            font-weight: 600;
+            color: #a0c4c4;
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+
+        .bias-description {
+            color: #c4d9d9;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        /* Example Cards */
+        .example-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 24px 0;
+        }
+
+        .example-card {
+            background: #e0f2fe;
+            border: 1px solid #b3e5fc;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .example-title {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+        }
+
+        .example-scenario {
+            color: #6b7280;
+            font-size: 0.95rem;
+            margin-bottom: 12px;
+        }
+
+        .example-impact {
+            background: rgba(45, 90, 90, 0.1);
+            border-left: 4px solid #2d5a5a;
+            padding: 12px;
+            border-radius: 4px;
+            color: #374151;
+            font-size: 0.9rem;
+        }
+
+        /* Support Panel */
+        .support-panel {
+            background: #6b7280;
+            color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 24px 0;
+            display: flex;
+            gap: 12px;
+        }
+
+        .support-icon {
+            width: 20px;
+            height: 20px;
+            background: #9ca3af;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .support-content {
+            flex: 1;
+        }
+
+        .support-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Application Scenarios */
+        .scenario-card {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .scenario-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .scenario-icon {
+            background: #2d5a5a;
+            color: white;
+            border-radius: 6px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .scenario-name {
+            font-weight: 600;
+            color: #1f2937;
+            font-size: 1.1rem;
+        }
+
+        .scenario-description {
+            color: #6b7280;
+            margin-bottom: 12px;
+        }
+
+        .bias-checklist {
+            background: white;
+            border-radius: 6px;
+            padding: 16px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .check-box {
+            width: 16px;
+            height: 16px;
+            border: 2px solid #d1d5db;
+            border-radius: 3px;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .check-box.checked {
+            background: #2d5a5a;
+            border-color: #2d5a5a;
+            position: relative;
+        }
+
+        .check-box.checked::after {
+            content: "✓";
+            color: white;
+            position: absolute;
+            top: -2px;
+            left: 2px;
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+
+            .bias-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .example-grid {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ML Bias Framework Explorer</h1>
+        <p>Understanding the nine types of bias that can emerge throughout the machine learning development process. Use this framework to identify potential bias sources in any AI system.</p>
+
+        <div class="support-panel">
+            <div class="support-icon">i</div>
+            <div class="support-content">
+                <div class="support-title">Framework Application</div>
+                <p>This framework can be applied to any AI system - from hiring algorithms to medical diagnosis tools. Each bias type represents a different way unfairness can enter the system.</p>
+            </div>
+        </div>
+
+        <h2>The Three Bias Categories</h2>
+
+        <div class="bias-category">
+            <div class="category-title">1. Data-to-Algorithm Bias</div>
+            <p style="color: #c4d9d9; margin-bottom: 16px;">Bias that enters through the data collection and preparation process</p>
+
+            <div class="bias-grid">
+                <div class="bias-item">
+                    <div class="bias-name">Measurement Bias</div>
+                    <div class="bias-description">Errors in how data is collected, measured, or recorded. Example: Using arrest records instead of actual criminal behavior in COMPAS.</div>
+                </div>
+
+                <div class="bias-item">
+                    <div class="bias-name">Representation Bias</div>
+                    <div class="bias-description">Training data doesn't reflect the target population. Example: Over-representation of certain communities due to policing practices.</div>
+                </div>
+
+                <div class="bias-item">
+                    <div class="bias-name">Aggregation Bias</div>
+                    <div class="bias-description">Inappropriate grouping across different subpopulations. Example: Using one model for urban and rural populations with different characteristics.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bias-category">
+            <div class="category-title">2. Algorithm-to-Users Bias</div>
+            <p style="color: #c4d9d9; margin-bottom: 16px;">Bias that emerges during model development and evaluation</p>
+
+            <div class="bias-grid">
+                <div class="bias-item">
+                    <div class="bias-name">Learning Bias</div>
+                    <div class="bias-description">Algorithm makes incorrect assumptions about patterns in data. Example: Assuming correlation implies causation or missing important relationships.</div>
+                </div>
+
+                <div class="bias-item">
+                    <div class="bias-name">User-Interaction Bias</div>
+                    <div class="bias-description">How users interpret and act on algorithmic outputs. Example: Judges using COMPAS scores differently than intended.</div>
+                </div>
+
+                <div class="bias-item">
+                    <div class="bias-name">Evaluation Bias</div>
+                    <div class="bias-description">Using wrong metrics or benchmarks for assessment. Example: Focusing only on accuracy while ignoring fairness across groups.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bias-category">
+            <div class="category-title">3. Users-to-Data Bias</div>
+            <p style="color: #c4d9d9; margin-bottom: 16px;">Bias that cycles back from system use to affect future data</p>
+
+            <div class="bias-grid">
+                <div class="bias-item">
+                    <div class="bias-name">Historical Bias</div>
+                    <div class="bias-description">Past inequities encoded in training data. Example: Historical discrimination in hiring decisions used to train recruitment algorithms.</div>
+                </div>
+
+                <div class="bias-item">
+                    <div class="bias-name">Deployment Bias</div>
+                    <div class="bias-description">Misalignment between model design and actual use. Example: Using COMPAS for bail decisions when trained for parole assessment.</div>
+                </div>
+
+                <div class="bias-item">
+                    <div class="bias-name">Self-Selection Bias</div>
+                    <div class="bias-description">Non-random participation in data generation. Example: Voluntary surveys where certain groups are less likely to respond.</div>
+                </div>
+            </div>
+        </div>
+
+        <h2>Application Examples</h2>
+
+        <div class="example-grid">
+            <div class="example-card">
+                <div class="example-title">🏢 Hiring Algorithm</div>
+                <div class="example-scenario">An AI system screens resumes and ranks candidates for technical positions</div>
+                <div class="example-impact">
+                    <strong>Primary Bias Sources:</strong><br>
+                    • Historical bias in past hiring decisions<br>
+                    • Representation bias in training data<br>
+                    • Deployment bias when used beyond original scope
+                </div>
+            </div>
+
+            <div class="example-card">
+                <div class="example-title">🏥 Medical Diagnosis AI</div>
+                <div class="example-scenario">Machine learning system assists doctors in diagnosing diseases from medical images</div>
+                <div class="example-impact">
+                    <strong>Primary Bias Sources:</strong><br>
+                    • Measurement bias in imaging equipment<br>
+                    • Representation bias in patient populations<br>
+                    • Evaluation bias in validation metrics
+                </div>
+            </div>
+
+            <div class="example-card">
+                <div class="example-title">💰 Credit Scoring</div>
+                <div class="example-scenario">Algorithm determines loan approval and interest rates based on applicant data</div>
+                <div class="example-impact">
+                    <strong>Primary Bias Sources:</strong><br>
+                    • Historical bias in lending practices<br>
+                    • Aggregation bias across different markets<br>
+                    • User-interaction bias in application process
+                </div>
+            </div>
+
+            <div class="example-card">
+                <div class="example-title">⚖️ COMPAS Algorithm</div>
+                <div class="example-scenario">Risk assessment tool predicts likelihood of defendant reoffending</div>
+                <div class="example-impact">
+                    <strong>Primary Bias Sources:</strong><br>
+                    • Historical bias in criminal justice data<br>
+                    • Measurement bias using arrest records<br>
+                    • Deployment bias expanding beyond training scope
+                </div>
+            </div>
+        </div>
+
+        <h2>Bias Detection Checklist</h2>
+
+        <div class="scenario-card">
+            <div class="scenario-header">
+                <div class="scenario-icon">🔍</div>
+                <div class="scenario-name">Data Collection & Preparation</div>
+            </div>
+            <div class="scenario-description">Questions to ask during the early stages of ML development:</div>
+            <div class="bias-checklist">
+                <div class="checklist-item">
+                    <div class="check-box"></div>
+                    <div>Is our training data representative of the population the model will serve?</div>
+                </div>
+                <div class="checklist-item">
+                    <div class="check-box"></div>
+                    <div>Are we using appropriate proxies for the outcomes we want to predict?</div>
+                </div>
+                <div class="checklist-item">
+                    <div class="check-box"></div>
+                    <div>Have we identified potential proxy variables for protected characteristics?</div>
+                </div>
+                <div class="checklist-item">
+                    <div class="check-box"></div>
+                    <div>Are there systematic differences in data quality across different groups?</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="scenario-card">
+            <div class="scenario-header">
+                <div class="scenario-icon">🔧</div>
+                <div class="scenario-name">Model Development & Training</div>
+            </div>
+            <div class="scenario-description">Critical considerations during algorithm development:</div>
+            <div class="bias-checklist">
+                <div class="checklist-item">
+                    <div class="check-box"></div>
+                    <div>Have we tested model performance across different demographic groups?</div>
+                </div>
+                <div class="checklist-item">
+                    <div class="check-box"></div>
+                    <div>Are we using appropriate fairness metrics for our use case?</div>
+                </div>
+                <div class="checklist-item">
+                    <div class="check-box"></div>
+                    <div>Have we considered the trade-offs between different fairness definitions?</div>
+                </div>
+                <div class="checklist-item">
+                    <div class="check-box"></div>
+                    <div>Is our model making assumptions that might not hold for all groups?</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="scenario-card">
+            <div class="scenario-header">
+                <div class="scenario-icon">🚀</div>
+                <div class="scenario-name">Deployment & Monitoring</div>
+            </div>
+            <div class="scenario-description">Ongoing considerations after model deployment:</div>
+            <div class="bias-checklist">
+                <div class="checklist-item">
+                    <div class="check-box"></div>
+                    <div>Is the model being used as intended during development?</div>
+                </div>
+                <div class="checklist-item">
+                    <div class="check-box"></div>
+                    <div>Do we have systems in place to detect bias drift over time?</div>
+                </div>
+                <div class="checklist-item">
+                    <div class="check-box"></div>
+                    <div>Are users interpreting and acting on model outputs appropriately?</div>
+                </div>
+                <div class="checklist-item">
+                    <div class="check-box"></div>
+                    <div>Have we established accountability mechanisms for unfair outcomes?</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="support-panel">
+            <div class="support-icon">💡</div>
+            <div class="support-content">
+                <div class="support-title">Key Takeaway</div>
+                <p>Bias can enter AI systems at any stage, but early intervention is most effective. The COMPAS case study demonstrates how multiple bias sources can compound to create unfair outcomes, even in systems designed to be objective and fair.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

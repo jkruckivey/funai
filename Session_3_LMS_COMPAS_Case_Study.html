@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COMPAS Case Study: Machine Learning Bias in the Courtroom</title>
+    <style>
+        /* Embedded Ivey CSS */
+        @import url('https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --ivey-green: #034638;
+            --ivey-purple: #582C83;
+            --ivey-orange: #f97316;
+            --text-primary: #1a202c;
+            --text-secondary: #4a5568;
+            --text-muted: #2d3748;
+            --bg-white: #ffffff;
+            --bg-light: #f8fafc;
+            --bg-subtle: #f1f5f9;
+            --border-light: #e2e8f0;
+            --border-medium: #cbd5e0;
+            --hover-bg: #f8fafc;
+        }
+
+        body {
+            font-family: 'Figtree', Arial, sans-serif;
+            background: var(--bg-white);
+            color: var(--text-primary);
+            line-height: 1.6;
+            font-size: 16px;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .widget-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background: var(--bg-white);
+        }
+
+        .widget-header {
+            background: var(--ivey-green);
+            color: white;
+            padding: 20px 24px;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+            margin: -20px -20px 30px -20px;
+        }
+
+        .widget-title {
+            font-size: 1.8em;
+            font-weight: 700;
+            margin: 0;
+            color: white !important;
+        }
+
+        .widget-subtitle {
+            font-size: 1.1em;
+            font-weight: 500;
+            margin: 8px 0 0 0;
+            opacity: 0.9;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Figtree', Arial, sans-serif;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.2;
+            margin-bottom: 0.5em;
+        }
+
+        h2 { font-size: 1.5rem; color: var(--ivey-green); }
+        h3 { font-size: 1.25rem; color: var(--ivey-purple); }
+
+        p {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .card {
+            background: var(--bg-white);
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            border-bottom: 3px solid var(--ivey-green);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--ivey-green);
+            margin: 0;
+        }
+
+        .callout {
+            padding: 20px 24px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid var(--ivey-green);
+            background: var(--bg-light);
+        }
+
+        .callout-primary {
+            border-color: var(--ivey-green);
+            background: rgba(3, 70, 56, 0.05);
+        }
+
+        .callout-secondary {
+            border-color: var(--ivey-purple);
+            background: rgba(88, 44, 131, 0.05);
+        }
+
+        .callout-accent {
+            border-color: var(--ivey-orange);
+            background: rgba(249, 115, 22, 0.05);
+        }
+
+        .callout-title {
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        .debate-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin: 24px 0;
+        }
+
+        .debate-side {
+            background: var(--bg-light);
+            border: 2px solid var(--border-light);
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .debate-side.propublica {
+            border-color: var(--ivey-orange);
+        }
+
+        .debate-side.northpointe {
+            border-color: var(--ivey-purple);
+        }
+
+        .debate-header {
+            font-weight: 700;
+            font-size: 1.2em;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .debate-side.propublica .debate-header {
+            color: var(--ivey-orange);
+        }
+
+        .debate-side.northpointe .debate-header {
+            color: var(--ivey-purple);
+        }
+
+        .statistics-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.9em;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .statistics-table th,
+        .statistics-table td {
+            border: 1px solid var(--border-light);
+            padding: 12px;
+            text-align: center;
+        }
+
+        .statistics-table th {
+            background: var(--ivey-green);
+            color: white;
+            font-weight: 600;
+        }
+
+        .statistics-table tr:nth-child(even) {
+            background: var(--bg-subtle);
+        }
+
+        .key-findings {
+            background: var(--bg-subtle);
+            border-radius: 8px;
+            padding: 24px;
+            margin: 24px 0;
+        }
+
+        .findings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .finding-item {
+            background: var(--bg-white);
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .finding-number {
+            background: var(--ivey-green);
+            color: white;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin: 0 auto 8px;
+            font-size: 0.9em;
+        }
+
+        .finding-text {
+            font-size: 0.95em;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        .bias-highlight {
+            background: rgba(249, 115, 22, 0.1);
+            border: 1px solid var(--ivey-orange);
+            border-radius: 4px;
+            padding: 3px 6px;
+            font-weight: 600;
+            color: var(--ivey-orange);
+        }
+
+        .reflection-questions {
+            background: var(--bg-light);
+            border: 2px solid var(--ivey-purple);
+            border-radius: 8px;
+            padding: 24px;
+            margin: 24px 0;
+        }
+
+        .question-list {
+            list-style: none;
+            padding: 0;
+            margin: 16px 0 0 0;
+        }
+
+        .question-item {
+            background: var(--bg-white);
+            border: 1px solid var(--border-light);
+            border-radius: 6px;
+            padding: 16px;
+            margin-bottom: 12px;
+            color: var(--text-secondary);
+        }
+
+        .question-number {
+            color: var(--ivey-purple);
+            font-weight: 700;
+            margin-right: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .widget-container {
+                padding: 15px;
+            }
+
+            .debate-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .findings-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .statistics-table {
+                font-size: 0.8em;
+            }
+
+            .statistics-table th,
+            .statistics-table td {
+                padding: 8px;
+            }
+        }
+
+        .text-center { text-align: center; }
+        .font-bold { font-weight: 700; }
+        .text-primary { color: var(--ivey-green); }
+        .text-secondary { color: var(--ivey-purple); }
+        .text-accent { color: var(--ivey-orange); }
+    </style>
+</head>
+<body>
+    <div class="widget-container">
+        <!-- Header -->
+        <div class="widget-header">
+            <h1 class="widget-title">COMPAS Case Study</h1>
+            <div class="widget-subtitle">Machine Learning Bias: Algorithms in the Courtroom</div>
+        </div>
+
+        <!-- Case Overview -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">What is COMPAS?</h2>
+            </div>
+            <div class="card-body">
+                <p>The <strong>Correctional Offender Management Profiling for Alternative Sanctions (COMPAS)</strong> is a risk-assessment tool designed to predict the likelihood of a defendant reoffending. Developed by Northpointe Inc. (now Equivant) starting in 1998, COMPAS was created to standardize decision-making within the criminal justice system, intending to reduce human error and bias in court rulings.</p>
+
+                <div class="callout callout-primary">
+                    <div class="callout-title">🎯 How COMPAS Works</div>
+                    <p>COMPAS uses a combination of a defendant's criminal history, demographic information, and answers to approximately 137 questions covering behavior tendencies, social ties, family history, and personal attitudes. These data points generate a risk score from 1-10, categorized as:</p>
+                    <ul style="margin: 12px 0 0 20px;">
+                        <li><strong>Low Risk:</strong> 1-4</li>
+                        <li><strong>Medium Risk:</strong> 5-7</li>
+                        <li><strong>High Risk:</strong> 8-10</li>
+                    </ul>
+                </div>
+
+                <p>By 2015, COMPAS was widely adopted across numerous US states including New York, Wisconsin, and California, with over 60,000 assessments evaluated annually in New York state alone.</p>
+            </div>
+        </div>
+
+        <!-- The Debate -->
+        <div class="key-findings">
+            <h2 class="text-center">The ProPublica vs. Northpointe Debate</h2>
+            <p class="text-center">In 2016, ProPublica published a groundbreaking investigation that sparked national debate about algorithmic bias in criminal justice.</p>
+
+            <div class="debate-grid">
+                <div class="debate-side propublica">
+                    <div class="debate-header">🔍 ProPublica's Findings</div>
+                    <p><strong>Key Claim:</strong> COMPAS perpetuates racial bias against Black defendants</p>
+
+                    <h4>Evidence Presented:</h4>
+                    <ul style="margin: 8px 0 0 20px; color: var(--text-secondary);">
+                        <li>Black defendants who didn't reoffend were <span class="bias-highlight">44.9%</span> incorrectly predicted to reoffend</li>
+                        <li>White defendants who didn't reoffend were only <span class="bias-highlight">23.5%</span> incorrectly predicted to reoffend</li>
+                        <li>White defendants who did reoffend were <span class="bias-highlight">47.7%</span> incorrectly classified as low risk</li>
+                        <li>Black defendants who did reoffend were only <span class="bias-highlight">28%</span> incorrectly classified as low risk</li>
+                    </ul>
+
+                    <p style="margin-top: 12px;"><strong>Conclusion:</strong> Different error rates by race suggest systematic bias</p>
+                </div>
+
+                <div class="debate-side northpointe">
+                    <div class="debate-header">⚖️ Northpointe's Response</div>
+                    <p><strong>Key Claim:</strong> COMPAS achieves predictive parity and accuracy equity</p>
+
+                    <h4>Counter-Arguments:</h4>
+                    <ul style="margin: 8px 0 0 20px; color: var(--text-secondary);">
+                        <li><strong>Predictive Parity:</strong> Among high-risk defendants, recidivism likelihood is equal regardless of race</li>
+                        <li><strong>Base Rate Differences:</strong> Black defendants had 51% recidivism rate vs. 39% for white defendants in Broward County</li>
+                        <li><strong>Statistical Accuracy:</strong> ROC values nearly identical for both racial groups</li>
+                        <li><strong>Objective Scoring:</strong> Algorithm uses unbiased scoring rules; differences reflect real disparities</li>
+                    </ul>
+
+                    <p style="margin-top: 12px;"><strong>Conclusion:</strong> Observed differences stem from population base rates, not algorithmic bias</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistical Evidence -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Statistical Evidence: The Numbers Behind the Debate</h2>
+            </div>
+            <div class="card-body">
+                <p>The debate centers on different interpretations of the same statistical data. Understanding these metrics is crucial for evaluating the arguments:</p>
+
+                <table class="statistics-table">
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>Definition</th>
+                            <th>Black Defendants</th>
+                            <th>White Defendants</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Base Rate</strong></td>
+                            <td>P(Recidivism)</td>
+                            <td>51.0%</td>
+                            <td>39.0%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>False Positive Rate</strong></td>
+                            <td>P("High Risk" | No Recidivism)</td>
+                            <td>44.9%</td>
+                            <td>23.5%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>False Negative Rate</strong></td>
+                            <td>P("Low Risk" | Recidivism)</td>
+                            <td>28.0%</td>
+                            <td>47.7%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Positive Predictive Value</strong></td>
+                            <td>P(Recidivism | "High Risk")</td>
+                            <td>63.0%</td>
+                            <td>59.0%</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="callout callout-secondary">
+                    <div class="callout-title">📊 Key Insight</div>
+                    <p>ProPublica focused on <strong>False Positive/Negative Rates</strong> (equal error rates), while Northpointe emphasized <strong>Positive Predictive Value</strong> (equal accuracy across groups). Both perspectives are mathematically valid but highlight different aspects of fairness.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bias Analysis -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Identifying Bias Sources in COMPAS</h2>
+            </div>
+            <div class="card-body">
+                <p>Using our nine-type bias framework, we can identify multiple sources of bias in the COMPAS system:</p>
+
+                <div class="findings-grid">
+                    <div class="finding-item">
+                        <div class="finding-number">1</div>
+                        <div class="finding-text"><strong>Historical Bias:</strong> Training data reflects past inequities in criminal justice system</div>
+                    </div>
+
+                    <div class="finding-item">
+                        <div class="finding-number">2</div>
+                        <div class="finding-text"><strong>Representation Bias:</strong> Over-policing of Black communities affects data representativeness</div>
+                    </div>
+
+                    <div class="finding-item">
+                        <div class="finding-number">3</div>
+                        <div class="finding-text"><strong>Measurement Bias:</strong> Arrest records used as proxy for criminal behavior</div>
+                    </div>
+
+                    <div class="finding-item">
+                        <div class="finding-number">4</div>
+                        <div class="finding-text"><strong>Aggregation Bias:</strong> Same model applied across different communities and contexts</div>
+                    </div>
+
+                    <div class="finding-item">
+                        <div class="finding-number">5</div>
+                        <div class="finding-text"><strong>User-Interaction Bias:</strong> Judges vary in how they interpret and use COMPAS scores</div>
+                    </div>
+
+                    <div class="finding-item">
+                        <div class="finding-number">6</div>
+                        <div class="finding-text"><strong>Deployment Bias:</strong> Used for decisions beyond original training scope (bail, sentencing)</div>
+                    </div>
+                </div>
+
+                <div class="callout callout-accent">
+                    <div class="callout-title">🔍 The Proxy Problem</div>
+                    <p>While COMPAS doesn't explicitly use race, it incorporates variables that serve as proxies: neighborhood, employment status, family history, and social connections. These factors correlate with race due to systemic inequalities, indirectly encoding bias.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- The Fairness Dilemma -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">The Fundamental Fairness Dilemma</h2>
+            </div>
+            <div class="card-body">
+                <p>The COMPAS debate reveals a fundamental mathematical impossibility: <strong>you cannot simultaneously achieve all types of fairness when base rates differ between groups.</strong></p>
+
+                <div class="callout callout-primary">
+                    <div class="callout-title">⚖️ Competing Fairness Definitions</div>
+                    <ul style="margin: 12px 0 0 20px;">
+                        <li><strong>Individual Fairness:</strong> Similar individuals should receive similar predictions</li>
+                        <li><strong>Group Fairness:</strong> Equal treatment across different demographic groups</li>
+                        <li><strong>Outcome Fairness:</strong> Equal positive outcomes across groups</li>
+                        <li><strong>Procedural Fairness:</strong> Equal process and methodology for all</li>
+                    </ul>
+                </div>
+
+                <p>This creates a fundamental tension: should AI systems mirror existing societal inequities (and potentially perpetuate them) or should they strive to counteract historical biases (and potentially sacrifice predictive accuracy)?</p>
+
+                <div class="callout callout-secondary">
+                    <div class="callout-title">🤔 The Management Question</div>
+                    <p>As business leaders implementing AI systems, you must choose which definition of fairness to prioritize. This isn't just a technical decision—it's a values-based choice with significant ethical and business implications.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Critical Reflection -->
+        <div class="reflection-questions">
+            <h2 class="text-center text-secondary">Critical Reflection Questions</h2>
+            <p class="text-center">Consider these questions as you analyze the COMPAS case:</p>
+
+            <ol class="question-list">
+                <li class="question-item">
+                    <span class="question-number">1.</span>
+                    <strong>Position in the Debate:</strong> Do you side with ProPublica or Northpointe in this debate? What evidence supports your position?
+                </li>
+
+                <li class="question-item">
+                    <span class="question-number">2.</span>
+                    <strong>Bias Identification:</strong> Which of the nine bias types are most prominent in COMPAS? Where do these biases originate?
+                </li>
+
+                <li class="question-item">
+                    <span class="question-number">3.</span>
+                    <strong>Fairness Definition:</strong> How do different definitions of "fairness" lead to different conclusions about COMPAS?
+                </li>
+
+                <li class="question-item">
+                    <span class="question-number">4.</span>
+                    <strong>Business Application:</strong> If you were implementing a similar AI system in your organization, what safeguards would you establish?
+                </li>
+
+                <li class="question-item">
+                    <span class="question-number">5.</span>
+                    <strong>Systemic Issues:</strong> How do historical and systemic inequalities become encoded in AI systems?
+                </li>
+
+                <li class="question-item">
+                    <span class="question-number">6.</span>
+                    <strong>Mitigation Strategies:</strong> What steps could have been taken during COMPAS development to address bias concerns?
+                </li>
+            </ol>
+
+            <div class="callout callout-accent" style="margin-top: 20px;">
+                <div class="callout-title">💭 Discussion Preparation</div>
+                <p>Prepare to defend your position using specific statistical evidence from the case. Consider both technical metrics and broader societal implications in your analysis.</p>
+            </div>
+        </div>
+
+        <!-- Case Impact -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Beyond COMPAS: Broader Implications</h2>
+            </div>
+            <div class="card-body">
+                <p>The COMPAS controversy extends far beyond criminal justice. Similar algorithmic bias challenges appear in:</p>
+
+                <div class="findings-grid">
+                    <div class="finding-item">
+                        <div class="finding-text"><strong>Hiring Systems:</strong> Resume screening and candidate ranking algorithms</div>
+                    </div>
+                    <div class="finding-item">
+                        <div class="finding-text"><strong>Credit Scoring:</strong> Loan approval and interest rate determination</div>
+                    </div>
+                    <div class="finding-item">
+                        <div class="finding-text"><strong>Healthcare AI:</strong> Treatment recommendations and resource allocation</div>
+                    </div>
+                    <div class="finding-item">
+                        <div class="finding-text"><strong>Content Curation:</strong> News feeds and recommendation systems</div>
+                    </div>
+                </div>
+
+                <p>The lessons from COMPAS provide a framework for identifying and addressing bias in any AI application where fairness and equity matter.</p>
+
+                <div class="callout callout-primary">
+                    <div class="callout-title">🎯 Key Takeaway</div>
+                    <p>Algorithmic bias isn't just a technical problem—it's a management challenge requiring careful consideration of values, stakeholder impact, and societal responsibility. The COMPAS case demonstrates that even well-intentioned AI systems can perpetuate harmful biases without proper oversight and accountability measures.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

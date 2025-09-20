@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Session 3: ML Development and Algorithmic Bias - Course Outline</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #034638 0%, #582C83 100%);
+            min-height: 100vh;
+        }
+        
+        .outline-container {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            margin: 20px 0;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        h1 {
+            font-family: Georgia, serif;
+            color: #034638;
+            border-bottom: 3px solid #582C83;
+            padding-bottom: 15px;
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+        
+        h2 {
+            font-family: Georgia, serif;
+            color: #034638;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+        
+        h3 {
+            font-family: Georgia, serif;
+            color: #582C83;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+        
+        h4 {
+            font-family: Georgia, serif;
+            color: #63666A;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        
+        .header-info {
+            background: #f0fdf4;
+            border-left: 4px solid #034638;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 25px 0;
+        }
+        
+        .objectives {
+            background: #e7f4ea;
+            padding: 25px;
+            border-left: 6px solid #16a34a;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+        
+        .activity {
+            background: #f8fafc;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #034638;
+            border-radius: 8px;
+        }
+        
+        .assessment {
+            background: #fef3c7;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #d97706;
+            border-radius: 8px;
+        }
+        
+        .qm-standard {
+            background: #eff6ff;
+            padding: 15px;
+            margin: 15px 0;
+            font-size: 0.9em;
+            border-radius: 5px;
+            border: 1px solid #93c5fd;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        th, td {
+            border: 1px solid #d1d5db;
+            padding: 15px;
+            text-align: left;
+        }
+        
+        th {
+            background: linear-gradient(135deg, #034638 0%, #582C83 100%);
+            color: white;
+            font-weight: bold;
+        }
+        
+        tbody tr:nth-child(even) {
+            background-color: #f9fafb;
+        }
+        
+        tbody tr:hover {
+            background-color: #f0fdf4;
+        }
+        
+        .flow-chart {
+            background: #f8fafc;
+            border: 2px solid #64748b;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 25px 0;
+            font-family: monospace;
+            font-size: 1.1em;
+        }
+        
+        .highlight {
+            background-color: #fef3c7;
+            padding: 3px 6px;
+            border-radius: 3px;
+        }
+        
+        ul li {
+            margin-bottom: 10px;
+        }
+        
+        ol li {
+            margin-bottom: 12px;
+        }
+        
+        .time-badge {
+            background: #63666A;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+        
+        .strengths-section {
+            background: linear-gradient(135deg, #e7f4ea 0%, #d1f2d9 100%);
+            border-left: 6px solid #16a34a;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+        
+        .strengths-section h3 {
+            color: #16a34a;
+            margin-top: 0;
+        }
+        
+        .footer {
+            margin-top: 50px;
+            padding-top: 25px;
+            border-top: 2px solid #e5e7eb;
+            color: #63666A;
+            text-align: center;
+            font-style: italic;
+        }
+        
+        .subtitle {
+            font-style: italic;
+            font-size: 1.1em;
+            color: #63666A;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .activity-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 25px 0;
+        }
+        
+        .listening-guide {
+            background: #f0f9ff;
+            border: 2px solid #0ea5e9;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .listening-guide h4 {
+            color: #0369a1;
+            margin-top: 0;
+        }
+        
+        .checkpoint {
+            background: #fef2f2;
+            border: 2px solid #ef4444;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .checkpoint h4 {
+            color: #dc2626;
+            margin-top: 0;
+        }
+        
+        .accessibility-section {
+            background: #f3f4f6;
+            border: 2px solid #9ca3af;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+        
+        .technical-section {
+            background: #f8fafc;
+            border: 2px solid #64748b;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+        
+        .rubric-header {
+            background: linear-gradient(135deg, #034638 0%, #582C83 100%);
+            color: white;
+            padding: 10px 15px;
+            margin: 0;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+        
+        .scaffolding-element {
+            display: inline-block;
+            background: #fef3c7;
+            padding: 2px 8px;
+            border-radius: 12px;
+            margin: 2px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="outline-container">
+        <h1>Session 3: ML Development and Algorithmic Bias</h1>
+        <p class="subtitle"><em>Fundamentals of AI for Business | Quality Matters-Aligned Course Outline</em></p>
+
+        <div class="header-info">
+            <strong>Session Overview</strong><br>
+            <strong>Duration:</strong> 2 hours (asynchronous, self-paced)<br>
+            <strong>Module:</strong> 2 - AI Development and Execution<br>
+            <strong>Prerequisites:</strong> Completion of Sessions 1-2 (AI fundamentals and ML techniques)<br>
+            <strong>Case Study:</strong> COMPAS Recidivism Risk Assessment Algorithm
+        </div>
+
+        <div class="objectives">
+            <h2>Session Learning Objectives</h2>
+            <p>By the end of this session, learners will be able to:</p>
+            <ol>
+                <li><strong>Describe</strong> the six-stage machine learning development cycle and explain the role of each stage <em>(Knowledge/Comprehension - Bloom's Level 2)</em></li>
+                <li><strong>Classify</strong> nine types of ML biases into three reinforcing categories: data-to-algorithm, algorithm-to-users, and users-to-data <em>(Analysis - Bloom's Level 4)</em></li>
+                <li><strong>Analyze</strong> how different types of bias emerge at specific stages of the ML development process <em>(Analysis - Bloom's Level 4)</em></li>
+                <li><strong>Evaluate</strong> competing definitions of fairness (predictive parity vs. error rate balance) using statistical evidence <em>(Evaluation - Bloom's Level 5)</em></li>
+                <li><strong>Apply</strong> bias identification frameworks to assess algorithmic systems in organizational contexts <em>(Application - Bloom's Level 3)</em></li>
+            </ol>
+        </div>
+
+        <h2>Pre-Session Preparation <span class="time-badge">10 min</span></h2>
+        <div class="qm-standard"><strong>QM Standard 4.1</strong> - Clear Instructions</div>
+        <ul>
+            <li><strong>Required Reading:</strong> Session 3 case overview (W42647 executive summary - 1 page)</li>
+            <li><strong>Reflection Prompt:</strong> "Think about a recent decision made about you by an algorithm (loan approval, job screening, social media content). What information do you think it used?"</li>
+        </ul>
+
+        <h2>Learning Activities & Assessments</h2>
+
+        <div class="activity">
+            <h3>Activity 1: Case Introduction via Podcast <span class="time-badge">45 min</span></h3>
+            <div class="qm-standard"><strong>QM Standards 3.1, 4.3, 5.1</strong> - Learning Objectives Alignment</div>
+            
+            <p><strong>Learning Objectives Addressed:</strong> 1, 4<br>
+            <strong>Content:</strong> COMPAS bias podcast covering ProPublica vs. Northpointe debate<br>
+            <strong>Format:</strong> Audio case study with guided listening prompts</p>
+
+            <div class="listening-guide">
+                <h4>Structured Listening Guide:</h4>
+                <ul>
+                    <li><strong>Minutes 0-10:</strong> COMPAS system overview - <em>Note key stakeholders and system purpose</em></li>
+                    <li><strong>Minutes 10-25:</strong> ProPublica's argument - <em>Identify their definition of fairness</em></li>
+                    <li><strong>Minutes 25-40:</strong> Northpointe's response - <em>Compare competing fairness metrics</em></li>
+                    <li><strong>Minutes 40-45:</strong> Implications - <em>Consider organizational decision-making</em></li>
+                </ul>
+            </div>
+
+            <div class="checkpoint">
+                <h4>Checkpoint Assessment (QM 5.3 - Frequent Feedback)</h4>
+                <p>Quick comprehension check: "In 2-3 sentences, explain the core disagreement between ProPublica and Northpointe."</p>
+            </div>
+        </div>
+
+        <div class="activity">
+            <h3>Activity 2: Bias Framework Development <span class="time-badge">45 min</span></h3>
+            <div class="qm-standard"><strong>QM Standards 3.1, 4.2, 5.1</strong></div>
+            
+            <p><strong>Learning Objectives Addressed:</strong> 2, 3, 5<br>
+            <strong>Format:</strong> Interactive CustomGPT exercise with bias identification framework</p>
+
+            <div class="activity-grid">
+                <div>
+                    <h4>Part A: ML Development Cycle Mapping (15 minutes)</h4>
+                    <ul>
+                        <li>CustomGPT guides students through building the 6-stage ML development cycle</li>
+                        <li>Students identify where COMPAS bias emerged at each stage</li>
+                        <li>Visual framework construction using provided template</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4>Part B: Nine Types of Bias Classification (20 minutes)</h4>
+                    <ul>
+                        <li>Students categorize bias examples from COMPAS case</li>
+                        <li>Interactive sorting activity: Data → Algorithm → User bias categories</li>
+                        <li>Real-time feedback on categorization accuracy</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h4>Part C: Organizational Application (10 minutes)</h4>
+            <ul>
+                <li>Students apply framework to their own workplace/industry</li>
+                <li>Prompt: "Identify one potential bias risk in your organization's use of AI/data"</li>
+            </ul>
+
+            <div class="assessment">
+                <strong>Formative Assessment</strong> (QM 5.2 - Meaningful Assessment)<br>
+                Students submit their completed bias framework with one organizational example. Peer review using provided rubric.
+            </div>
+        </div>
+
+        <div class="activity">
+            <h3>Activity 3: Fairness Analysis & Synthesis <span class="time-badge">30 min</span></h3>
+            <div class="qm-standard"><strong>QM Standards 3.1, 5.4</strong> - Synthesis and Application</div>
+            
+            <p><strong>Learning Objectives Addressed:</strong> 4, 5<br>
+            <strong>Format:</strong> Video debrief with analytical reflection exercise</p>
+
+            <div class="activity-grid">
+                <div>
+                    <h4>Part A: Statistical Fairness Comparison (15 minutes)</h4>
+                    <ul>
+                        <li>Instructor video explaining statistical concepts (FPR, FNR, PPV)</li>
+                        <li>Side-by-side comparison of ProPublica vs. Northpointe metrics</li>
+                        <li>Interactive calculator to explore trade-offs</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4>Part B: Stakeholder Perspective Analysis (15 minutes)</h4>
+                    <ul>
+                        <li>Students take perspective of different stakeholders (judges, defendants, society)</li>
+                        <li>Structured reflection: "Which definition of fairness would you prioritize and why?"</li>
+                        <li>Consider organizational implications and ethical responsibilities</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="assessment">
+                <strong>Summative Assessment</strong> (QM 5.1 - Aligned with Objectives)<br>
+                <strong>Critical Analysis Essay (500 words):</strong> "Taking the role of a business leader implementing AI in your organization, which approach to fairness (ProPublica's or Northpointe's) would you adopt and how would you justify this decision to stakeholders?"
+            </div>
+        </div>
+
+        <h2>Assessment Rubric</h2>
+        <div class="qm-standard"><strong>QM Standard 5.3</strong> - Clear Grading Criteria</div>
+
+        <table>
+            <thead>
+                <tr class="rubric-header">
+                    <th>Criterion</th>
+                    <th>Excellent (4)</th>
+                    <th>Proficient (3)</th>
+                    <th>Developing (2)</th>
+                    <th>Beginning (1)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>ML Development Understanding</strong></td>
+                    <td>Accurately describes all 6 stages with clear connections to bias sources</td>
+                    <td>Describes most stages with good understanding</td>
+                    <td>Basic understanding with some gaps</td>
+                    <td>Limited understanding of development process</td>
+                </tr>
+                <tr>
+                    <td><strong>Bias Classification</strong></td>
+                    <td>Correctly categorizes all 9 bias types with clear rationale</td>
+                    <td>Categorizes most biases correctly</td>
+                    <td>Some correct categorization with explanation</td>
+                    <td>Incorrect or incomplete categorization</td>
+                </tr>
+                <tr>
+                    <td><strong>Fairness Analysis</strong></td>
+                    <td>Sophisticated comparison of competing definitions with stakeholder considerations</td>
+                    <td>Good comparison with some stakeholder analysis</td>
+                    <td>Basic comparison with limited depth</td>
+                    <td>Superficial or confused analysis</td>
+                </tr>
+                <tr>
+                    <td><strong>Organizational Application</strong></td>
+                    <td>Insightful application with specific examples and implementation considerations</td>
+                    <td>Good application with relevant examples</td>
+                    <td>Basic application with general examples</td>
+                    <td>Vague or inappropriate application</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Learning Progression & Scaffolding Map</h2>
+        <div class="qm-standard"><strong>QM Standards 3.2, 4.4</strong> - Appropriate Sequencing</div>
+
+        <div class="flow-chart">
+            <strong>Session Learning Flow:</strong><br>
+            Pre-Session → Activity 1 → Checkpoint → Activity 2 → Formative → Activity 3 → Summative<br><br>
+
+            <strong>Knowledge Building Progression:</strong><br>
+            1. Personal Reflection (Connect to prior experience)<br>
+            2. Case Context (COMPAS overview - foundational knowledge)<br>
+            3. Concept Development (ML development cycle - structured framework)<br>
+            4. Application Practice (Bias identification - skill building)<br>
+            5. Critical Analysis (Fairness evaluation - higher-order thinking)<br>
+            6. Synthesis (Organizational application - transfer of learning)
+        </div>
+
+        <h3>Scaffolding Elements:</h3>
+        <ul>
+            <li><span class="scaffolding-element">Guided listening prompts</span> support audio case engagement</li>
+            <li><span class="scaffolding-element">Visual frameworks</span> help organize complex concepts</li>
+            <li><span class="scaffolding-element">CustomGPT interactions</span> provide immediate feedback and guidance</li>
+            <li><span class="scaffolding-element">Peer review</span> offers collaborative learning and additional feedback</li>
+            <li><span class="scaffolding-element">Progressive complexity</span> from identification → classification → analysis → evaluation</li>
+        </ul>
+
+        <h2>Accessibility & Universal Design</h2>
+        <div class="accessibility-section">
+            <div class="qm-standard"><strong>QM Standards 8.1-8.5</strong></div>
+            <ul>
+                <li><strong>Multiple formats:</strong> Audio (podcast), visual (frameworks), interactive (CustomGPT), text (case materials)</li>
+                <li><strong>Closed captions</strong> available for all video content</li>
+                <li><strong>Alternative text</strong> for all visual elements and charts</li>
+                <li><strong>Keyboard navigation</strong> supported for all interactive elements</li>
+                <li><strong>Flexible timing</strong> for self-paced completion within session window</li>
+            </ul>
+        </div>
+
+        <h2>Technical Requirements & Support</h2>
+        <div class="technical-section">
+            <div class="qm-standard"><strong>QM Standards 7.1-7.4</strong></div>
+            <ul>
+                <li><strong>LMS integration</strong> for seamless content delivery and progress tracking</li>
+                <li><strong>CustomGPT access</strong> with clear login instructions and troubleshooting guide</li>
+                <li><strong>PDF readers</strong> for case study materials</li>
+                <li><strong>Audio playback</strong> capability with download option for offline access</li>
+                <li><strong>Technical support contact</strong> prominently displayed with response time expectations</li>
+            </ul>
+        </div>
+
+        <div class="strengths-section">
+            <h2>Key Strengths & QM Alignment</h2>
+            <h3>QM Alignment Highlights:</h3>
+            <ul>
+                <li><strong>Clear, measurable learning objectives</strong> using Bloom's taxonomy</li>
+                <li><strong>Authentic assessments</strong> directly tied to objectives</li>
+                <li><strong>Scaffolded learning progression</strong> from basic to complex</li>
+                <li><strong>Multiple learning modalities</strong> (audio, visual, interactive, analytical)</li>
+                <li><strong>Frequent feedback opportunities</strong> throughout the session</li>
+                <li><strong>Accessibility considerations</strong> built into design</li>
+            </ul>
+
+            <h3>Case-Based Learning Integration:</h3>
+            <ul>
+                <li>The COMPAS case serves as the central thread connecting all activities</li>
+                <li>Real-world application opportunities in each activity</li>
+                <li>Stakeholder perspective-taking for deeper engagement</li>
+                <li>Statistical literacy development through concrete examples</li>
+            </ul>
+        </div>
+
+        <div class="footer">
+            <p><em>Course: Fundamentals of AI for Business | Instructor: Yasser Rahrovani | Ivey Business School</em></p>
+            <p>This outline leverages existing COMPAS case materials while ensuring full Quality Matters compliance.</p>
+        </div>
+    </div>
+</body>
+</html>

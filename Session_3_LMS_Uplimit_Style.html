@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Session 3: ML Development and Bias</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background: #f5f5f5;
+            color: #374151;
+            line-height: 1.6;
+            font-size: 16px;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 0;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 1.5rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 1rem;
+        }
+
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.75rem;
+        }
+
+        p {
+            color: #6b7280;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Learning Outcomes - Uplimit Style */
+        .learning-outcomes {
+            margin-bottom: 2rem;
+        }
+
+        .outcome-card {
+            background: #2d5a5a;
+            color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+        }
+
+        .outcome-number {
+            background: #1e3a3a;
+            color: white;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .outcome-content {
+            flex: 1;
+        }
+
+        .outcome-title {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .outcome-description {
+            color: #a0c4c4;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .outcome-info-icon {
+            width: 20px;
+            height: 20px;
+            background: #4a7c7c;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+            margin-left: auto;
+            flex-shrink: 0;
+        }
+
+        /* Support Panel - Uplimit Style */
+        .support-panel {
+            background: #6b7280;
+            color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 24px 0;
+            display: flex;
+            gap: 12px;
+        }
+
+        .support-icon {
+            width: 20px;
+            height: 20px;
+            background: #9ca3af;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .support-content {
+            flex: 1;
+        }
+
+        .support-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .support-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .support-list li {
+            margin-bottom: 8px;
+            padding-left: 12px;
+            position: relative;
+            font-size: 0.9rem;
+        }
+
+        .support-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #d1d5db;
+        }
+
+        /* Expandable Sections - Uplimit Style */
+        .expandable-section {
+            background: #e0f2fe;
+            border: 1px solid #b3e5fc;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+
+        .section-header {
+            padding: 16px 20px;
+            background: #e0f2fe;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background-color 0.2s ease;
+        }
+
+        .section-header:hover {
+            background: #b3e5fc;
+        }
+
+        .section-title {
+            font-weight: 600;
+            color: #1f2937;
+            font-size: 1rem;
+        }
+
+        .chevron {
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 6px solid #6b7280;
+            transition: transform 0.2s ease;
+        }
+
+        .section-header.expanded .chevron {
+            transform: rotate(180deg);
+        }
+
+        .section-content {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+
+        .section-content.expanded {
+            max-height: 500px;
+            padding: 16px 20px;
+        }
+
+        .section-detail {
+            margin-bottom: 12px;
+        }
+
+        .section-label {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 4px;
+        }
+
+        .section-text {
+            color: #6b7280;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Add Button */
+        .add-button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #6b7280;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 12px 0;
+            font-size: 0.9rem;
+            transition: color 0.2s ease;
+        }
+
+        .add-button:hover {
+            color: #374151;
+        }
+
+        .add-icon {
+            width: 16px;
+            height: 16px;
+            border: 1px solid currentColor;
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+
+            .outcome-card {
+                padding: 16px;
+                gap: 12px;
+            }
+
+            .section-header {
+                padding: 14px 16px;
+            }
+
+            .section-content.expanded {
+                padding: 14px 16px;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Learning Outcomes</h1>
+        <p>By the end of this module, you will be able to:</p>
+
+        <div class="learning-outcomes">
+            <div class="outcome-card">
+                <div class="outcome-number">1</div>
+                <div class="outcome-content">
+                    <div class="outcome-title">Describe the seven-stage machine learning development cycle and explain the role of each stage</div>
+                    <div class="outcome-description">Understand how bias can emerge at data collection, preparation, feature engineering, training, validation, deployment, and monitoring stages</div>
+                </div>
+                <div class="outcome-info-icon">℮</div>
+            </div>
+
+            <div class="outcome-card">
+                <div class="outcome-number">2</div>
+                <div class="outcome-content">
+                    <div class="outcome-title">Classify nine types of ML biases into three reinforcing categories: data-to-algorithm, algorithm-to-users, and users-to-data</div>
+                    <div class="outcome-description">Apply the bias framework to identify measurement, representation, aggregation, learning, user-interaction, evaluation, historical, deployment, and self-selection biases</div>
+                </div>
+                <div class="outcome-info-icon">℮</div>
+            </div>
+
+            <div class="outcome-card">
+                <div class="outcome-number">3</div>
+                <div class="outcome-content">
+                    <div class="outcome-title">Evaluate competing definitions of fairness (predictive parity vs error rate balance) using statistical evidence</div>
+                    <div class="outcome-description">Analyze the ProPublica vs. Northpointe debate to understand how different fairness metrics lead to different conclusions about algorithmic bias</div>
+                </div>
+                <div class="outcome-info-icon">℮</div>
+            </div>
+
+            <div class="outcome-card">
+                <div class="outcome-number">4</div>
+                <div class="outcome-content">
+                    <div class="outcome-title">Assess the cascade effects of bias amplification throughout the ML development pipeline</div>
+                    <div class="outcome-description">Understand how bias at early stages compounds and magnifies, creating disproportionate impacts on marginalized groups</div>
+                </div>
+                <div class="outcome-info-icon">℮</div>
+            </div>
+
+            <div class="outcome-card">
+                <div class="outcome-number">5</div>
+                <div class="outcome-content">
+                    <div class="outcome-title">Develop bias detection and mitigation strategies for business AI applications</div>
+                    <div class="outcome-description">Create frameworks for identifying, measuring, and addressing bias before AI system deployment in organizational contexts</div>
+                </div>
+                <div class="outcome-info-icon">℮</div>
+            </div>
+
+            <div class="outcome-card">
+                <div class="outcome-number">6</div>
+                <div class="outcome-content">
+                    <div class="outcome-title">Apply lessons from the COMPAS case study to other high-stakes AI decision systems</div>
+                    <div class="outcome-description">Transfer insights about algorithmic bias to hiring, lending, healthcare, and recommendation systems in business contexts</div>
+                </div>
+                <div class="outcome-info-icon">℮</div>
+            </div>
+        </div>
+
+        <button class="add-button">
+            <span class="add-icon">+</span>
+            Add new
+        </button>
+
+        <div class="support-panel">
+            <div class="support-icon">i</div>
+            <div class="support-content">
+                <div class="support-title">This module supports course objectives</div>
+                <ul class="support-list">
+                    <li>Explain the ML development process and evaluate bias emergence</li>
+                    <li>Recognize ethical risks and societal harms of AI</li>
+                    <li>Apply hands-on understanding of machine learning development</li>
+                    <li>Analyze how AI transforms organizational decision-making</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>Understanding How AI Systems Are Built</h2>
+        <p>Before we can identify where bias emerges, we need to understand how machine learning systems are developed. Every ML system follows a seven-stage lifecycle, as detailed in the COMPAS development process:</p>
+
+        <div class="expandable-section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <span class="section-title">Stage 1: Data Collection</span>
+                <div class="chevron"></div>
+            </div>
+            <div class="section-content">
+                <div class="section-detail">
+                    <div class="section-label">What happens:</div>
+                    <div class="section-text">Teams gather data from the target population to train the algorithm. Decisions about what data to collect, from whom, and how to measure relevant outcomes.</div>
+                </div>
+                <div class="section-detail">
+                    <div class="section-label">Key decisions:</div>
+                    <div class="section-text">Which populations to include, what variables to measure, how to define the target outcome (e.g., 2-year recidivism vs 5-year).</div>
+                </div>
+                <div class="section-detail">
+                    <div class="section-label">Business impact:</div>
+                    <div class="section-text">These choices determine what the system can and cannot learn. Historical inequities in data collection become encoded into the algorithm.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="expandable-section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <span class="section-title">Stage 2: Data Preparation</span>
+                <div class="chevron"></div>
+            </div>
+            <div class="section-content">
+                <div class="section-detail">
+                    <div class="section-label">What happens:</div>
+                    <div class="section-text">Raw data is cleaned, structured, and prepared for training. Missing values are handled, outliers addressed, and data quality issues resolved.</div>
+                </div>
+                <div class="section-detail">
+                    <div class="section-label">Key decisions:</div>
+                    <div class="section-text">How to handle missing data, which data points to exclude, how to deal with inconsistencies across different data sources.</div>
+                </div>
+                <div class="section-detail">
+                    <div class="section-label">Business impact:</div>
+                    <div class="section-text">Preparation choices can systematically exclude certain groups or introduce measurement bias that affects fairness.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="expandable-section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <span class="section-title">Stage 3: Feature Engineering</span>
+                <div class="chevron"></div>
+            </div>
+            <div class="section-content">
+                <div class="section-detail">
+                    <div class="section-label">What happens:</div>
+                    <div class="section-text">Raw variables are transformed into features the algorithm can use. COMPAS used 137 variables including demographic info, criminal history, and questionnaire responses.</div>
+                </div>
+                <div class="section-detail">
+                    <div class="section-label">Key decisions:</div>
+                    <div class="section-text">Which variables to include as predictors, how to handle proxy variables (e.g., zip code as proxy for race), feature selection and weighting.</div>
+                </div>
+                <div class="section-detail">
+                    <div class="section-label">Business impact:</div>
+                    <div class="section-text">Feature choices can introduce indirect bias even when protected characteristics are explicitly excluded.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="expandable-section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <span class="section-title">Stage 4: Model Training</span>
+                <div class="chevron"></div>
+            </div>
+            <div class="section-content">
+                <div class="section-detail">
+                    <div class="section-label">What happens:</div>
+                    <div class="section-text">The algorithm learns patterns from training data. COMPAS likely used logistic regression and decision trees to identify relationships between predictors and recidivism.</div>
+                </div>
+                <div class="section-detail">
+                    <div class="section-label">Key decisions:</div>
+                    <div class="section-text">Algorithm selection, parameter tuning, optimization objectives (accuracy vs fairness), training/validation split ratios.</div>
+                </div>
+                <div class="section-detail">
+                    <div class="section-label">Business impact:</div>
+                    <div class="section-text">Training choices determine whether the model learns biased patterns from historical data and how it balances different performance metrics.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="expandable-section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <span class="section-title">Stage 5: Model Validation</span>
+                <div class="chevron"></div>
+            </div>
+            <div class="section-content">
+                <div class="section-detail">
+                    <div class="section-label">What happens:</div>
+                    <div class="section-text">The trained model's performance is assessed using test data. Northpointe focused on overall accuracy and predictive parity metrics.</div>
+                </div>
+                <div class="section-detail">
+                    <div class="section-label">Key decisions:</div>
+                    <div class="section-text">Which metrics to evaluate, what constitutes "good enough" performance, whether to test for bias across different demographic groups.</div>
+                </div>
+                <div class="section-detail">
+                    <div class="section-label">Business impact:</div>
+                    <div class="section-text">Limited evaluation can mask bias or unfairness issues that only become apparent after deployment.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="expandable-section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <span class="section-title">Stage 6: Deployment</span>
+                <div class="chevron"></div>
+            </div>
+            <div class="section-content">
+                <div class="section-detail">
+                    <div class="section-label">What happens:</div>
+                    <div class="section-text">The model is put into production use. COMPAS was deployed across multiple jurisdictions for pretrial, sentencing, and parole decisions.</div>
+                </div>
+                <div class="section-detail">
+                    <div class="section-label">Key decisions:</div>
+                    <div class="section-text">How judges should interpret scores, what use cases are appropriate, whether deployment matches original training scope.</div>
+                </div>
+                <div class="section-detail">
+                    <div class="section-label">Business impact:</div>
+                    <div class="Section-text">Deployment scope expansion (using for bail when trained for sentencing) can introduce new bias sources and fairness concerns.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="expandable-section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <span class="section-title">Stage 7: Monitoring</span>
+                <div class="chevron"></div>
+            </div>
+            <div class="section-content">
+                <div class="section-detail">
+                    <div class="section-label">What happens:</div>
+                    <div class="section-text">Ongoing assessment of model performance in real-world use. ProPublica's analysis represented external monitoring that revealed bias issues.</div>
+                </div>
+                <div class="section-detail">
+                    <div class="section-label">Key decisions:</div>
+                    <div class="section-text">What metrics to track over time, how to detect bias drift, when to retrain or retire the model, transparency and accountability measures.</div>
+                </div>
+                <div class="section-detail">
+                    <div class="section-label">Business impact:</div>
+                    <div class="section-text">Inadequate monitoring allows bias problems to persist and compound, affecting fairness and organizational reputation.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleSection(header) {
+            const content = header.nextElementSibling;
+            const chevron = header.querySelector('.chevron');
+
+            if (content.classList.contains('expanded')) {
+                content.classList.remove('expanded');
+                header.classList.remove('expanded');
+            } else {
+                content.classList.add('expanded');
+                header.classList.add('expanded');
+            }
+        }
+    </script>
+</body>
+</html>
