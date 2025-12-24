@@ -1,0 +1,360 @@
+00;00;00;00 - 00;00;31;18
+Unknown
+What do we mean by bias in AI and what is at stake when AI is biased? Where is the source of AI bias? Is it in the data, in society or in the analysis of the algorithm? And when it comes to fairness? Should we prioritize equality in the outcomes or the procedures that create them? Welcome to Case Text, where we dive into another topic at the crossroad of AI and ethics.
+
+00;00;31;21 - 00;01;04;02
+Unknown
+I'm your host, Yasir Rohani, a professor of technology and innovation at Ivy Business School. Today, we're diving into a topic that is both fascinating and honestly, a little unsettling. Machine learning bias. To help me untangle this complex and super important issue. I've got the perfect. Yes. We. Brilliant colleague, doctor Lauren Cyprian. She is a professor in management science out of business school and the Canada researcher in health care analytics, management and policy.
+
+00;01;04;05 - 00;01;25;00
+Unknown
+Lauren, welcome. Thank you. Yasir, it's great to be here. This topic hits close to home for me as I work in health care and health policy decision problems every day. Algorithms are changing the landscape of how patients interact with physicians and how physicians interact with the information about patients. They have to make complex diagnosis and treatment decisions together.
+
+00;01;25;02 - 00;02;02;26
+Unknown
+We'll explore the fascinating story of Compass, an algorithm used for risk assessment in the criminal justice system before hitting the road. Let me define two terms that we're going to use frequently. Algorithm versus model. What do we mean by that? An algorithm refers to the specific computer or method or procedure used to solve a problem, or make a prediction, such as logistic regression or random forest algorithm memes, or like recipes or methods that guide how to process data, identify patterns, and make decisions.
+
+00;02;02;28 - 00;02;34;20
+Unknown
+A model is a trained instance of an algorithm on a specific data set, producing a system of learned patterns. In the context of our today's podcast, Compas is a predictive model developed using machine learning techniques and algorithms. Like logistic regression is used to build Compas model to predict recidivism. Now, Lauren, before we dive in, how do you feel about the idea of algorithms weighing in on decisions that affect people's lives so directly?
+
+00;02;34;23 - 00;03;03;12
+Unknown
+Honestly, it's both exciting and a bit unsettling. Algorithms can bring consistency and data driven insights. Most of us are familiar with algorithms that recommend what to watch on streaming platforms, but the stakes are so low. Algorithms are quietly shaping our experiences in many ways that are high stakes, but that we don't see so obviously as our Netflix recommendations from selecting what news we see and the perspective it's presented in our news feed to determining our credit scores.
+
+00;03;03;16 - 00;03;29;13
+Unknown
+Deciding who gets a job interview. Models like compass, which are used in the criminal justice system, have very serious implications. And so we must question how fair and transparent they really are. Exactly. That's such a good point, Lauren. It's easy to think of models and algorithms as neutral or objective because they are based on data. But as we will see with Compas, this story is far more complex.
+
+00;03;29;20 - 00;04;02;18
+Unknown
+Compas stands for Correctional Offender Management profiling for Alternative Sanctions. It is a tool developed by North Point in cooperation, now rebranded as equivalent, and has been used to assess over a million offenders. Since it's inception in 1998. The way these models are designed, the data they're fed, the strengths and weaknesses of the algorithms used to build them, and how they're used can have profound consequences, often in ways that reflect and amplify existing biases.
+
+00;04;02;20 - 00;04;29;24
+Unknown
+And the idea is simple yet profound. Compass is an AI based model used in the criminal justice system to assess the likelihood of a defendant re-offending, which is called recidivism. Essentially, it generates a risk score based on various factors, and this score is used by judges to make decisions about bail, sentencing, and even parole. It's meant to bring consistency to these decisions, but it raises significant questions about fairness and accountability.
+
+00;04;29;27 - 00;04;39;00
+Unknown
+All right. Let's dive in and uncover the story behind Compas.
+
+00;04;39;03 - 00;05;10;13
+Unknown
+Predictive models in the criminal justice system, also known as risk assessment tools, rats aim to predict recidivism and aid decisions ranging from pretrial to parole. Compas is not the only one. Some widely use rats include the Public Safety Assessment PSA, Virginia Pretrial Risk Assessment Instrument, VPI or AI or Praxis in Michigan used to guide bail recommendations. But why bother with a model like Compas?
+
+00;05;10;20 - 00;05;37;06
+Unknown
+Can't human judges, with their experiences and judgments, make better decisions without relying on a computer system? These tools aim to manage heavy workloads, cut costs, and reduce human bias. We worry about conflicts of interest or animus in the form of racism or discrimination against victims or defendants. But as humans, even factors like our mood or even the weather on a given day can influence our interactions and decisions.
+
+00;05;37;08 - 00;06;13;16
+Unknown
+Unlike the human brain, algorithms can process numerous factors simultaneously and can be updated to reflect new laws and policy changes, ensuring consistency. The goal is to make judicial decisions more accurate, fair, and transparent than those based solely on human judgment. But it isn't clear that accuracy, fairness and transparency are being achieved. Yes, actually, I've read about that study by Hodges and O'Brien found that a ten degree Fahrenheit increase in outside temperature could reduce favorable rulings in immigration cases by 6.55%.
+
+00;06;13;18 - 00;06;43;05
+Unknown
+It's fascinating and concerning how external factors can affect supposedly objective decisions like this. Historically, judges have relied on their past experience and intuition to estimate an individual's risk of re-offending when making crucial decisions like setting bail, granting probation or parole when the stakes are so high, affecting both the lives of defendants and public safety. It's understandable why there's a push to use data driven tools like compass to support these decisions, as we're going to explore.
+
+00;06;43;05 - 00;07;11;16
+Unknown
+These tools aren't without their own issues. And when seeing this opportunity in the late 1980s, Timothy Brennan, a professor at the University of Colorado, envisioned using AI for more objective risk assessments. He founded Northpointe Incorporation and developed Compas to predict recidivism risk using an algorithm trained on extensive criminal justice data. Laura, what strikes you about this mission? It's ambitious, but also highlights the challenges.
+
+00;07;11;18 - 00;07;41;15
+Unknown
+While automation with a data driven model promises objectivity, the quality of its predictors depends heavily on the data and design choices made during development. His goal was to provide a more objective and accurate assessment of recidivism risk. If successful, this program could be more efficient and less prone to human bias and errors than traditional judicial intuition. Compas was designed to assess judges probation officers, and other criminal justice professionals in making more informed decisions about defendants.
+
+00;07;41;17 - 00;08;12;14
+Unknown
+It uses a vast array of data points to provide a risk score, indicating the likelihood of a defendant committing another crime within two years. That sounds impressive, but it's important to note the complexity behind these kinds of algorithms. Compass uses data from a variety of sources, such as prior arrest convictions and even personal questionnaire answers. But we need to critically examine the development process to see whether these tools are delivering on that promise, or if they just repackaged bias in a more sophisticated way.
+
+00;08;12;16 - 00;08;29;04
+Unknown
+All right, let's shift gears and hit the fast track to model Devo.
+
+00;08;29;06 - 00;09;00;07
+Unknown
+No matter the industry, understanding the development process is crucial. It is essential for effectively overseeing and managing AI systems. Compas is an AI system, as it is a mathematical model that mimics and enhances human predictions. In this case, it predicts re-engagement in criminal activity based on the data it receives. Absolutely. Yessir. The development of AI systems like compass involves several critical steps.
+
+00;09;00;09 - 00;09;27;29
+Unknown
+It starts with identifying the problem, in this case predicting the likelihood of recidivism. Then comes the data collection phase, where vast amounts of information are gathered, often from historical records, surveys, or databases. This step is critical as the quality and representativeness of the data lay the foundation of the entire algorithm. This phase is more than just technical. It requires critical thinking to ensure the data represents the population the algorithm will serve.
+
+00;09;28;01 - 00;09;56;24
+Unknown
+This is followed by data pre-processing, where the raw data is cleaned, structured and prepared for training the model. Once the data is ready, the actual mathematical model is developed. Developers choose an algorithm type, train it using the preprocessed data, and fine tune it to improve its accuracy. It's worth noting that the choice of algorithm whether a logistic regression, decision trees, or more advanced methods can significantly affect the outcome and interpretability of the model.
+
+00;09;56;26 - 00;10;21;22
+Unknown
+But here's the tricky part the process doesn't end there. The algorithm must be rigorously tested to ensure it performs well across different scenarios and demographics. This is where questions about bias and fairness often come into the forefront, and finding solutions isn't always straightforward and isn't one of the challenges, ensuring that the data used to train the algorithm accurately reflects the population it will serve.
+
+00;10;21;24 - 00;10;50;09
+Unknown
+Can truly unbiased data even exist if the data is incomplete or biased? Won't the algorithm inherit those flaws? Exactly. The source of the data and its quality are everything. If the training data overrepresented or underrepresented certain groups, the algorithm may produce biased results. For example, if police reports from overpoliced communities dominate the data set, the algorithm could unfairly penalize individuals from those areas.
+
+00;10;50;12 - 00;11;16;23
+Unknown
+It's the classic seeing garbage in garbage out. But with statistical and machine learning algorithms, spotting the garbage isn't always straightforward, because bias can hide deep within these patterns. Without high quality, representative data, even the most advanced algorithms can yield biased or inaccurate results. And this raises another important question how will developers even start collecting data in a way that minimizes these risks?
+
+00;11;16;25 - 00;11;49;14
+Unknown
+To develop a functional model like Compas, Brennan started by gathering input and output data. This meant selecting a population offenders from states like New York, Wisconsin or Florida, for example. Then he needed to identify the target output that he wanted to predict. In this case, the target output is whether the person re-offend. It called recidivism. And they defined it precisely as whether the individual was rearrested within two years.
+
+00;11;49;17 - 00;12;16;14
+Unknown
+This is a great example of analyst choice. They could have chosen to define recidivism as within one year, three years or five years. They chose re-offending within two years. Even more, they could have chosen to define it broadly as any re-arrest, or narrowly as re-arrest for a violent crime, or very narrowly as re incarceration. Each of these definitions would lead to very different prediction models and potentially different policy outcomes.
+
+00;12;16;16 - 00;12;46;23
+Unknown
+So to the final piece of assembling the data involves another set of choices. Brennan needed to identify variables available at the time the person is being sentenced to use as predictors of recidivism. That sounds complicated. How would someone trying to develop a model like this identify predictive variables in a case like this? An interdisciplinary approach is critical. Bringing in experts from diverse fields ensures that the model captures nuanced and relevant variables.
+
+00;12;46;25 - 00;13;20;16
+Unknown
+Ideally, a team consisting of sociologists, criminologists, and other social scientists, in addition to computer scientists, would collaborate to avoid overlooking critical factors and introducing human bias. Ultimately, the Compass model uses predictors from various sources within the criminal justice system, including demographic information, criminal history, social and personal background, and behavioral factors. I see two concerns here. First, demographic information, criminal histories, social and personal background and behavioral factors.
+
+00;13;20;23 - 00;13;47;26
+Unknown
+All very broad categories and lack of specificity. Each one could involve multiple factors, and every factor would need to be measured objectively. How did they ensure that these predictors were measured in a consistent and unbiased way? Second, what about the information they don't have? How do you ensure you're not missing critical variables that could improve the accuracy of predictions?
+
+00;13;47;26 - 00;14;17;21
+Unknown
+Big time? Great question and a big challenge for any AI project. After a hopefully multidisciplinary team determines the general concepts, specific measures for these general concepts need to be developed. For instance, compass measured demographic information like age, gender, and ethnicity, but deliberately excluded race. Critics often point out that excluding race, while including other variables like neighborhood or socioeconomic status, can that act as proxies for race reintroduces this bias indirectly.
+
+00;14;17;23 - 00;14;43;29
+Unknown
+Let me give you some measures for criminal history. They collected variables like the number of prior arrests and convictions and the age at the first arrest. First of all, background was measured through employment status and education level, while social relationships were assessed with questions like, was one of your parents ever sent to jail or prison? Or how many of your friends are taking drugs illegally?
+
+00;14;44;01 - 00;15;14;12
+Unknown
+Behavioral factors were measured with questions about past violence and attitudes towards criminal behavior, such as how often did you get in fights while out of school? Or to what extent you agree that a hungry person has a right to steal? This might be a very easy question to answer if you not hungry, but obviously defendants may seek to provide answers that would decrease the appearance of being considered an ongoing threat.
+
+00;15;14;15 - 00;15;42;02
+Unknown
+These were some of the input variables. As you see, there are a lot of analysts choice in how to define each concept and what to provide as potential predictors. On one hand, there is the constraint of what is available. On the other hand, it seems like it really needs to be a thoughtful choice, doesn't it? Overall for compass, we don't know how many predictors or modified definitions of each predictor were even considered.
+
+00;15;42;05 - 00;16;12;03
+Unknown
+Ultimately, the Northpointe model uses 137 predictor variables from the full list of predictor variables that were potentially available to them. The set of predictors actually used is identified through the modeling step. So let's recap Northpointe more. You collect all the data on offenders in Florida for a specific period of time, identify whether they did or did not reoffend within two years, and then identify the full set of potential predictors for each person.
+
+00;16;12;06 - 00;16;39;06
+Unknown
+Because many of the predictors compas uses or answers to a questionnaire, they needed to find a setting in which the questionnaire they wanted to use had been widely adopted. You have it now from the full set of potential predictors. We want to identify which subset of them are needed to create a high quality prediction model. When there are a lot of potential predictors available, it's easy to develop a prediction model that is overfit to the data.
+
+00;16;39;11 - 00;17;03;07
+Unknown
+By that, I mean it's great at predicting outcomes within the data it was built on, but it's not good at predicting in other data sets a model that is only useful at doing prediction using the data on which it was built. Isn't very useful. The goal is that the prediction model is generalizable to other settings. You know where the outcome isn't already known.
+
+00;17;03;10 - 00;17;25;18
+Unknown
+So how do you make sure that your model is good at predictions in new data, not just in the data you have? If you want your model to be good at predicting using data it didn't used for model selection and fitting, then the model selection criterion needs to be evaluating exactly that how good the model is at fitting out-of-sample data.
+
+00;17;25;21 - 00;17;46;27
+Unknown
+So there are generally three steps to doing this very well. First, you split the data. You have into a training set and a testing set. I usually use 70% of the data for training, but there's no correct answer about how much you should use for training and how much you should reserve for testing. After you have a preliminary model, you can compare how it performs on this testing data set.
+
+00;17;47;03 - 00;18;13;13
+Unknown
+That's called internal validation. Second, when you are doing the mechanics of model selection and fitting, you can use a cross-validation approach when using cross-validation. The training data itself is split into training and testing sets and candidate models are evaluated on whether or not they minimize prediction error in the testing set. Third, and this one is actually shockingly rare, but it's really a best practice.
+
+00;18;13;16 - 00;18;35;19
+Unknown
+You collect a new, fully independent data set and you test the model using that independent data set. This is called external validation. In this case they could use a complete data set from Georgia or Pennsylvania. This is the truest test of when asking the question is my model generalizable to other settings? You actually have to test it in those other settings.
+
+00;18;35;21 - 00;19;04;21
+Unknown
+Whoa. That's that's an extensive process. So let me make sure we've got this right. Lauren. First we split the data into two parts. Then we train the model on one part and test it on the other. Finally, we need at least one completely independent data set with the same predictors to validate the model externally. This gives us two levels of testing to ensure the model performs well on new data.
+
+00;19;04;24 - 00;19;25;01
+Unknown
+Makes sense, especially if this model is influencing decisions as serious as how long someone stays in prison. Did I get it right? Exactly. Yes, sir. Without rigorous testing, you risk deploying a model that only works on the data on which it was built. Not in real world settings where it's meant to be applied, and when the stakes are high.
+
+00;19;25;02 - 00;19;50;27
+Unknown
+Generalizability is not negotiable. But now I'm curious. How does the actual model training work? You're the expert here, Lauren. Or should I say the resident nerd? Break it down for me. I'll try and keep my nerdiness in check. The model training process depends on the type of algorithm chosen for prediction models. Techniques like logistic regression, decision trees, or ensemble methods like random forest are commonly used.
+
+00;19;50;29 - 00;20;18;25
+Unknown
+The goal during training is to optimize an objective function like minimizing prediction error for recidivism risk. During optimization, the model explores and considers different relationships between inputs and outputs. Ultimately, these methods identify the patterns that link predictor variables to the target outcome. For instance, random forests create multiple decision trees using subsets of data, then average the results to improve accuracy and reduce overfitting.
+
+00;20;18;28 - 00;20;40;18
+Unknown
+It's like having a committee of decision trees vote on the best prediction. Other methods like neural networks, are more complex and can capture intricate relationships in the data, but they're also more prone to overfitting and harder to interpret. Each of these methods can be implemented different ways an analyst can select predictors and model parameters. In regression, these are the model coefficients.
+
+00;20;40;21 - 00;21;13;27
+Unknown
+Using the full training data set or using the cross-validation approach I mentioned earlier when using cross-validation. The training data itself is iteratively split into training and testing sets, and candidate models are evaluated on whether they minimize the prediction error in the observations not used for training. All of this is automated so that hundreds and thousands of training and testing sets are created, and the best model, including a specific subset of the available predictors, is selected based on how well it does at predicting outcomes in observations not used for training.
+
+00;21;14;00 - 00;21;52;04
+Unknown
+One thing to note is that cross-validation approaches are computationally very intensive, so different algorithms have different strengths and weaknesses. But what about comparisons specifically? Compas is a proprietary model, so Northpointe hasn't disclosed the exact methods under the hood. However, based on available information, it likely relies on a combination of logistic regression and decision tree models. These methods are well-suited for structured data like the variables Compas uses and the law for relatively interpretable outputs later with scores.
+
+00;21;52;06 - 00;22;24;18
+Unknown
+But the lack of transparency is part of what makes Compas controversial. It is hard to evaluate or challenge its predictions without knowing how it works. So the question is how can you trust something you can't fully understand? Exactly. And that brings us to one of the biggest challenges with algorithms like compass, balancing the promise of AI with the need for accountability and fairness, transparency in how these models are built, tested and deployed is crucial, especially when they're making decisions that deeply impact people's lives.
+
+00;22;24;21 - 00;22;56;23
+Unknown
+Lauren, I still have the same question why should we trust the compas model? While compass doesn't reveal the details of the specific model structure, coefficients or parameters. They do publicly provide the results of their validation analysis during model evaluation. Northpointe focused on developing a model with high predictive value. For example, finding that the positive predictive value, which is the probability a person re-offend when they have been assigned a high score or negative predictive value, which is the probability that somebody does not offend when they've been assigned a low score.
+
+00;22;56;26 - 00;23;24;11
+Unknown
+Both of these are reasonable measures of accuracy, and that's what Compas focused on. Here is what I found in my research about Compas validation in the early 20 tens. Independent researcher tested Compas using historical criminal justice data and found that it correctly predicted two year recidivism between 64 and 74% of the time, compared to 64% accuracy from human predictions.
+
+00;23;24;14 - 00;23;55;21
+Unknown
+North Point's psychometric data underwent peer review in academic journals, and the company carried out multiple external validation studies nationwide. What was the result of external validation law? Generally, compass performed on par with, if not slightly better than, human decision makers, with less time required and fewer chances for individual bias. Northpointe promoted Compas as an unbiased, data driven tool designed solely to connect the dots within defendant information.
+
+00;23;55;23 - 00;24;30;08
+Unknown
+This marketing implied to enterprise clients that compass would be objective and free from the emotional and learned biases of human operators. As a result, judges, probation officers, and other criminal justice professionals use compass scores to make crucial decisions about defendants. These scores contribute and influence the deliberation about who can be safely diverted to alternative programs, who should be released before trial, and who requires close monitoring or incarceration.
+
+00;24;30;10 - 00;24;54;28
+Unknown
+But wait a second. What exactly did Compas spit out for judges to use? Compass presents a risk score on a scale from 1 to 10. Corresponding with the probability of recidivism in validation data sets both internal and external. It has been shown that these risk scores are correlated with the likelihood of re-offending. However, note that not all tools present their results in the same way.
+
+00;24;55;04 - 00;25;25;12
+Unknown
+For example, that public safety Assessment PSR you spoke about earlier provides multiple risk scores, one for the risk of failure to appear in court. Another for the risk of new criminal activity, both on a scale of 1 to 6. It even includes a binary variable a simple yes or no. For the risk of new violent criminal activity, the Ohio Risk Assessment System categorizes risk levels as low, moderate, or high, so the format of the results can vary significantly depending on the tool.
+
+00;25;25;15 - 00;25;53;00
+Unknown
+Right now that we've explored the details of how Compas was developed, let's shift gears and discuss its deployment and real world application in the criminal justice system.
+
+00;25;53;02 - 00;26;22;09
+Unknown
+Compas was launched in 1998 and was quickly adopted by the criminal justice system in New York, Wisconsin, and California, among other places across the United States. Marketed to course as an advanced tool to predict the likelihood of future crimes. Compas aims to provide valuable insights for judicial decisions. Compass was enthusiastically embraced by many judges and used widely across various jurisdictions.
+
+00;26;22;11 - 00;26;50;03
+Unknown
+Judges were instructed to use Compas scores to inform their sentences and rulings, but not to solely based judgments on them. Interestingly, Compas use was not mandatory, so some judges used it and some didn't use it at all or only used it in some cases. While the model was developed and trained on data of people convicted of crimes, some courts relied heavily on compass scores to inform decisions about bail prior to trial or parole decisions in addition to sentencing.
+
+00;26;50;05 - 00;27;20;21
+Unknown
+This inconsistency undermined one of the stated goals of the tools improving uniformity in judicial decision making. That's correct Lauren. Judges varied in their use of compass. In some instances, it was used to determine the level of supervision a person received on parole. It was also used for analysis for pretrial bail, parole, and probation decision making. Some agencies even relied on campus to help allocate resources and ensure the right supervision level.
+
+00;27;20;23 - 00;27;51;27
+Unknown
+Here's an interesting example. In August 2013, a Wisconsin judge referenced compas in the sentencing of the defendant, Eric Loomis, stating that the two identified Loomis as a high risk individual. The judge is a statement about Loomis being at high risk to the community directly reflects the output of the Compas assessment. This case led to a lawsuit and gained national attention and a separate critique of recidivism risk assessment algorithms.
+
+00;27;51;29 - 00;28;17;00
+Unknown
+It's fascinating how the adoption of Compas varied so much. Kind of reminds me of the diffusion of innovation theory by Everett Rogers. Oh. What's that? Yasir. It's a well known theory that explains how innovations spread through a population. It's a framework with different components and arguments. But one key aspect is this as an innovation, it spreads in user populations.
+
+00;28;17;01 - 00;28;44;05
+Unknown
+Its use often evolves based on the needs, feedback, and context of the adopters. This adaptation can lead to modifications in the innovation itself, its application, or even how people perceive it. So the innovation doesn't stay static. It changes as it diffuses. Oh I see. So as companies spread the way judges and agencies used it influenced and evolved. Right.
+
+00;28;44;09 - 00;29;16;01
+Unknown
+Exactly. And that leads us to another issue worth noting. A broader challenge with introducing technologies into the courtroom, the group to individual problem. I heard about this on David Gilman's podcast on Courtroom Technologies, where he explains the dilemma of using MRI scans in the courtroom. Scientific results from testing a technology often come from examining groups of people. But the justice system requires decision about individual rules.
+
+00;29;16;03 - 00;29;51;09
+Unknown
+For example, Compas uses patterns derived from historical group data to assess an individual's recidivism risk. But group averages can mislead when applied to individuals. Imagine research accurately identifies that men on average or taller than women, but then assume the tall woman must be a man because her height matches the height of an average male. This issue raises critical questions about how specific and sensitive such tools need to be to truly inform individual decisions.
+
+00;29;51;16 - 00;30;20;26
+Unknown
+That's such a great point, Yasser. The group to individual problem is especially relevant here. Compas scores are calculated based on group level data, yet they're used to make high stakes decisions about individuals bail, sentencing and parole. Where stakes couldn't be higher. Exactly. So that's not the end of the story. In 2014, then U.S. Attorney General Eric Holder warned that the risk score might be injecting bias into the courts later in May 2016.
+
+00;30;20;29 - 00;31;09;15
+Unknown
+ProPublica, an investigative journalism organization, published a bombshell critical report scrutinizing Compas. They found that despite not explicitly including race, other data aspects correlated with race, leading to racial disparities in predictions. Specifically, ProPublica reported that black defendants who did not re-offend were nearly twice as likely to be incorrectly predicted to re-offend, comparing to white defendants, 45% to 23%. Conversely, white defendants who did not reoffend were almost twice as likely to be incorrectly predicted not to reoffend compared to black defendants 48% versus 28%.
+
+00;31;09;17 - 00;31;32;12
+Unknown
+That's one draw and break it down for us. What's going on here? ProPublica evaluated the model using different metrics than those Northpointe uses to develop and validate compass. Northpointe focused on how well the model assigned higher scores to individuals who did re-offend, and lower scores to those who did not. A measure of rank order accuracy and the model performed well by those standards.
+
+00;31;32;14 - 00;31;56;05
+Unknown
+However, ProPublica flipped the evaluation and took a more impact oriented approach to the evaluation. They asked among people who never re-offend, what was the probability of falsely being assigned a high risk score? This is called a false positive among people who did re-offend. What is the probability of falsely being assigned a low risk score? And among those assigned low scores, what percentage did re-offend?
+
+00;31;56;08 - 00;32;29;08
+Unknown
+This is called a false negative. They examined whether these probabilities, the probability of being falsely assigned a positive score or falsely assigned a negative score, were consistent across racial groups. Their analysis revealed that black defendants were disproportionately classified as high risk when they did not re-offend. White defendants were more likely to be inaccurately assigned a low score. While technical metrics like rank order accuracy mattered to developers and researchers, false positives and negatives directly connect to how people experience the justice system.
+
+00;32;29;10 - 00;32;58;15
+Unknown
+Other studies have also picked up some critical issues. One study specifically highlighted that Compas reliance on arrest records as proxies for criminal behavior introduce significant biases as arrests. Race can be influenced by policing practices and racial profiling. This reliance on arrests record, rather than direct measures of re-offending pointed to potential bias I know. And concerns arose about how Compas was deployed in the judicial system.
+
+00;32;58;18 - 00;33;23;20
+Unknown
+Judges were often influenced by the risk score in their sentencing decisions, sometimes leading to harsher penalties depending on risk scores, even if the individual circumstances didn't fully justify the outcomes. Transparency is key when implementing a system like this. Did Northpointe share their training data or their algorithm with others? Nope. As a proprietary system, Northpointe did not disclose the inner workings of Compas.
+
+00;33;23;28 - 00;33;50;25
+Unknown
+However, researchers like Dressel and Faried found that Compas prediction algorithm could be as simple as a linear classifier, using just two features each and the number of prior convictions to achieve similar accuracy. Does it mean that those 137 variables is just fluff? It's very interesting that Dressel and Faried were able to find a model with similar performance characteristics to the compass model, with just two predictors.
+
+00;33;50;28 - 00;34;11;01
+Unknown
+In general, in statistics a simpler model, we say parsimonious model is preferred. It's easier to understand, easier to validate, easier to explain, easier to deploy. But I have to say yes for a model with two predictors would make a terrible AI company. It would be easily reproducible, and no one would need your software to do the calculations for them.
+
+00;34;11;03 - 00;34;38;07
+Unknown
+One of the barriers to adoption of AI tools is that they're black box, which decreases public trust, expert trust, and policymaker trust in them. However, if adopted, a black box keeps the secret of the model indefinitely. I would also like to add that predicting something as complex as human recidivism shaped by individual, familial, societal, and geographical factors using just two variables, is a massive oversimplification.
+
+00;34;38;09 - 00;35;20;27
+Unknown
+Complexity theory teaches us that systems designed to govern or predict complex phenomena need to match their complexity over simplify tools, risk missing critical interdependencies and nonlinear relationships. Whether we're making decisions or building models, our tools must be as nuanced, interconnected, and complex as the system they aim to address. Anyways, let me tell you, Loren, what the company did in response to ProPublica report, Northpointe defended their model, arguing that the observed disparities were in natural consequence of using on bias the scoring rules on groups with different score distributions.
+
+00;35;20;29 - 00;36;01;11
+Unknown
+They detailed the extensive validation studies conducted both internally and by independent researchers, which consists only showed positive results and good predictive ability across various demographic groups. Northpointe asserted that their tool was equally predictive for both black and white defendants with similar accuracy rates. In both their studies and ProPublica analysis, 62.5% for white defendants, versus 62.3% for black defendants in ProPublica report and 69% for white defendants, versus 67% for black defendants in Northpointe study.
+
+00;36;01;13 - 00;36;26;09
+Unknown
+Simplify this for US law. Let's take a look at exhibit one. In our case, where I've summarized the specific versions of the arguments in statistical language. Northpointe went back to the metrics used for model selection and validation conditional on being a free offender. The model is equally good at giving higher scores to black and white people conditional on not being a re-offend, for the model is equally good at giving lower scores to black and white people.
+
+00;36;26;11 - 00;36;50;04
+Unknown
+But what this means in Broward County, where the overall recidivism rate for black defendants was 51% in comparison to 39% for white defendants. So the probability of being assigned a higher score was greater for black people than for white people. Northpointe emphasized that their model mirrored real world data rather than introducing new biases. But what ProPublica pointed out was still correct.
+
+00;36;50;09 - 00;37;13;12
+Unknown
+Conditional on being assigned a higher score, the probability that the higher score was incorrect is higher for black people than it is for white people. Northpointe doesn't disagree with that, but it says that this is only because of the difference in base rate of reoffending by race. Lauren, help me understand what the heck is base rate? Base rate is the underlying probability of the truth in application.
+
+00;37;13;12 - 00;37;34;15
+Unknown
+You don't know what the truth is, but in the training, testing and validation data, you do know what the true rate of recidivism is, because the base rate of recidivism is higher in black defendants. The model is going to assign higher scores on average to black defendants when it's deployed in the real world. This leads to another criticism of the model and of air models in general, with disparate outcomes by race.
+
+00;37;34;18 - 00;37;58;14
+Unknown
+The racial disparities highlighted by ProPublica underscore broader systemic issues. For example, the higher arrest rates for black individuals are often driven by overpolicing in certain communities. Create feedback loops in data sets that perpetuate bias in predictive models. These disparities make it harder for individuals from marginalized groups to break free of the cycle of criminalization, further reinforcing social inequalities.
+
+00;37;58;16 - 00;38;36;15
+Unknown
+In technical terms, northpointe prioritized calibration matching scores to recidivism probabilities over equal error rates across groups. So Propublica's findings suggest that even a calibrated tool can lead to inequitable outcomes when applied in systems with historical and structural biases. This shift in focus from technical calibration to fairness in outcomes frames the broader ethical question should AI systems and the models they rely on mirror the inequities of the real world, or should they strive to counteract them?
+
+00;38;36;17 - 00;39;13;06
+Unknown
+That's the million dollar question. I should also mention that companies response also stressed the importance of using Compas as intended, and aid in decision making, rather than the sole determinant of judicial outcomes. US guidelines from the National Center for State Courts recommend using risk assessments to inform public safety considerations, without relying on them exclusively for sentencing decisions. Northpointe also addresses the black box criticism, explaining that compass is a well understood statistical model with theoretically justified features.
+
+00;39;13;09 - 00;39;38;21
+Unknown
+They have made efforts to ensure transparency in the variables and scoring processes for agencies that use the tool, but they didn't really open the box. ProPublica countered the criticism with another response, and academic researchers also joined the debate. This controversy drew attention from various newspapers, and the Wisconsin Supreme Court referenced it in their decision to uphold the use of Compas in sentencing.
+
+00;39;38;23 - 00;40;02;06
+Unknown
+This is an ongoing debate, and it is relevant beyond sentencing guidelines. Similar algorithms are suggesting what news we read, what we watch for enjoyment, and who we date, but also whether we get selected for a job interview, whether we're issued a credit or approved for a mortgage, what mortgage rate we're going to pay, and even whether we qualify for certain medical treatments or insurance rates.
+
+00;40;02;08 - 00;40;28;08
+Unknown
+These algorithms are woven into the fabric of modern decision making, affecting nearly every aspect of our lives. The compass controversy is particularly significant because it highlights the broader question how do we ensure fairness, accountability, and transparency when algorithms influence decisions that carry such a high stakes? The debate isn't just about technical performance, whether the algorithm is accurate or calibrated, but about the values and ethics embedded within these tools.
+
+00;40;28;12 - 00;40;55;20
+Unknown
+When systems like Compas reflect existing societal biases, they risk perpetuating those biases in ways that are harder to detect and even harder to challenge. That's such a critical points flaw. It raises the question of responsibility. Should we hold developers accountable for the outcomes their algorithms produce, or is the responsibility shared with the institutions using these tools? After all, no algorithm exists in isolation.
+
+00;40;55;27 - 00;41;23;06
+Unknown
+They're part of larger systems of decision making. Exactly. It's a shared responsibility. Developers must design and validate these tools with fairness and inclusivity in mind. While institutions must critically evaluate how they implement them, blindly trusting a tool like compass or rejecting it outright misses the point. The real challenge is finding ways to leverage these technologies responsibly, ensuring that they complement human judgment without reinforcing inequalities.
+
+00;41;23;08 - 00;42;00;05
+Unknown
+Lauren, it was wonderful to host you as the resident nerd on Case Cast to discuss such an important topic. Thank you for having me, Yasir. All right. This story of campus highlights the kinds of challenges managers face in developing, deploying, and managing AI, such as loan approval system, mental health applications, recommendation systems, search engines, fraud detection systems, predictive policing technology or analytics, health care robots, facial recognition technology or autonomous vehicles.
+
+00;42;00;07 - 00;42;30;10
+Unknown
+Let's take a moment to reflect on a few questions about AI bias. Before our class discussion, do you side with ProPublica or Northpointe in this debate? What types of biases can you identify in the development and deployment of companies? Where are the locus of these biases in the algorithm, in the data or in the society at large? And as a manager, what steps would you take to mitigate any identified biases?
+
+00;42;30;13 - 00;42;56;20
+Unknown
+These questions will guide us as we dive deeper into ethical and practical challenges organizations face when developing and deploying AI system. I'll see you in class.
+

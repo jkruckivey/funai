@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preprocessing Simulator - One-Hot Encoding and Standardization</title>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --color-neutral-50: #fafafa;
+            --color-neutral-100: #f5f5f5;
+            --color-neutral-200: #e5e5e5;
+            --color-neutral-300: #d4d4d4;
+            --color-neutral-400: #a3a3a3;
+            --color-neutral-500: #737373;
+            --color-neutral-600: #525252;
+            --color-neutral-700: #404040;
+            --color-neutral-800: #262626;
+            --color-neutral-900: #171717;
+
+            --color-primary: #171717;
+            --color-primary-dark: #404040;
+            --color-accent: #bfe5e7;
+            --color-accent-dark: #5a9ea1;
+            --color-success: #22c55e;
+            --color-success-light: #dcfce7;
+            --color-warning: #f59e0b;
+            --color-warning-light: #fcd34d;
+            --color-correct: #c0d1cd;
+            --color-correct-bg: #f0f5f4;
+            --color-incorrect: #f0ede0;
+            --color-incorrect-bg: #faf9f5;
+        }
+
+        body {
+            font-family: 'Geist', -apple-system, sans-serif;
+            background: white;
+            color: var(--color-neutral-900);
+            padding: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .simulator-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .header h3 {
+            color: var(--color-neutral-900);
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: var(--color-neutral-600);
+            font-size: 0.875rem;
+        }
+
+        /* Progress indicator */
+        .progress-bar {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .progress-step {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--color-neutral-100);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--color-neutral-500);
+            transition: all 0.3s ease;
+        }
+
+        .progress-step.active {
+            background: var(--color-accent-dark);
+            color: white;
+        }
+
+        .progress-step.completed {
+            background: var(--color-accent-dark);
+            color: white;
+        }
+
+        .progress-step .step-num {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.7rem;
+        }
+
+        /* Stage panels */
+        .stage-panel {
+            display: none;
+            background: var(--color-neutral-50);
+            border: 1px solid var(--color-neutral-200);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .stage-panel.active {
+            display: block;
+        }
+
+        .stage-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--color-neutral-900);
+        }
+
+        .stage-description {
+            font-size: 0.875rem;
+            color: var(--color-neutral-600);
+            margin-bottom: 1rem;
+        }
+
+        /* Data table */
+        .data-table-wrapper {
+            overflow-x: auto;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--color-neutral-200);
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+            background: white;
+        }
+
+        .data-table th {
+            background: var(--color-neutral-100);
+            padding: 0.625rem 0.75rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--color-neutral-700);
+            border-bottom: 2px solid var(--color-neutral-200);
+            white-space: nowrap;
+        }
+
+        .data-table td {
+            padding: 0.5rem 0.75rem;
+            border-bottom: 1px solid var(--color-neutral-100);
+            color: var(--color-neutral-700);
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .data-table tr:hover {
+            background: var(--color-neutral-50);
+        }
+
+        .col-categorical {
+            background: var(--color-warning-light);
+        }
+
+        .col-numerical {
+            background: var(--color-success-light);
+        }
+
+        .col-encoded {
+            background: var(--color-accent);
+        }
+
+        .col-standardized {
+            background: #fce7f3;
+        }
+
+        /* Legend */
+        .legend {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+            font-size: 0.75rem;
+            color: var(--color-neutral-600);
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+        }
+
+        .legend-color.categorical { background: var(--color-warning-light); }
+        .legend-color.numerical { background: var(--color-success-light); }
+        .legend-color.encoded { background: var(--color-accent); }
+        .legend-color.standardized { background: #fce7f3; }
+
+        /* Action button */
+        .action-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--color-neutral-900);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover:not(:disabled) {
+            background: var(--color-neutral-700);
+        }
+
+        .action-btn:focus {
+            outline: 2px solid #3182ce;
+            outline-offset: 2px;
+        }
+
+        .action-btn:disabled {
+            background: var(--color-neutral-300);
+            cursor: not-allowed;
+        }
+
+        /* Explanation tooltip */
+        .explanation-box {
+            background: white;
+            border: 1px solid var(--color-neutral-200);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .explanation-box.visible {
+            display: block;
+        }
+
+        .explanation-box h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--color-neutral-800);
+        }
+
+        .explanation-box p {
+            font-size: 0.8rem;
+            color: var(--color-neutral-600);
+            margin-bottom: 0.5rem;
+        }
+
+        .formula {
+            background: var(--color-neutral-100);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            display: inline-block;
+        }
+
+        /* Quiz section */
+        .quiz-section {
+            display: none;
+            background: var(--color-neutral-50);
+            border: 1px solid var(--color-neutral-200);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .quiz-section.active {
+            display: block;
+        }
+
+        .quiz-question {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--color-neutral-200);
+        }
+
+        .quiz-question:last-of-type {
+            border-bottom: none;
+            margin-bottom: 1rem;
+        }
+
+        .quiz-question h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--color-neutral-800);
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .quiz-option {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.625rem;
+            padding: 0.75rem;
+            background: white;
+            border: 2px solid var(--color-neutral-200);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .quiz-option:hover {
+            border-color: var(--color-neutral-400);
+            background: var(--color-neutral-50);
+        }
+
+        .quiz-option:focus-within {
+            outline: 2px solid #3182ce;
+            outline-offset: 2px;
+        }
+
+        .quiz-option.selected {
+            border-color: var(--color-neutral-900);
+            background: var(--color-neutral-50);
+        }
+
+        .quiz-option.correct {
+            border-color: var(--color-correct);
+            background: var(--color-correct-bg);
+        }
+
+        .quiz-option.incorrect {
+            border-color: var(--color-incorrect);
+            background: var(--color-incorrect-bg);
+        }
+
+        .quiz-option input {
+            margin-top: 2px;
+        }
+
+        .quiz-option label {
+            font-size: 0.85rem;
+            color: var(--color-neutral-700);
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .quiz-feedback {
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            margin-top: 0.75rem;
+            display: none;
+        }
+
+        .quiz-feedback.correct {
+            background: var(--color-correct-bg);
+            color: var(--color-neutral-900);
+            display: block;
+        }
+
+        .quiz-feedback.incorrect {
+            background: var(--color-incorrect-bg);
+            color: var(--color-neutral-900);
+            display: block;
+        }
+
+        .check-answers-btn {
+            margin-top: 1rem;
+        }
+
+        /* Completion panel */
+        .completion-panel {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+            background: var(--color-correct-bg);
+            border: 2px solid var(--color-correct);
+            border-radius: 12px;
+        }
+
+        .completion-panel.active {
+            display: block;
+        }
+
+        .completion-panel h3 {
+            color: var(--color-neutral-900);
+            margin-bottom: 0.5rem;
+        }
+
+        .completion-panel p {
+            color: var(--color-neutral-700);
+            font-size: 0.9rem;
+        }
+
+        /* Reset button */
+        .reset-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: transparent;
+            color: var(--color-neutral-500);
+            border: 1px solid var(--color-neutral-300);
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        .reset-btn:hover {
+            background: var(--color-neutral-100);
+            color: var(--color-neutral-700);
+        }
+
+        /* Screen reader only */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .progress-bar { flex-direction: column; }
+            .data-table { font-size: 0.7rem; }
+            .legend { flex-direction: column; gap: 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="simulator-container">
+        <div class="header">
+            <h3>Data Preprocessing Simulator</h3>
+            <p>Transform raw data into machine learning-ready format using one-hot encoding and standardization</p>
+        </div>
+
+        <div class="progress-bar" role="progressbar" aria-label="Preprocessing progress">
+            <div class="progress-step active" id="step1">
+                <span class="step-num">1</span>
+                <span>One-Hot Encoding</span>
+            </div>
+            <div class="progress-step" id="step2">
+                <span class="step-num">2</span>
+                <span>Standardization</span>
+            </div>
+            <div class="progress-step" id="step3">
+                <span class="step-num">3</span>
+                <span>Check Understanding</span>
+            </div>
+        </div>
+
+        <!-- Stage 1: One-Hot Encoding -->
+        <div class="stage-panel active" id="stage1">
+            <h4 class="stage-title">Stage 1: One-Hot Encoding</h4>
+            <p class="stage-description">
+                Machine learning algorithms need numerical inputs. Categorical variables like "Education" must be converted to binary columns.
+                Click the button to apply one-hot encoding to the categorical columns.
+            </p>
+
+            <div class="legend">
+                <div class="legend-item">
+                    <span class="legend-color categorical"></span>
+                    <span>Categorical (to be encoded)</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color numerical"></span>
+                    <span>Numerical (keep as-is for now)</span>
+                </div>
+            </div>
+
+            <div class="data-table-wrapper">
+                <table class="data-table" id="table-stage1">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th class="col-numerical">Age</th>
+                            <th class="col-numerical">Income ($K)</th>
+                            <th class="col-numerical">Credit Score</th>
+                            <th class="col-categorical">Education</th>
+                            <th class="col-categorical">Employment</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-stage1"></tbody>
+                </table>
+            </div>
+
+            <button class="action-btn" id="btn-encode" onclick="applyOneHotEncoding()">
+                Apply One-Hot Encoding
+            </button>
+
+            <div class="explanation-box" id="explain-encoding">
+                <h4>What happened?</h4>
+                <p><strong>Education</strong> (Bachelor, Master, PhD) became 3 binary columns: <code>edu_Bachelor</code>, <code>edu_Master</code>, <code>edu_PhD</code></p>
+                <p><strong>Employment</strong> (Full-time, Part-time, Self-employed) became 3 binary columns.</p>
+                <p>This prevents the algorithm from assuming false relationships (e.g., PhD = 3 isn't "3x better" than Bachelor = 1).</p>
+                <button class="action-btn" onclick="goToStage2()">Continue to Standardization</button>
+            </div>
+        </div>
+
+        <!-- Stage 2: Standardization -->
+        <div class="stage-panel" id="stage2">
+            <h4 class="stage-title">Stage 2: Standardization</h4>
+            <p class="stage-description">
+                Numerical variables have different scales (Age: 25-55, Income: 35-150K, Credit Score: 580-780).
+                Without standardization, income would dominate predictions simply because its values are larger.
+            </p>
+
+            <div class="legend">
+                <div class="legend-item">
+                    <span class="legend-color encoded"></span>
+                    <span>One-hot encoded (complete)</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color numerical"></span>
+                    <span>Numerical (to be standardized)</span>
+                </div>
+            </div>
+
+            <div class="data-table-wrapper">
+                <table class="data-table" id="table-stage2">
+                    <thead id="thead-stage2"></thead>
+                    <tbody id="tbody-stage2"></tbody>
+                </table>
+            </div>
+
+            <button class="action-btn" id="btn-standardize" onclick="applyStandardization()">
+                Standardize Numerical Variables
+            </button>
+
+            <div class="explanation-box" id="explain-standardization">
+                <h4>What happened?</h4>
+                <p>Each numerical column was transformed to have <strong>mean = 0</strong> and <strong>standard deviation = 1</strong>.</p>
+                <p class="formula">standardized_value = (original_value - mean) / std_dev</p>
+                <p style="margin-top: 0.75rem;">Example: An income of $85K with mean=$82.5K and std=$34.2K becomes: (85-82.5)/34.2 = 0.07</p>
+                <p>Now all variables contribute equally to predictions regardless of their original scale.</p>
+                <button class="action-btn" onclick="goToQuiz()">Check Your Understanding</button>
+            </div>
+        </div>
+
+        <!-- Quiz Section -->
+        <div class="quiz-section" id="quizSection">
+            <h4 class="stage-title">Check Your Understanding</h4>
+            <p class="stage-description">Answer these 3 questions to confirm your understanding of preprocessing.</p>
+
+            <div class="quiz-question" data-correct="b">
+                <h4>1. Why do we use one-hot encoding instead of numbering categories (1, 2, 3)?</h4>
+                <div class="quiz-options">
+                    <div class="quiz-option" onclick="selectOption(this, 'q1')">
+                        <input type="radio" name="q1" value="a" id="q1a">
+                        <label for="q1a">It makes the data smaller and faster to process</label>
+                    </div>
+                    <div class="quiz-option" onclick="selectOption(this, 'q1')">
+                        <input type="radio" name="q1" value="b" id="q1b">
+                        <label for="q1b">It prevents the algorithm from assuming false ordinal relationships between categories</label>
+                    </div>
+                    <div class="quiz-option" onclick="selectOption(this, 'q1')">
+                        <input type="radio" name="q1" value="c" id="q1c">
+                        <label for="q1c">It's required by Python's pandas library</label>
+                    </div>
+                </div>
+                <div class="quiz-feedback" id="feedback-q1"></div>
+            </div>
+
+            <div class="quiz-question" data-correct="c">
+                <h4>2. After standardization, what is the mean of the standardized values?</h4>
+                <div class="quiz-options">
+                    <div class="quiz-option" onclick="selectOption(this, 'q2')">
+                        <input type="radio" name="q2" value="a" id="q2a">
+                        <label for="q2a">The original mean of the data</label>
+                    </div>
+                    <div class="quiz-option" onclick="selectOption(this, 'q2')">
+                        <input type="radio" name="q2" value="b" id="q2b">
+                        <label for="q2b">1</label>
+                    </div>
+                    <div class="quiz-option" onclick="selectOption(this, 'q2')">
+                        <input type="radio" name="q2" value="c" id="q2c">
+                        <label for="q2c">0</label>
+                    </div>
+                </div>
+                <div class="quiz-feedback" id="feedback-q2"></div>
+            </div>
+
+            <div class="quiz-question" data-correct="b">
+                <h4>3. Why is standardization important for fair predictions?</h4>
+                <div class="quiz-options">
+                    <div class="quiz-option" onclick="selectOption(this, 'q3')">
+                        <input type="radio" name="q3" value="a" id="q3a">
+                        <label for="q3a">It removes all bias from the dataset</label>
+                    </div>
+                    <div class="quiz-option" onclick="selectOption(this, 'q3')">
+                        <input type="radio" name="q3" value="b" id="q3b">
+                        <label for="q3b">It ensures variables with larger scales don't dominate predictions simply due to their magnitude</label>
+                    </div>
+                    <div class="quiz-option" onclick="selectOption(this, 'q3')">
+                        <input type="radio" name="q3" value="c" id="q3c">
+                        <label for="q3c">It's only needed for categorical variables</label>
+                    </div>
+                </div>
+                <div class="quiz-feedback" id="feedback-q3"></div>
+            </div>
+
+            <button class="action-btn check-answers-btn" onclick="checkAnswers()">Check Answers</button>
+        </div>
+
+        <!-- Completion Panel -->
+        <div class="completion-panel" id="completionPanel">
+            <h3>Preprocessing Complete!</h3>
+            <p>You've successfully transformed raw mixed-type data into clean numerical inputs ready for machine learning.</p>
+            <p style="margin-top: 0.75rem;"><strong>Key Takeaways:</strong></p>
+            <p>One-hot encoding prevents false ordinal assumptions. Standardization ensures equal influence across variables.</p>
+            <button class="reset-btn" onclick="resetSimulator()">Reset and Try Again</button>
+        </div>
+    </div>
+
+    <div role="status" aria-live="polite" class="sr-only" id="announcements"></div>
+
+    <script>
+        // Sample loan applicant data
+        const originalData = [
+            { id: 1, age: 28, income: 45, creditScore: 680, education: 'Bachelor', employment: 'Full-time' },
+            { id: 2, age: 35, income: 85, creditScore: 720, education: 'Master', employment: 'Full-time' },
+            { id: 3, age: 42, income: 120, creditScore: 780, education: 'PhD', employment: 'Self-employed' },
+            { id: 4, age: 31, income: 55, creditScore: 650, education: 'Bachelor', employment: 'Part-time' },
+            { id: 5, age: 25, income: 35, creditScore: 580, education: 'Bachelor', employment: 'Full-time' },
+            { id: 6, age: 48, income: 150, creditScore: 750, education: 'Master', employment: 'Self-employed' },
+            { id: 7, age: 29, income: 62, creditScore: 690, education: 'Master', employment: 'Full-time' },
+            { id: 8, age: 55, income: 95, creditScore: 710, education: 'Bachelor', employment: 'Part-time' },
+            { id: 9, age: 38, income: 78, creditScore: 640, education: 'PhD', employment: 'Full-time' },
+            { id: 10, age: 33, income: 100, creditScore: 700, education: 'Master', employment: 'Self-employed' }
+        ];
+
+        let encodedData = [];
+        let standardizedData = [];
+
+        // Initialize Stage 1 table
+        function initStage1() {
+            const tbody = document.getElementById('tbody-stage1');
+            tbody.innerHTML = '';
+
+            originalData.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${row.id}</td>
+                    <td class="col-numerical">${row.age}</td>
+                    <td class="col-numerical">${row.income}</td>
+                    <td class="col-numerical">${row.creditScore}</td>
+                    <td class="col-categorical">${row.education}</td>
+                    <td class="col-categorical">${row.employment}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Apply one-hot encoding
+        function applyOneHotEncoding() {
+            const educationLevels = ['Bachelor', 'Master', 'PhD'];
+            const employmentTypes = ['Full-time', 'Part-time', 'Self-employed'];
+
+            encodedData = originalData.map(row => {
+                const encoded = {
+                    id: row.id,
+                    age: row.age,
+                    income: row.income,
+                    creditScore: row.creditScore
+                };
+
+                // One-hot encode education
+                educationLevels.forEach(level => {
+                    encoded[`edu_${level}`] = row.education === level ? 1 : 0;
+                });
+
+                // One-hot encode employment
+                employmentTypes.forEach(type => {
+                    const key = `emp_${type.replace('-', '')}`;
+                    encoded[key] = row.employment === type ? 1 : 0;
+                });
+
+                return encoded;
+            });
+
+            document.getElementById('btn-encode').disabled = true;
+            document.getElementById('explain-encoding').classList.add('visible');
+            announce('One-hot encoding applied. Education and Employment columns converted to binary columns.');
+        }
+
+        // Move to Stage 2
+        function goToStage2() {
+            document.getElementById('stage1').classList.remove('active');
+            document.getElementById('stage2').classList.add('active');
+            document.getElementById('step1').classList.remove('active');
+            document.getElementById('step1').classList.add('completed');
+            document.getElementById('step2').classList.add('active');
+
+            renderStage2Table();
+            announce('Stage 2: Standardization. Transform numerical variables to have mean 0 and standard deviation 1.');
+        }
+
+        // Render Stage 2 table
+        function renderStage2Table() {
+            const thead = document.getElementById('thead-stage2');
+            const tbody = document.getElementById('tbody-stage2');
+
+            // Headers
+            thead.innerHTML = `
+                <tr>
+                    <th>ID</th>
+                    <th class="col-numerical">Age</th>
+                    <th class="col-numerical">Income</th>
+                    <th class="col-numerical">Credit</th>
+                    <th class="col-encoded">edu_Bach</th>
+                    <th class="col-encoded">edu_Mast</th>
+                    <th class="col-encoded">edu_PhD</th>
+                    <th class="col-encoded">emp_FT</th>
+                    <th class="col-encoded">emp_PT</th>
+                    <th class="col-encoded">emp_SE</th>
+                </tr>
+            `;
+
+            tbody.innerHTML = '';
+            encodedData.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${row.id}</td>
+                    <td class="col-numerical">${row.age}</td>
+                    <td class="col-numerical">${row.income}</td>
+                    <td class="col-numerical">${row.creditScore}</td>
+                    <td class="col-encoded">${row.edu_Bachelor}</td>
+                    <td class="col-encoded">${row.edu_Master}</td>
+                    <td class="col-encoded">${row.edu_PhD}</td>
+                    <td class="col-encoded">${row.emp_Fulltime}</td>
+                    <td class="col-encoded">${row.emp_Parttime}</td>
+                    <td class="col-encoded">${row.emp_Selfemployed}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Apply standardization
+        function applyStandardization() {
+            // Calculate statistics
+            const ages = encodedData.map(r => r.age);
+            const incomes = encodedData.map(r => r.income);
+            const credits = encodedData.map(r => r.creditScore);
+
+            const stats = {
+                age: { mean: mean(ages), std: std(ages) },
+                income: { mean: mean(incomes), std: std(incomes) },
+                credit: { mean: mean(credits), std: std(credits) }
+            };
+
+            standardizedData = encodedData.map(row => ({
+                ...row,
+                age_std: standardize(row.age, stats.age.mean, stats.age.std),
+                income_std: standardize(row.income, stats.income.mean, stats.income.std),
+                credit_std: standardize(row.creditScore, stats.credit.mean, stats.credit.std)
+            }));
+
+            // Update table
+            const tbody = document.getElementById('tbody-stage2');
+            const thead = document.getElementById('thead-stage2');
+
+            thead.innerHTML = `
+                <tr>
+                    <th>ID</th>
+                    <th class="col-standardized">Age (std)</th>
+                    <th class="col-standardized">Income (std)</th>
+                    <th class="col-standardized">Credit (std)</th>
+                    <th class="col-encoded">edu_Bach</th>
+                    <th class="col-encoded">edu_Mast</th>
+                    <th class="col-encoded">edu_PhD</th>
+                    <th class="col-encoded">emp_FT</th>
+                    <th class="col-encoded">emp_PT</th>
+                    <th class="col-encoded">emp_SE</th>
+                </tr>
+            `;
+
+            tbody.innerHTML = '';
+            standardizedData.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${row.id}</td>
+                    <td class="col-standardized">${row.age_std}</td>
+                    <td class="col-standardized">${row.income_std}</td>
+                    <td class="col-standardized">${row.credit_std}</td>
+                    <td class="col-encoded">${row.edu_Bachelor}</td>
+                    <td class="col-encoded">${row.edu_Master}</td>
+                    <td class="col-encoded">${row.edu_PhD}</td>
+                    <td class="col-encoded">${row.emp_Fulltime}</td>
+                    <td class="col-encoded">${row.emp_Parttime}</td>
+                    <td class="col-encoded">${row.emp_Selfemployed}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            document.getElementById('btn-standardize').disabled = true;
+            document.getElementById('explain-standardization').classList.add('visible');
+            announce('Standardization applied. All numerical variables now have mean 0 and standard deviation 1.');
+        }
+
+        // Helper functions
+        function mean(arr) {
+            return arr.reduce((a, b) => a + b, 0) / arr.length;
+        }
+
+        function std(arr) {
+            const m = mean(arr);
+            return Math.sqrt(arr.map(x => Math.pow(x - m, 2)).reduce((a, b) => a + b) / arr.length);
+        }
+
+        function standardize(value, mean, std) {
+            return ((value - mean) / std).toFixed(2);
+        }
+
+        // Move to Quiz
+        function goToQuiz() {
+            document.getElementById('stage2').classList.remove('active');
+            document.getElementById('quizSection').classList.add('active');
+            document.getElementById('step2').classList.remove('active');
+            document.getElementById('step2').classList.add('completed');
+            document.getElementById('step3').classList.add('active');
+            announce('Quiz section. Answer 3 questions to check your understanding.');
+        }
+
+        // Quiz functions
+        function selectOption(element, questionName) {
+            const options = element.parentElement.querySelectorAll('.quiz-option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            element.querySelector('input').checked = true;
+        }
+
+        function checkAnswers() {
+            const questions = document.querySelectorAll('.quiz-question');
+            let allCorrect = true;
+
+            questions.forEach((q, index) => {
+                const correct = q.dataset.correct;
+                const selected = q.querySelector('input:checked');
+                const feedback = document.getElementById(`feedback-q${index + 1}`);
+                const options = q.querySelectorAll('.quiz-option');
+
+                options.forEach(opt => {
+                    opt.classList.remove('correct', 'incorrect');
+                    const input = opt.querySelector('input');
+                    if (input.value === correct) {
+                        opt.classList.add('correct');
+                    }
+                });
+
+                if (selected) {
+                    const selectedOption = selected.closest('.quiz-option');
+                    if (selected.value === correct) {
+                        feedback.textContent = 'Correct!';
+                        feedback.className = 'quiz-feedback correct';
+                    } else {
+                        selectedOption.classList.add('incorrect');
+                        feedback.textContent = 'Incorrect. See the highlighted correct answer above.';
+                        feedback.className = 'quiz-feedback incorrect';
+                        allCorrect = false;
+                    }
+                } else {
+                    feedback.textContent = 'Please select an answer.';
+                    feedback.className = 'quiz-feedback incorrect';
+                    allCorrect = false;
+                }
+            });
+
+            if (allCorrect) {
+                setTimeout(() => {
+                    document.getElementById('quizSection').classList.remove('active');
+                    document.getElementById('completionPanel').classList.add('active');
+                    document.getElementById('step3').classList.remove('active');
+                    document.getElementById('step3').classList.add('completed');
+                    announce('Congratulations! You completed the preprocessing simulator.');
+                }, 1500);
+            }
+        }
+
+        // Reset simulator
+        function resetSimulator() {
+            // Reset panels
+            document.querySelectorAll('.stage-panel, .quiz-section, .completion-panel').forEach(el => {
+                el.classList.remove('active');
+            });
+            document.getElementById('stage1').classList.add('active');
+
+            // Reset progress
+            document.querySelectorAll('.progress-step').forEach(el => {
+                el.classList.remove('active', 'completed');
+            });
+            document.getElementById('step1').classList.add('active');
+
+            // Reset buttons
+            document.getElementById('btn-encode').disabled = false;
+            document.getElementById('btn-standardize').disabled = false;
+
+            // Reset explanations
+            document.querySelectorAll('.explanation-box').forEach(el => {
+                el.classList.remove('visible');
+            });
+
+            // Reset quiz
+            document.querySelectorAll('.quiz-option').forEach(el => {
+                el.classList.remove('selected', 'correct', 'incorrect');
+            });
+            document.querySelectorAll('.quiz-feedback').forEach(el => {
+                el.className = 'quiz-feedback';
+                el.textContent = '';
+            });
+            document.querySelectorAll('.quiz-question input').forEach(el => {
+                el.checked = false;
+            });
+
+            // Reinitialize
+            initStage1();
+            announce('Simulator reset. Start from Stage 1.');
+        }
+
+        function announce(message) {
+            const announcer = document.getElementById('announcements');
+            announcer.textContent = message;
+            setTimeout(() => { announcer.textContent = ''; }, 1000);
+        }
+
+        // Initialize on load
+        initStage1();
+    </script>
+</body>
+</html>

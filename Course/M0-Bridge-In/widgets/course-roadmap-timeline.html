@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Roadmap & Timeline</title>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --color-neutral-50: #fafafa;
+            --color-neutral-100: #f5f5f5;
+            --color-neutral-200: #e5e5e5;
+            --color-neutral-300: #d4d4d4;
+            --color-neutral-400: #a3a3a3;
+            --color-neutral-500: #737373;
+            --color-neutral-600: #525252;
+            --color-neutral-700: #404040;
+            --color-neutral-800: #262626;
+            --color-neutral-900: #171717;
+
+            --color-accent: #bfe5e7;
+            --color-accent-dark: #5a9ea1;
+            --color-correct: #c0d1cd;
+            --color-correct-bg: #f0f5f4;
+        }
+
+        body {
+            font-family: 'Geist', -apple-system, sans-serif;
+            background: white;
+            color: var(--color-neutral-900);
+            padding: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .header h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--color-neutral-900);
+            margin-bottom: 0.25rem;
+        }
+
+        .header p {
+            font-size: 0.875rem;
+            color: var(--color-neutral-600);
+        }
+
+        /* Progress overview */
+        .progress-overview {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            padding: 1rem;
+            background: var(--color-neutral-50);
+            border: 1px solid var(--color-neutral-200);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .progress-stat {
+            text-align: center;
+        }
+
+        .progress-stat .value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-neutral-900);
+        }
+
+        .progress-stat .label {
+            font-size: 0.75rem;
+            color: var(--color-neutral-500);
+            text-transform: uppercase;
+        }
+
+        .progress-bar-container {
+            flex: 1;
+            max-width: 300px;
+        }
+
+        .progress-bar-bg {
+            height: 8px;
+            background: var(--color-neutral-200);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--color-accent);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .progress-label {
+            font-size: 0.75rem;
+            color: var(--color-neutral-500);
+            margin-top: 0.25rem;
+            text-align: center;
+        }
+
+        /* View toggle */
+        .toggle-container {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .toggle-btn {
+            padding: 0.5rem 1rem;
+            background: white;
+            border: 1px solid var(--color-neutral-300);
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .toggle-btn:hover {
+            background: var(--color-neutral-50);
+        }
+
+        .toggle-btn.active {
+            background: var(--color-neutral-900);
+            color: white;
+            border-color: var(--color-neutral-900);
+        }
+
+        .toggle-btn:focus {
+            outline: 2px solid #3182ce;
+            outline-offset: 2px;
+        }
+
+        /* Module list */
+        .module-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        /* Module card */
+        .module-card {
+            background: white;
+            border: 2px solid var(--color-neutral-200);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+
+        .module-card:hover {
+            border-color: var(--color-neutral-400);
+        }
+
+        .module-card.expanded {
+            border-color: var(--color-accent-dark);
+            box-shadow: 0 4px 12px rgba(90, 158, 161, 0.15);
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem;
+            cursor: pointer;
+        }
+
+        .module-header:focus {
+            outline: 2px solid #3182ce;
+            outline-offset: -2px;
+        }
+
+        .module-number {
+            background: var(--color-neutral-900);
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .module-info {
+            flex: 1;
+        }
+
+        .module-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--color-neutral-900);
+            margin-bottom: 0.125rem;
+        }
+
+        .module-subtitle {
+            font-size: 0.8rem;
+            color: var(--color-neutral-500);
+        }
+
+        .module-time {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            background: var(--color-neutral-100);
+            padding: 0.25rem 0.625rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            color: var(--color-neutral-600);
+            font-weight: 500;
+        }
+
+        .expand-icon {
+            font-size: 1.25rem;
+            color: var(--color-neutral-400);
+            transition: transform 0.2s ease;
+        }
+
+        .module-card.expanded .expand-icon {
+            transform: rotate(180deg);
+        }
+
+        /* Module content */
+        .module-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .module-card.expanded .module-content {
+            max-height: 600px;
+        }
+
+        .module-content-inner {
+            padding: 0 1rem 1rem 1rem;
+            border-top: 1px solid var(--color-neutral-200);
+        }
+
+        .content-section {
+            margin-top: 1rem;
+        }
+
+        .content-section h5 {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--color-neutral-700);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.375rem;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--color-neutral-700);
+        }
+
+        .activity-item::before {
+            content: "→";
+            color: var(--color-accent-dark);
+            flex-shrink: 0;
+        }
+
+        .deliverable-box {
+            background: var(--color-correct-bg);
+            border-left: 3px solid var(--color-correct);
+            padding: 0.625rem 0.875rem;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.85rem;
+            color: var(--color-neutral-700);
+        }
+
+        .why-box {
+            background: var(--color-neutral-50);
+            padding: 0.625rem 0.875rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            color: var(--color-neutral-600);
+            font-style: italic;
+        }
+
+        .format-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.375rem;
+        }
+
+        .format-tag {
+            background: var(--color-accent);
+            color: var(--color-neutral-800);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+
+        /* Weekly schedule view */
+        .weekly-schedule {
+            display: none;
+        }
+
+        .weekly-schedule.active {
+            display: block;
+        }
+
+        .module-list.hidden {
+            display: none;
+        }
+
+        .week-card {
+            background: var(--color-neutral-50);
+            border: 1px solid var(--color-neutral-200);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .week-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--color-neutral-200);
+        }
+
+        .week-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--color-neutral-900);
+        }
+
+        .week-time {
+            font-size: 0.8rem;
+            color: var(--color-neutral-500);
+        }
+
+        .week-modules {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .week-module-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: white;
+            padding: 0.625rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+        }
+
+        .week-module-badge {
+            background: var(--color-neutral-900);
+            color: white;
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .week-module-name {
+            flex: 1;
+            color: var(--color-neutral-700);
+        }
+
+        .week-module-time {
+            font-size: 0.75rem;
+            color: var(--color-neutral-500);
+        }
+
+        /* Help text */
+        .help-text {
+            background: #f5fafa;
+            border-left: 3px solid var(--color-accent);
+            padding: 0.75rem 1rem;
+            margin-top: 1rem;
+            border-radius: 0 8px 8px 0;
+            text-align: center;
+        }
+
+        .help-text p {
+            color: var(--color-neutral-600);
+            font-size: 0.8rem;
+        }
+
+        /* Screen reader */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .progress-overview { flex-direction: column; gap: 1rem; }
+            .progress-bar-container { width: 100%; max-width: none; }
+            .module-header { flex-wrap: wrap; }
+            .module-time { margin-top: 0.5rem; order: 4; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h3>Your 10-Hour Learning Journey</h3>
+            <p>Click each module to see detailed activities and time estimates</p>
+        </div>
+
+        <div class="progress-overview">
+            <div class="progress-stat">
+                <div class="value">6</div>
+                <div class="label">Modules</div>
+            </div>
+            <div class="progress-bar-container">
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" id="progress-fill"></div>
+                </div>
+                <div class="progress-label">Course Progress: <span id="progress-text">0%</span></div>
+            </div>
+            <div class="progress-stat">
+                <div class="value">10</div>
+                <div class="label">Hours Total</div>
+            </div>
+        </div>
+
+        <div class="toggle-container">
+            <button class="toggle-btn active" data-view="modules" aria-pressed="true">Module View</button>
+            <button class="toggle-btn" data-view="weekly" aria-pressed="false">Weekly Schedule</button>
+        </div>
+
+        <div class="module-list" id="module-list"></div>
+
+        <div class="weekly-schedule" id="weekly-schedule"></div>
+
+        <div class="help-text">
+            <p><strong>Tip:</strong> Complete modules at your own pace. The weekly schedule shows a suggested 3-week plan at ~3.5 hours per week.</p>
+        </div>
+    </div>
+
+    <div role="status" aria-live="polite" class="sr-only" id="announcements"></div>
+
+    <script>
+        const modules = [
+            {
+                number: 'M1',
+                title: 'AI Systems',
+                subtitle: 'What is AI and Its Types',
+                time: '2 hrs',
+                formats: ['Video', 'Google Colab', 'Interactive Widgets'],
+                activities: [
+                    'Navigate Google Colab environment',
+                    'Load and explore loan dataset (45,000 applications)',
+                    'Identify data quality issues (outliers, missing values)',
+                    'Preprocess data (one-hot encoding, standardization)',
+                    'Build logistic regression model (80/20 train-test split)',
+                    'Evaluate model accuracy (89%)'
+                ],
+                deliverable: 'Working ML model predicting loan approvals',
+                why: 'Hands-on experience reveals where bias enters ML development'
+            },
+            {
+                number: 'M2',
+                title: 'ML Techniques',
+                subtitle: 'Supervised, Unsupervised, Reinforcement Learning',
+                time: '1.5 hrs',
+                formats: ['Comic-Based Cases', 'CustomGPT Simulations'],
+                activities: [
+                    'Explore supervised learning (labeled data → predictions)',
+                    'Explore unsupervised learning (pattern discovery without labels)',
+                    'Explore reinforcement learning (trial-and-error learning)',
+                    'Interactive simulations showing when each approach applies'
+                ],
+                deliverable: null,
+                why: 'Understand which ML type fits different business problems'
+            },
+            {
+                number: 'M3',
+                title: 'ML Development & Bias',
+                subtitle: 'COMPAS Algorithm Case Study',
+                time: '2 hrs',
+                formats: ['Case Study', 'Podcast', 'CustomGPT Exercises'],
+                activities: [
+                    'Analyze ProPublica investigation of COMPAS recidivism predictions',
+                    'Identify 9 types of bias (Data-to-Algorithm, Algorithm-to-Users, Users-to-Data)',
+                    'Evaluate competing definitions of fairness (outcome vs. procedure)',
+                    'Explore bias mitigation strategies and stakeholder responsibilities'
+                ],
+                deliverable: 'Bias analysis framework application',
+                why: 'Critical lens for evaluating fairness in high-stakes AI systems'
+            },
+            {
+                number: 'M4',
+                title: 'AI, Work & Creativity',
+                subtitle: 'Automation vs. Augmentation',
+                time: '1.5 hrs',
+                formats: ['Avatar Cases', 'Interactive Exercises'],
+                activities: [
+                    'Analyze how AI reshapes decision-making and creativity',
+                    'Compare automation (replacing humans) vs. augmentation (enhancing humans)',
+                    'Evaluate when each approach creates value vs. harm',
+                    'Explore organizational and workforce implications'
+                ],
+                deliverable: null,
+                why: 'Strategic decisions about AI deployment affect competitiveness and culture'
+            },
+            {
+                number: 'M5',
+                title: 'Executing & Governing AI',
+                subtitle: 'Implementation Challenges',
+                time: '2 hrs',
+                formats: ['Case Studies', 'Strategy Exercises'],
+                activities: [
+                    'Analyze real AI implementation challenges',
+                    'Evaluate cross-functional coordination needs (IT, legal, ops, ethics)',
+                    'Design governance frameworks and accountability structures',
+                    'Identify common failure modes and mitigation strategies'
+                ],
+                deliverable: 'AI governance framework proposal',
+                why: 'AI success requires organizational readiness, not just technical capability'
+            },
+            {
+                number: 'M6',
+                title: 'AI Harms & Snake Oil',
+                subtitle: 'Ethical Risks and Evaluation',
+                time: '1 hr',
+                formats: ['Deep Learning Overviews', 'Critical Evaluation'],
+                activities: [
+                    'Distinguish predictive AI (forecast outcomes) from generative AI (create content)',
+                    'Identify ethical risks specific to each type',
+                    'Recognize AI "snake oil"—overhyped or misleading claims',
+                    'Evaluate when AI is appropriate vs. inappropriate for business problems'
+                ],
+                deliverable: null,
+                why: 'Protect your organization from hype cycles and harmful deployments'
+            }
+        ];
+
+        const weeklySchedule = [
+            {
+                week: 'Week 1',
+                time: '~3.5 hours',
+                modules: [
+                    { number: 'M1', name: 'AI Systems', time: '2 hrs' },
+                    { number: 'M2', name: 'ML Techniques', time: '1.5 hrs' }
+                ]
+            },
+            {
+                week: 'Week 2',
+                time: '~3.5 hours',
+                modules: [
+                    { number: 'M3', name: 'ML Development & Bias', time: '2 hrs' },
+                    { number: 'M4', name: 'AI, Work & Creativity', time: '1.5 hrs' }
+                ]
+            },
+            {
+                week: 'Week 3',
+                time: '~3 hours',
+                modules: [
+                    { number: 'M5', name: 'Executing & Governing AI', time: '2 hrs' },
+                    { number: 'M6', name: 'AI Harms & Snake Oil', time: '1 hr' }
+                ]
+            }
+        ];
+
+        const moduleList = document.getElementById('module-list');
+        const weeklyScheduleEl = document.getElementById('weekly-schedule');
+
+        // Build module cards
+        modules.forEach((mod, index) => {
+            const card = document.createElement('div');
+            card.className = 'module-card';
+            card.dataset.index = index;
+
+            const activitiesHTML = mod.activities.map(a => `<div class="activity-item">${a}</div>`).join('');
+            const formatsHTML = mod.formats.map(f => `<span class="format-tag">${f}</span>`).join('');
+            const deliverableHTML = mod.deliverable
+                ? `<div class="content-section"><h5>Deliverable</h5><div class="deliverable-box">${mod.deliverable}</div></div>`
+                : '';
+
+            card.innerHTML = `
+                <div class="module-header" tabindex="0" role="button" aria-expanded="false" aria-label="${mod.number} ${mod.title}: ${mod.subtitle}. ${mod.time}. Click to expand details.">
+                    <div class="module-number">${mod.number}</div>
+                    <div class="module-info">
+                        <div class="module-title">${mod.title}</div>
+                        <div class="module-subtitle">${mod.subtitle}</div>
+                    </div>
+                    <div class="module-time">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                        ${mod.time}
+                    </div>
+                    <span class="expand-icon">▼</span>
+                </div>
+                <div class="module-content">
+                    <div class="module-content-inner">
+                        <div class="content-section">
+                            <h5>Formats</h5>
+                            <div class="format-tags">${formatsHTML}</div>
+                        </div>
+                        <div class="content-section">
+                            <h5>Key Activities</h5>
+                            <div class="activity-list">${activitiesHTML}</div>
+                        </div>
+                        ${deliverableHTML}
+                        <div class="content-section">
+                            <h5>Why It Matters</h5>
+                            <div class="why-box">${mod.why}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            const header = card.querySelector('.module-header');
+            header.addEventListener('click', () => toggleCard(card));
+            header.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    toggleCard(card);
+                }
+            });
+
+            moduleList.appendChild(card);
+        });
+
+        // Build weekly schedule
+        weeklySchedule.forEach(week => {
+            const weekCard = document.createElement('div');
+            weekCard.className = 'week-card';
+
+            const modulesHTML = week.modules.map(m => `
+                <div class="week-module-item">
+                    <span class="week-module-badge">${m.number}</span>
+                    <span class="week-module-name">${m.name}</span>
+                    <span class="week-module-time">${m.time}</span>
+                </div>
+            `).join('');
+
+            weekCard.innerHTML = `
+                <div class="week-header">
+                    <div class="week-title">${week.week}</div>
+                    <div class="week-time">${week.time}</div>
+                </div>
+                <div class="week-modules">${modulesHTML}</div>
+            `;
+
+            weeklyScheduleEl.appendChild(weekCard);
+        });
+
+        function toggleCard(card) {
+            const wasExpanded = card.classList.contains('expanded');
+            const header = card.querySelector('.module-header');
+
+            // Close all cards
+            document.querySelectorAll('.module-card').forEach(c => {
+                c.classList.remove('expanded');
+                c.querySelector('.module-header').setAttribute('aria-expanded', 'false');
+            });
+
+            // Toggle this card
+            if (!wasExpanded) {
+                card.classList.add('expanded');
+                header.setAttribute('aria-expanded', 'true');
+                announce(`${modules[card.dataset.index].title} expanded`);
+            } else {
+                announce(`${modules[card.dataset.index].title} collapsed`);
+            }
+        }
+
+        // View toggle
+        document.querySelectorAll('.toggle-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.toggle-btn').forEach(b => {
+                    b.classList.remove('active');
+                    b.setAttribute('aria-pressed', 'false');
+                });
+                btn.classList.add('active');
+                btn.setAttribute('aria-pressed', 'true');
+
+                const view = btn.dataset.view;
+                if (view === 'modules') {
+                    moduleList.classList.remove('hidden');
+                    weeklyScheduleEl.classList.remove('active');
+                } else {
+                    moduleList.classList.add('hidden');
+                    weeklyScheduleEl.classList.add('active');
+                }
+            });
+        });
+
+        function announce(message) {
+            const announcer = document.getElementById('announcements');
+            announcer.textContent = message;
+            setTimeout(() => { announcer.textContent = ''; }, 1000);
+        }
+    </script>
+</body>
+</html>

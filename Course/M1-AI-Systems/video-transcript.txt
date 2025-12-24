@@ -1,0 +1,1745 @@
+1
+00:00:01,020 --> 00:00:05,660
+[Auto-generated transcript. Edits may have been applied for clarity.]
+So what? I'm gonna start, um. So you see my screen?
+
+2
+00:00:06,470 --> 00:00:09,650
+Uh, I'm going to go and search Google Colab.
+
+3
+00:00:10,010 --> 00:00:14,180
+My suggestion is to go with your Gmail. Um, you have access to it.
+
+4
+00:00:14,180 --> 00:00:17,540
+And this is the Google Colab. And then I press it.
+
+5
+00:00:17,900 --> 00:00:21,410
+So we're going to go and have a new notebook. Okay.
+
+6
+00:00:21,770 --> 00:00:29,690
+So when you press this notebook, um, it opens an environment that we are going to code here.
+
+7
+00:00:30,170 --> 00:00:35,420
+What is that? I'm going to explain it to you. Um, this and moments as you see.
+
+8
+00:00:35,660 --> 00:00:42,410
+Untitled zero dots. So it's an interactive AI poi python and B is notebook.
+
+9
+00:00:42,410 --> 00:00:47,530
+So interactive Python notebook is not office the environment that interact we write the code.
+
+10
+00:00:47,540 --> 00:00:52,660
+So look at here. You can really write the code. If you know Python you can do it exactly as you want to.
+
+11
+00:00:52,940 --> 00:00:56,480
+And if you're not you can ask AI to generate the code for you.
+
+12
+00:00:56,810 --> 00:01:03,380
+So um, that's an environment that we do the attribution, uh, write down here whatever you want.
+
+13
+00:01:03,410 --> 00:01:07,280
+Um, and you can you see that's like a cell.
+
+14
+00:01:07,700 --> 00:01:13,500
+Um, you can you can press on this, you can generate the code, you can deleted, you can do whatever you want.
+
+15
+00:01:13,520 --> 00:01:16,280
+And if you press this, it's going to run the model, okay.
+
+16
+00:01:16,880 --> 00:01:23,990
+This is an environment that you talk to Jim and on for you for general to understand what you mean or generally explain it to you.
+
+17
+00:01:24,500 --> 00:01:28,610
+And when you use this, you develop the code.
+
+18
+00:01:28,610 --> 00:01:32,510
+And then when the code is develop is going to show up here and then you run it.
+
+19
+00:01:32,930 --> 00:01:38,719
+Um, one thing some of you may have it in the bottom here, but it doesn't matter if you look at it, you can move it.
+
+20
+00:01:38,720 --> 00:01:41,900
+For example, from the layout you can go with the two rows.
+
+21
+00:01:42,110 --> 00:01:45,740
+So it comes in the bottom. But I prefer always to have it on the side.
+
+22
+00:01:46,250 --> 00:01:50,800
+Um, that's a little bit easier for me. Um, but go.
+
+23
+00:01:50,810 --> 00:02:01,680
+As you wish. Right. Okay. Okay. So when we create a new interactive Python notebook, as I just did, you have a kind of a blank and one.
+
+24
+00:02:01,700 --> 00:02:07,760
+It's a black notebook you need to load the data on. Right? To load the data, you need to go into your drive.
+
+25
+00:02:08,270 --> 00:02:12,740
+And then you go into the drive you're going to see as you see here.
+
+26
+00:02:13,700 --> 00:02:19,590
+Um, in your drive there is a notebook colab folder being created.
+
+27
+00:02:19,610 --> 00:02:28,009
+So if you go here, you will see that you have a notebook and that's going to have a folder and that has an untitled.
+
+28
+00:02:28,010 --> 00:02:31,850
+And that's exactly you see here, untitled zero is what we have here.
+
+29
+00:02:32,000 --> 00:02:37,040
+So let's change the name of this to Long Data.
+
+30
+00:02:37,820 --> 00:02:43,430
+Um, so that's the long data. Uh, this name is change the school here and see whether this has changed.
+
+31
+00:02:44,120 --> 00:02:48,920
+Um, and if you refresh is going to change, but you have a long data also CSV.
+
+32
+00:02:49,160 --> 00:02:52,550
+Take your CSV file and drag and drop it here.
+
+33
+00:02:53,300 --> 00:02:54,860
+Okay. Because you need to.
+
+34
+00:02:54,860 --> 00:03:04,230
+And when you put it there it's going to you're going to make that load data mounted um to the to the notebook uh, uh, that you just created.
+
+35
+00:03:04,250 --> 00:03:08,360
+You see that that name also changed, uh, uh, and you have it here.
+
+36
+00:03:08,370 --> 00:03:15,500
+So now we don't have the data. So you press on this. Um, this is the place you need to mount the your data set.
+
+37
+00:03:15,860 --> 00:03:19,519
+You see this here? Sometimes it doesn't show. Wait a couple seconds.
+
+38
+00:03:19,520 --> 00:03:26,480
+It's going to show up. Um, if we go here, you see that there's a sample data, which we have nothing to do with the sample data.
+
+39
+00:03:26,930 --> 00:03:31,340
+Uh, we need to mount to, uh. But I don't see the drive to be able to see the drive.
+
+40
+00:03:31,850 --> 00:03:34,910
+You press this, it's going to say connect to the Google Drive.
+
+41
+00:03:35,890 --> 00:03:42,850
+And if you approve that connection, you may get a notification on your email, or you may get a notification on a cell phone and prove it.
+
+42
+00:03:43,390 --> 00:03:49,800
+But it takes a couple of seconds to pull up and get a couple of approvals, um, to make sure you're okay.
+
+43
+00:03:49,810 --> 00:03:54,910
+After the consent, you're going to have access to it. It didn't do show it for me, but it may sure it for you.
+
+44
+00:03:54,910 --> 00:03:59,220
+Accept it. Uh, read it and accept those files because you're going to see the drive now.
+
+45
+00:03:59,230 --> 00:04:05,080
+It's my drive. And when I go down, I'll see a Google Colab.
+
+46
+00:04:05,830 --> 00:04:12,310
+And then you have the Google Colab. Um, you see this, uh, loan data here.
+
+47
+00:04:12,580 --> 00:04:19,870
+So now you have access to it. Go there and say copy paste, which is the address that could copy you.
+
+48
+00:04:19,870 --> 00:04:26,560
+You copy the password is and you come here. So the very first thing you do is, uh, load the data.
+
+49
+00:04:27,650 --> 00:04:36,740
+Here for me. You see that? I deliberately take it off the language that it's really like a simple language, not coding language.
+
+50
+00:04:37,130 --> 00:04:41,570
+And I say, okay, here's the data and here's the address. I copy and pasted this address, you see.
+
+51
+00:04:42,030 --> 00:04:45,170
+Uh, this is the address that I copied. It's a CSV file.
+
+52
+00:04:45,560 --> 00:04:54,260
+So I talk a simple language through it and it's going to turn it into a code not running it, but it turned into the code that you see the code.
+
+53
+00:04:54,260 --> 00:04:57,900
+And then you will decide to run it. Okay. So what we'll do.
+
+54
+00:04:57,920 --> 00:05:01,640
+Okay. That's the kind of the Python language of it.
+
+55
+00:05:02,090 --> 00:05:06,460
+Uh, and it gives you the option of accepting but not running or accepting and running.
+
+56
+00:05:06,470 --> 00:05:10,390
+So you can do that. But even before accepting and running, you can press.
+
+57
+00:05:10,400 --> 00:05:16,150
+I mean, let me accept and run and then I'll tell you what it is. But, um, I can explain this.
+
+58
+00:05:16,160 --> 00:05:23,450
+If you bring the, the, uh, the, the cursor on it, it explains the, the for example, this is display.
+
+59
+00:05:23,810 --> 00:05:29,060
+It explains how you use it. It gives you some example, but you can also ask it to explain it to you in a simple language.
+
+60
+00:05:29,330 --> 00:05:31,549
+So you see how it does it. So import pandas.
+
+61
+00:05:31,550 --> 00:05:37,940
+Pandas is one library that is very much used for the data, uh, data analysis, especially when it's a spreadsheet.
+
+62
+00:05:38,180 --> 00:05:42,110
+And as PD as PD means, I want to give it a simple name that I keep.
+
+63
+00:05:42,170 --> 00:05:48,170
+Don't keep writing. Pandas. Pandas, pandas. So you see that you name it as PD, you don't understand.
+
+64
+00:05:48,170 --> 00:05:53,900
+That means panda and it calls for read CSV, which is a function into that library.
+
+65
+00:05:54,170 --> 00:05:57,409
+As you see, Python is pretty simple. They have develop libraries.
+
+66
+00:05:57,410 --> 00:06:01,550
+You don't need to develop libraries and you don't need to develop functions within that library.
+
+67
+00:06:01,850 --> 00:06:08,390
+It has been, uh, tested and improved, and it's constantly being maintained by the community development community.
+
+68
+00:06:08,660 --> 00:06:12,410
+So we just use it pretty simple. But that's the explanation.
+
+69
+00:06:12,410 --> 00:06:18,770
+The DF, uh, means dataframe. So it's going to read the CSV and put it in the dataframe.
+
+70
+00:06:18,770 --> 00:06:24,560
+It's like a bucket for spreadsheet. So it loads all the data into that display and show it to me.
+
+71
+00:06:24,890 --> 00:06:29,120
+And DF is the dataframe that I just you just loaded the data on.
+
+72
+00:06:29,480 --> 00:06:33,770
+And the head means just the top five rows and I just want to see it.
+
+73
+00:06:33,770 --> 00:06:36,860
+Right. So that's what it says. So let's accept and run.
+
+74
+00:06:37,670 --> 00:06:41,270
+Uh, you can press the run here as well. And that's it. So you see this.
+
+75
+00:06:41,270 --> 00:06:46,490
+It shows what you have. It's it displays the top five rows zero, one, two, three, four.
+
+76
+00:06:46,880 --> 00:06:49,970
+And you see the variables inside it okay. So we can take a look.
+
+77
+00:06:49,970 --> 00:06:53,540
+It's always important to take a look at that. So we have person age.
+
+78
+00:06:53,870 --> 00:07:01,040
+Uh we have the gender female male uh person education masters, high school bachelor and so on.
+
+79
+00:07:01,370 --> 00:07:06,980
+Income with one decimal, um, employment exper, uh, experience.
+
+80
+00:07:07,220 --> 00:07:12,470
+But do you eventually see that some of them you may not understand, depending on how do you put the data into a CSV.
+
+81
+00:07:12,680 --> 00:07:15,330
+So most of the time a good, um, data, uh,
+
+82
+00:07:15,380 --> 00:07:22,490
+science practice is that you include the middle information about your data sets and you keep that because people come and read it and understand.
+
+83
+00:07:22,490 --> 00:07:27,110
+For example, somebody may not understand what is the meaning of load into it,
+
+84
+00:07:27,290 --> 00:07:31,909
+but probably a hunch is it's interest rate for the loan rate and the intent.
+
+85
+00:07:31,910 --> 00:07:35,810
+Is it personal, is is for medical or education purposes and so on and so forth.
+
+86
+00:07:36,110 --> 00:07:44,509
+So this is a data set that we have. So it's a combination of categorical variable female male master explanation words
+
+87
+00:07:44,510 --> 00:07:49,010
+rent um and numerical that you see a lot of numerical variables loan amount.
+
+88
+00:07:49,490 --> 00:07:59,540
+And let me scroll to the to the end loan status which is one means yeah it was approved and zero is no, we did not approve that loan.
+
+89
+00:07:59,900 --> 00:08:06,080
+Uh, whenever you are doing okay. So we imported the data and got this.
+
+90
+00:08:06,080 --> 00:08:09,350
+So if you do not understand you need you can also prompted.
+
+91
+00:08:09,350 --> 00:08:13,250
+Here, explain this for me. Or you can press on this.
+
+92
+00:08:13,760 --> 00:08:17,209
+Um, this. You see that this is data Gen.
+
+93
+00:08:17,210 --> 00:08:20,570
+I've explained the code for me and it explains everything.
+
+94
+00:08:20,750 --> 00:08:26,450
+If you understand most of it, then you can just go and, um, explain the parts that you want.
+
+95
+00:08:26,450 --> 00:08:29,680
+But you see that I actually had it just selected this post.
+
+96
+00:08:29,690 --> 00:08:34,669
+It only explains this part. So if you don't select part of the text, it's going to explain everything.
+
+97
+00:08:34,670 --> 00:08:38,810
+But it says this reads CSV is a function from pandas library.
+
+98
+00:08:39,020 --> 00:08:43,730
+It explains to you what it is if you do it like this. Not a very specific part.
+
+99
+00:08:44,240 --> 00:08:51,260
+I recently read it and you'll see that it's going to explain everything to you, uh, in terms of what they used for.
+
+100
+00:08:51,410 --> 00:08:56,240
+So I assume it explains about the panda is about the PD, about the DF.
+
+101
+00:08:56,600 --> 00:09:05,210
+Um, you you go, uh, import pandas as PD means import pandas library, giving it, uh, the alias of PD.
+
+102
+00:09:05,420 --> 00:09:12,840
+If you don't understand, you can ask someone. What? These pandas useful for?
+
+103
+00:09:13,110 --> 00:09:16,469
+I don't know what it is. So I asked the question. Very simple. Right.
+
+104
+00:09:16,470 --> 00:09:20,010
+So you can it's really interactive. Um, like ChatGPT doesn't matter.
+
+105
+00:09:20,010 --> 00:09:23,100
+It's like a Gemini here. Talk to you, but explain it to you.
+
+106
+00:09:23,100 --> 00:09:28,830
+It's used for data manipulation and cleaning, data analysis, data loading and saving and so on and so forth.
+
+107
+00:09:28,920 --> 00:09:33,870
+Okay, so we loaded data and we took a look at the first five rows okay.
+
+108
+00:09:34,560 --> 00:09:37,920
+What if if I want to know more. So describe.
+
+109
+00:09:39,750 --> 00:09:43,680
+The data sets for me. Remember that there's a caveat here.
+
+110
+00:09:43,800 --> 00:09:47,010
+You gave me the data. That's what Jim and I should say.
+
+111
+00:09:47,370 --> 00:09:49,769
+So you know what you gave me. But it's still.
+
+112
+00:09:49,770 --> 00:09:58,229
+You know that from looking at the data, Gemini has some sense look at correlations, mashing up the numbers and explanations and so forth.
+
+113
+00:09:58,230 --> 00:10:05,550
+Probably come up with. Yes. So you you can use this describe uh, but you always interpret it with a caveat.
+
+114
+00:10:05,600 --> 00:10:12,870
+So let's see what what what function does it in Python when we simply ask describe a.
+
+115
+00:10:12,940 --> 00:10:17,819
+So it's going to develop the code for that. Okay. So it involves three lines of codes.
+
+116
+00:10:17,820 --> 00:10:24,360
+And it explains it actually here as you see it says display the shape of the data frame number of rows and number of columns.
+
+117
+00:10:24,360 --> 00:10:30,450
+So it's automatically came up with that. You could have asked it directly but then a general ask a general question.
+
+118
+00:10:30,450 --> 00:10:34,800
+It included this tree. If you have another force type of question you can add it.
+
+119
+00:10:35,100 --> 00:10:38,440
+But these are the tree. Um, so it displays the DF shape.
+
+120
+00:10:38,460 --> 00:10:45,210
+That's the function. You can learn the function if you're interested in Python I would um, the other one is the data info,
+
+121
+00:10:45,210 --> 00:10:48,960
+which is bring you up more of the information about the types of variables.
+
+122
+00:10:48,960 --> 00:10:57,390
+Which one of them is for example integer, which one of them is text, which one is do you have a null uh, um, and missing values in it?
+
+123
+00:10:57,390 --> 00:11:00,600
+Oh no. So you get it there. And descriptive statistics.
+
+124
+00:11:00,600 --> 00:11:05,969
+What is the mean. What is the average, uh, median. What is the, uh, for example, 1,225%.
+
+125
+00:11:05,970 --> 00:11:10,760
+What is the maximum? What is the minimum. And that's display. Display is like order.
+
+126
+00:11:10,770 --> 00:11:15,809
+Is it you printed out and DF is in my data frame that you have it displayed it for me.
+
+127
+00:11:15,810 --> 00:11:20,220
+And that's the function. So let's go one accept all the tree and see what it does.
+
+128
+00:11:20,400 --> 00:11:24,600
+So the very first one that says explain the shape.
+
+129
+00:11:24,600 --> 00:11:29,190
+It says it has 45,000 rows and 14 columns.
+
+130
+00:11:29,190 --> 00:11:34,139
+Right. Uh, we can have a guess of the columns, but we'll see the next one.
+
+131
+00:11:34,140 --> 00:11:42,180
+It brings up the information about a specific variable. So those are the columns column um encoding in Python it starts from zero.
+
+132
+00:11:42,180 --> 00:11:46,829
+So column zero is person h. We have 45,000 of them.
+
+133
+00:11:46,830 --> 00:11:52,110
+There's no null in it. So that's great. So it shows the data is clean when it was passed to you, which is great.
+
+134
+00:11:52,380 --> 00:11:57,480
+Um, just in parentheses. Data cleaning is a very tedious and very important task.
+
+135
+00:11:57,660 --> 00:12:00,540
+You just skip it because that's not part of the course. Right.
+
+136
+00:12:00,810 --> 00:12:06,780
+But I want you to know that, uh, and data type is float64 is one type of, for example, numbers.
+
+137
+00:12:07,140 --> 00:12:10,530
+Um, it's 64, uh, bits, uh, bytes.
+
+138
+00:12:10,890 --> 00:12:17,490
+Um, uh, bits actually um, and object is the character is the tax rate it has for gender.
+
+139
+00:12:17,490 --> 00:12:21,570
+Education is an object, but income is a float64.
+
+140
+00:12:21,900 --> 00:12:26,520
+Um, this is integer um 64 and so on and so forth.
+
+141
+00:12:26,520 --> 00:12:35,249
+You probably start guessing um, uh, loan, integer array, interest rate, loan intent, loan percent, percent income.
+
+142
+00:12:35,250 --> 00:12:42,809
+So it's probably a percentage of the amount of loan over the amount of income you have, um, personal credit history length,
+
+143
+00:12:42,810 --> 00:12:48,990
+which is how many years you have credit history and the credit score, uh, previous loan defaults on file.
+
+144
+00:12:49,020 --> 00:12:54,569
+Is there any kind of a bad news about the past, um, loans and the loan status?
+
+145
+00:12:54,570 --> 00:12:58,500
+Right. So it kind of summarizes the different types of data types that we have.
+
+146
+00:12:58,830 --> 00:13:07,469
+This is how much it was kind of amount of capacity, uh, of uh data it takes uh, and describes come in with statistics.
+
+147
+00:13:07,470 --> 00:13:10,740
+So look at this is statistics is only for numerical variables.
+
+148
+00:13:10,740 --> 00:13:15,629
+Look at this is all of them 45,000 which there's no missing value mean of them.
+
+149
+00:13:15,630 --> 00:13:19,500
+Minimum maximum. And so for standard deviation. Oh interesting.
+
+150
+00:13:19,740 --> 00:13:24,420
+Uh that easily gives us there are some probably outliers that you need to take care of.
+
+151
+00:13:24,420 --> 00:13:35,010
+Somebody with 140 years old person with the employment experience of 125,000 years, asked for the loan and it was approved.
+
+152
+00:13:35,340 --> 00:13:45,450
+Interesting. Um. So anyways, um, we have that and you see that these numbers are also some of them that you may want to point for.
+
+153
+00:13:45,660 --> 00:13:53,069
+You don't have such a thing should be zero and one. So you get a sense of some of the kind of data cleaning that is necessary,
+
+154
+00:13:53,070 --> 00:13:56,490
+although there's no missing value, but it doesn't mean that it doesn't have that.
+
+155
+00:13:56,520 --> 00:14:05,430
+Okay. So if you want a sense of the pixel. So what about if I want to get some visualization and data I want to look at for example?
+
+156
+00:14:05,550 --> 00:14:14,490
+Uh, let me ask it. So what if I want if I want to predict loan status.
+
+157
+00:14:16,100 --> 00:14:25,620
+Um. Give me. Two important visualization to look at, which is good and bad.
+
+158
+00:14:25,640 --> 00:14:29,000
+It's good that it can create and gives propose something to me.
+
+159
+00:14:29,270 --> 00:14:32,569
+At the same time, it shows that because on the subject matter, it matter.
+
+160
+00:14:32,570 --> 00:14:36,440
+Experts. I'm the anchor. I should have an idea what to include or not.
+
+161
+00:14:36,560 --> 00:14:47,540
+So I want to just emphasize that you can't rely on, uh, generative AI to tell you what, what type of, uh, correlation or visualization you need.
+
+162
+00:14:47,720 --> 00:14:51,290
+But if you just want to show me the power of this. Okay, let's take a look at that.
+
+163
+00:14:57,130 --> 00:15:02,580
+So you see that it takes a bit of a time and it has some, um, some suggestions.
+
+164
+00:15:02,590 --> 00:15:10,720
+Uh, we can pick one of them and then cancel the rest. But visualize the distribution of loan status, which is generally because this status.
+
+165
+00:15:10,730 --> 00:15:17,230
+How many? One. How many? Zero. Uh, analyze the relationship between numerical features and loan status.
+
+166
+00:15:17,230 --> 00:15:20,650
+So, for example, the interest rates and personal income,
+
+167
+00:15:20,650 --> 00:15:25,540
+that would be interesting to know and analyze the relationship between categorical variables and some of them.
+
+168
+00:15:25,540 --> 00:15:30,129
+So let's let's get all of them, um, just to get a sense of this.
+
+169
+00:15:30,130 --> 00:15:33,220
+We're not going to go through all I'm going to skip this. You have a time.
+
+170
+00:15:33,250 --> 00:15:36,970
+You have a chance to do it yourself and an inquiry strongly to do that.
+
+171
+00:15:37,120 --> 00:15:43,390
+But it just wants you to see how it works. If you saw I pressed on the run all so it's not going to wait for my approval.
+
+172
+00:15:43,600 --> 00:15:46,239
+So let's go as it's doing it. So we'll take a look at that.
+
+173
+00:15:46,240 --> 00:15:50,920
+So if you want to get an explanation anytime you want you press on this and explain it to you.
+
+174
+00:15:51,040 --> 00:15:56,500
+But some of them I just explain it just imports math plot which is used always for plotting.
+
+175
+00:15:56,860 --> 00:16:01,030
+Um, so and this is the code for why I'm not going to go through that.
+
+176
+00:16:01,030 --> 00:16:09,430
+If you're interested, go through it yourself. But I'm going to just show you count of the approvals or the rejections and loan status.
+
+177
+00:16:09,610 --> 00:16:16,269
+It shows like around 35,000 or decline and around 10,000 were approved.
+
+178
+00:16:16,270 --> 00:16:21,040
+One. Right. Um, then it comes down, looks at this, um, plot.
+
+179
+00:16:21,040 --> 00:16:33,669
+So this is interesting. It shows the one that are approved on average or around 13% interest rate, the ones that are declined or on average 11%.
+
+180
+00:16:33,670 --> 00:16:38,170
+And that's interesting. And why is that and mean we can come up with a couple of hypotheses.
+
+181
+00:16:38,170 --> 00:16:44,920
+But again, a subject matter expert can better explain. Is it a bank decision policy is a regulator's policy.
+
+182
+00:16:45,220 --> 00:16:52,270
+If there's this shows that then the interest rate is higher. Banks are feeling comfortable to give more loans or approve more.
+
+183
+00:16:52,450 --> 00:16:56,169
+The system is uh less. They don't do that. Um, so on.
+
+184
+00:16:56,170 --> 00:17:03,670
+And so there can be a lot of explanations, but you can take a look at different types of, uh, plots that it automatically generated.
+
+185
+00:17:04,000 --> 00:17:07,870
+And I won't go through that. This is based on the homeownership as an important variable.
+
+186
+00:17:07,870 --> 00:17:13,540
+That can be important. And then we'll stop here okay. So these are some of the interesting variables that we can visualize.
+
+187
+00:17:13,870 --> 00:17:21,909
+Do we have an outlier. Definitely we have an outlier. But I want to go um we have more than a few and in different categories of outliers.
+
+188
+00:17:21,910 --> 00:17:27,790
+But I just want to give you one example. Um, I want to.
+
+189
+00:17:29,160 --> 00:17:32,880
+See how players in percent aged.
+
+190
+00:17:34,370 --> 00:17:37,790
+So let's just take a look on how it calculates.
+
+191
+00:17:37,820 --> 00:17:43,180
+Again, I don't go through the details, but I just want to show you the power of this and the importance of it.
+
+192
+00:17:43,190 --> 00:17:47,830
+Right. Um, let me because I think it went well and that's okay.
+
+193
+00:17:47,840 --> 00:17:54,440
+It put that it forth there. And this one, what is it doing? Um, so it is.
+
+194
+00:17:57,070 --> 00:18:01,840
+They can see it's going to give us, uh. Let's see. This is the outflow.
+
+195
+00:18:01,870 --> 00:18:05,200
+This is the boxplot. It shows the output flow this way.
+
+196
+00:18:05,560 --> 00:18:10,640
+Okay. What about, um. I don't need it this way.
+
+197
+00:18:10,660 --> 00:18:15,700
+I need. To actually does show.
+
+198
+00:18:15,700 --> 00:18:19,270
+Some of this shows that some people are over 100.
+
+199
+00:18:19,690 --> 00:18:27,909
+How do I assume people are over 100? Imagine I talk through to my manager when my colleagues and we think that that's obviously wrong.
+
+200
+00:18:27,910 --> 00:18:42,130
+Somebody had done a data entry goes wrong. I can don't start. So we can ask it to tonight draw the data points that has the age of the person.
+
+201
+00:18:43,920 --> 00:18:49,420
+Over 100. Well, let's say for under 50 years.
+
+202
+00:18:49,420 --> 00:18:54,180
+So let's see what it does. So again I ask it and say what is the code for that.
+
+203
+00:18:54,180 --> 00:19:02,709
+Right. So we're going to see. So I don't know why it does it on the top.
+
+204
+00:19:02,710 --> 00:19:06,670
+So then they bring it down. So you see that these cells you can look at it started doing there.
+
+205
+00:19:06,670 --> 00:19:11,049
+I just brought it down. So this is the explanation of the code for it.
+
+206
+00:19:11,050 --> 00:19:18,400
+So it does. Um so if you look at this it the data frame, it creates a new data frame which is called filter by age.
+
+207
+00:19:18,580 --> 00:19:24,680
+You see that if you're always in software development and coding, we kind of make it in a way that is understandable.
+
+208
+00:19:24,680 --> 00:19:32,620
+But take a look at it. Right. So the data frame we go with the ones only included the first that the age is over equal to 15 and list and this.
+
+209
+00:19:33,040 --> 00:19:37,540
+And then we put that in a new data frame. So uh, am I going to do that.
+
+210
+00:19:37,540 --> 00:19:41,019
+I don't want to do if I cancel it. Right. I keep it as it is.
+
+211
+00:19:41,020 --> 00:19:47,410
+Let's think about it. We can go and do all of these type of things and the data, and you need to do that in a real project.
+
+212
+00:19:47,860 --> 00:19:51,460
+Um, okay. We have a lot of categorical variable.
+
+213
+00:19:51,910 --> 00:19:58,630
+Let us a little bit clean the data there. Um number one for numerical do I need to do is scale.
+
+214
+00:19:58,660 --> 00:20:03,760
+Some of them may be one, two and three. Some of them maybe 4000, 35,000.
+
+215
+00:20:03,760 --> 00:20:07,209
+And it becomes more difficult to work with. Maybe I need to standardize that.
+
+216
+00:20:07,210 --> 00:20:14,350
+That's fine for categorical. I mean, I do need to turn them into numbers because that's what machine learning understands.
+
+217
+00:20:14,590 --> 00:20:20,020
+So me categorical in two rather than false and true false until we do one actually.
+
+218
+00:20:20,020 --> 00:20:27,490
+So it's the same. But in terms of whether it's a bachelor's degree or somebody has a high school degree, I have to turn it into number.
+
+219
+00:20:27,760 --> 00:20:31,809
+And then, for example, sometimes I may want to drop some of the variables.
+
+220
+00:20:31,810 --> 00:20:36,040
+And so so these are a little bit of a data cleaning. Let me go with the categorical variables.
+
+221
+00:20:36,310 --> 00:20:41,680
+Can you show me the categorical variables.
+
+222
+00:20:42,490 --> 00:20:47,650
+Um tell me how to turn them into numerical.
+
+223
+00:20:47,920 --> 00:20:55,010
+And I don't know I'd have total I'll be there because uh generativity I understand that.
+
+224
+00:20:55,060 --> 00:20:58,470
+Right. So let's see what it does. Um hmm.
+
+225
+00:20:59,520 --> 00:21:03,620
+There's a bit of a time. I don't know what they mean. So it's this categorical column.
+
+226
+00:21:03,630 --> 00:21:09,650
+So it's create a new dataframe. So from the dataframe that we had it selects the data types.
+
+227
+00:21:09,660 --> 00:21:12,210
+This is a function that it calls in Panda.
+
+228
+00:21:12,540 --> 00:21:23,339
+So dataframe select the types that include object y is that if you go or if you remember when we initially got a report, it says this is object.
+
+229
+00:21:23,340 --> 00:21:29,309
+If this is object integer a float or numbers, but object is text for example.
+
+230
+00:21:29,310 --> 00:21:33,330
+Those are categorical. So select stores and prints them and displayed it.
+
+231
+00:21:33,330 --> 00:21:38,400
+Okay let's do that. We want to take a look at that okay. So categorical variable in the data set.
+
+232
+00:21:38,700 --> 00:21:44,010
+So even it's in the quotation. It exactly puts that as it as a text as a string.
+
+233
+00:21:44,400 --> 00:21:50,639
+And then it says what is it. It says. And an index set is percent gender percent education.
+
+234
+00:21:50,640 --> 00:21:56,400
+These all those ones. Right. And then it tells you okay I can turn them into numerical.
+
+235
+00:21:56,700 --> 00:22:04,200
+How do you want to do it. There are different types that it can do it a little with the most simple one which is one hot encoding, one hot encoding.
+
+236
+00:22:04,500 --> 00:22:11,670
+Let me tell you what it does. Imagine we have four categories high school degree, bachelor's degree, graduate degree or PhD.
+
+237
+00:22:11,790 --> 00:22:17,250
+These are four categories. It it turns that one column to four columns.
+
+238
+00:22:17,670 --> 00:22:24,479
+So rather than one column of education and the text in it, if you have four columns and column one is high school,
+
+239
+00:22:24,480 --> 00:22:32,760
+column two is, uh, Bachelor and column three is um grad and column for is, for example, PhD.
+
+240
+00:22:33,240 --> 00:22:37,110
+And whichever one is right, it makes that one, the other one is zero.
+
+241
+00:22:37,140 --> 00:22:41,310
+Right. And that's the easiest one especially for these type of categories that we use.
+
+242
+00:22:41,310 --> 00:22:46,980
+I think that's good enough. So I tell you go with one.
+
+243
+00:22:48,900 --> 00:22:54,330
+Hard coding. So just. Just learn as much as just as all this other stuff.
+
+244
+00:22:54,360 --> 00:22:59,159
+I don't want to go into details, but the other one, for example, was giving you the kind of A12,
+
+245
+00:22:59,160 --> 00:23:04,410
+three, four variable, uh, which is a second priority in this situation.
+
+246
+00:23:04,530 --> 00:23:08,220
+Why? Uh, it's, uh, you can you can dig down.
+
+247
+00:23:08,620 --> 00:23:11,700
+Um, beyond this. It's beyond this conversation. Okay.
+
+248
+00:23:12,330 --> 00:23:18,150
+So let's see how d does it. So DF encoder. So it's, um, encoding categorical into a miracle.
+
+249
+00:23:18,180 --> 00:23:23,390
+Excellent. So it does this, it gets dummy variables zero and one will call false and true.
+
+250
+00:23:23,400 --> 00:23:28,170
+It goes with false and true which is zero and one. And it prints out DataFrame.
+
+251
+00:23:28,200 --> 00:23:35,820
+After one hot encoding it displays it and it shows the head of it for you to get a sense, and it shows you the shape of it.
+
+252
+00:23:35,850 --> 00:23:39,810
+Okay, let's do that. So we do it. Um, so we did it for the whole document.
+
+253
+00:23:39,820 --> 00:23:46,810
+So the shape of the dataframe now is on on the rather than if you remember it had 14 columns.
+
+254
+00:23:46,840 --> 00:23:53,490
+Then it turns into 23 columns. And that's okay. And it's actually a good thing for for machine learning algorithm it's easier to interpret this way.
+
+255
+00:23:53,940 --> 00:23:59,260
+Um, and it just shows the, uh, the, the head of it to, to, to, to to give you a sense,
+
+256
+00:23:59,280 --> 00:24:06,209
+you look at here, you see that it's loan intent, personal true loan intent, medical false loan intent.
+
+257
+00:24:06,210 --> 00:24:10,260
+Home improvement false. So for all those are going to be false.
+
+258
+00:24:10,260 --> 00:24:13,290
+And this is the only one that is true. That's the way we do it. Okay.
+
+259
+00:24:13,380 --> 00:24:16,920
+That's good. Um, let me ask for the numerical.
+
+260
+00:24:17,010 --> 00:24:28,110
+Do we need to standardize, um, a skill stand or uh, is the numerical variables?
+
+261
+00:24:30,270 --> 00:24:34,879
+Let me see what it says. You take a look on the data and tells me if they want to develop more.
+
+262
+00:24:34,880 --> 00:24:39,370
+Or is it really I actually, it's not a very good prompt, but I actually have to say,
+
+263
+00:24:39,720 --> 00:24:45,780
+if I want to develop a supervised machine learning with a simple algorithm, do I need to standardize it?
+
+264
+00:24:45,790 --> 00:24:50,100
+But by default we need to do that. Um, it says that's a great question.
+
+265
+00:24:50,460 --> 00:24:55,470
+Uh, whether or not you need it, it's good to actually go and do it.
+
+266
+00:24:55,500 --> 00:24:58,960
+So what are the, um, let me let me tell.
+
+267
+00:24:59,250 --> 00:25:08,160
+Um, I am going to use logistic regression, which I'm going to show you later as the algo for.
+
+268
+00:25:09,490 --> 00:25:15,660
+A predictive assessment. Standardize.
+
+269
+00:25:21,000 --> 00:25:28,640
+The video for me. In numerical. Okay, let's see what he does.
+
+270
+00:25:32,710 --> 00:25:37,390
+When I say do it for me, I assume that is going to come up with the code. Okay, so it's excellent choice.
+
+271
+00:25:37,420 --> 00:25:43,840
+Logistic regression is indeed sensitive to the scalar features, and that's actually pretty important.
+
+272
+00:25:44,320 --> 00:25:48,480
+Um so that's what it is. So going in to explain it let's go with this.
+
+273
+00:25:48,490 --> 00:25:52,630
+This is quite complex. Let's see what it means and then go with the whole of it.
+
+274
+00:25:53,410 --> 00:25:57,330
+Um. And I did it before running.
+
+275
+00:25:57,480 --> 00:26:01,020
+Let's see what it's going to do with it. Um. Oh, I should run that.
+
+276
+00:26:02,100 --> 00:26:07,750
+Uh, so sometimes it's good to take a look and see what is.
+
+277
+00:26:08,070 --> 00:26:11,530
+Yes, you. Let me see you.
+
+278
+00:26:12,430 --> 00:26:17,030
+Let me ask it again. I'm going to ask you again.
+
+279
+00:26:17,120 --> 00:26:24,170
+I think I told you I was better off running it and then asking the question of explaining the code for you.
+
+280
+00:26:24,440 --> 00:26:28,130
+So let me do this and see whether it's kind of okay, now that's better.
+
+281
+00:26:28,430 --> 00:26:33,140
+So we'll run it. And then ask if you're slightly.
+
+282
+00:26:36,360 --> 00:26:40,290
+So. To give you a general sense.
+
+283
+00:26:40,290 --> 00:26:46,390
+Um. So I am going to go on to ask you to explain for me.
+
+284
+00:26:48,970 --> 00:26:52,990
+Before we dive into developing the model, which is the beef.
+
+285
+00:26:53,320 --> 00:26:58,840
+And in this in this session. Okay. So uh, here's the explanation.
+
+286
+00:26:59,200 --> 00:27:03,700
+The first part, you see this? I mean, it's half hot even it has hashtag.
+
+287
+00:27:03,700 --> 00:27:08,440
+It's explanation very short, but it brings in all the numerical columns.
+
+288
+00:27:08,800 --> 00:27:11,800
+Uh, creates a new encoder last time you had an encoded form.
+
+289
+00:27:11,800 --> 00:27:19,630
+Categorical. This is for numerical. So this one, it only selects the one, not the object with the 4064 an integer 64.
+
+290
+00:27:20,110 --> 00:27:24,490
+And it puts it there and it removes the long status.
+
+291
+00:27:24,730 --> 00:27:29,290
+I'll tell you later why. Because and one reason is that because that's the vertical.
+
+292
+00:27:29,290 --> 00:27:32,769
+But that doesn't need any any standardization positions. You want one.
+
+293
+00:27:32,770 --> 00:27:37,360
+Right. So it removes that. And that's actually very wise and a good decision.
+
+294
+00:27:37,630 --> 00:27:41,709
+So it does this. You can see this. It explains any of those variables.
+
+295
+00:27:41,710 --> 00:27:46,870
+Explain why these two. And then you come down and what it does.
+
+296
+00:27:47,050 --> 00:27:50,650
+Let it go and see what is this function. For example I want to learn about this.
+
+297
+00:27:50,650 --> 00:27:56,680
+That's a function of a standardization. This creates an instance of this and a scalar right.
+
+298
+00:27:56,830 --> 00:28:01,960
+So it makes it for example you want to go and have a logarithm and it's going to go and do that right.
+
+299
+00:28:02,500 --> 00:28:06,040
+Um so we do this and we have five rows.
+
+300
+00:28:06,040 --> 00:28:14,319
+It shows the 323 columns. And it did to standardize many of these variables that we have to display the first row.
+
+301
+00:28:14,320 --> 00:28:20,410
+This is for the display. And you deployed this and it fit and it transformed the data.
+
+302
+00:28:20,440 --> 00:28:24,490
+If you come here it extreme calculates the mean and standard deviation.
+
+303
+00:28:24,520 --> 00:28:28,120
+You always need that for standardization. And then it applies.
+
+304
+00:28:28,120 --> 00:28:31,480
+And it kind of uh makes it standardize okay.
+
+305
+00:28:31,840 --> 00:28:35,420
+So let's go for I think it was in the 12.
+
+306
+00:28:35,430 --> 00:28:42,759
+He was someplace that it was. Oh okay. That's very it. So let's it actually explains what is the process.
+
+307
+00:28:42,760 --> 00:28:46,290
+So let me ask you again to make it better. Come on. Accomplished.
+
+308
+00:28:46,540 --> 00:28:54,400
+Now I need the I need to evolve and SML model.
+
+309
+00:28:55,530 --> 00:29:01,950
+Um. With logistic regression or.
+
+310
+00:29:03,990 --> 00:29:08,310
+I don't know whether that's the best or any suggestion you may have.
+
+311
+00:29:11,050 --> 00:29:14,200
+What are these steps? That's access.
+
+312
+00:29:14,800 --> 00:29:18,250
+And that's part of the learning. And I need you to kind of understand this part.
+
+313
+00:29:18,400 --> 00:29:26,100
+What are exactly these steps for, uh, doing the so if this is this or this stuff.
+
+314
+00:29:26,110 --> 00:29:31,659
+So number one, you split the data. Um, what do I mean by that?
+
+315
+00:29:31,660 --> 00:29:40,360
+You split the data. Um, you have a data frame. You need to separate the target variable or dependent variable, which is only one variable we have.
+
+316
+00:29:40,360 --> 00:29:44,830
+What is it is the last one, right. It is the I think we have more variables now.
+
+317
+00:29:45,010 --> 00:29:51,610
+So it's the loan status right. Loan status 011. This guy is the one that you want to predict through your name okay.
+
+318
+00:29:51,850 --> 00:29:58,840
+And we have all the other variables. So we want to have all the other variables that are x's X12 3 to 22.
+
+319
+00:29:59,200 --> 00:30:02,799
+And the x 23. It's not x it's going to be y.
+
+320
+00:30:02,800 --> 00:30:06,520
+That's the predictive um the prediction the variable that we want to predict.
+
+321
+00:30:06,520 --> 00:30:14,650
+And then we, we separate the two. And then what we do is the another point we want to do, which is this guy testing your training.
+
+322
+00:30:14,680 --> 00:30:21,339
+What is that. So imagine you have a data set. You're not going to use all that data to train your algorithm.
+
+323
+00:30:21,340 --> 00:30:24,850
+Why? Because there's no way to test it. But it's a good one or not.
+
+324
+00:30:24,970 --> 00:30:32,140
+Sometimes you go and it comes up with an algorithm that this predictable, this point 55 this is really not different from flipping the coin.
+
+325
+00:30:32,230 --> 00:30:38,830
+Right? So it's not a good one. Do you want to test it? So having that said, always a statistician data scientist.
+
+326
+00:30:38,830 --> 00:30:42,159
+We split the data into like 70% of it.
+
+327
+00:30:42,160 --> 00:30:45,520
+They keep it for training. They keep another 30% for training.
+
+328
+00:30:45,550 --> 00:30:52,120
+They do that right. And then when we do this, we use the training part to train the, uh, the model.
+
+329
+00:30:52,300 --> 00:30:55,930
+We use logistic regression here as an algorithm that we just adopted.
+
+330
+00:30:55,930 --> 00:31:00,339
+You don't need to learn the details about it. And then we look at the prediction, we do the prediction.
+
+331
+00:31:00,340 --> 00:31:07,690
+And then we look at the to evaluate it with the test part, with the test uh part of the data set and see whether it's a good one or not.
+
+332
+00:31:07,690 --> 00:31:10,810
+And that's what we do. And then we finish this, this recording.
+
+333
+00:31:11,020 --> 00:31:14,590
+So let's do it one by one. And it's fun.
+
+334
+00:31:14,620 --> 00:31:19,350
+So. If you put us in here. Um, it is splits.
+
+335
+00:31:19,370 --> 00:31:24,549
+Um, I don't know. I think we did this split up because it it dropped the lone status.
+
+336
+00:31:24,550 --> 00:31:28,570
+But anyways, it has to create, um, something for it.
+
+337
+00:31:28,810 --> 00:31:36,760
+So let's see this, uh, the scalar or scikit learn is the library that you adopt and you import.
+
+338
+00:31:36,760 --> 00:31:40,180
+This is a function again embedded into that library.
+
+339
+00:31:40,210 --> 00:31:48,210
+You don't need to reinvent it. Its job is to split any data set you give to it to a training and test it.
+
+340
+00:31:48,460 --> 00:31:53,620
+Right. So what we do is this is what we do.
+
+341
+00:31:53,680 --> 00:31:56,770
+So number one we have two splits as I mentioned.
+
+342
+00:31:56,800 --> 00:32:05,830
+Number one separate the features which are xs x one to x 22 and the target variable which we want to predict that if you have the DF,
+
+343
+00:32:05,830 --> 00:32:10,330
+if you remember uh we had the DF encoded, what was the encoded one.
+
+344
+00:32:10,330 --> 00:32:15,399
+It was the one that we, um, kind of took care of the numerical variable.
+
+345
+00:32:15,400 --> 00:32:19,810
+And the categorical variable is standardize it and return to categorical into numerical.
+
+346
+00:32:20,170 --> 00:32:25,630
+So it wants to drop the lone status and keep them as x c this way.
+
+347
+00:32:26,140 --> 00:32:31,540
+And put the that one that is drop. This is the loner status as the only one that we want to predict.
+
+348
+00:32:31,540 --> 00:32:36,790
+That's why. So we want to predict Y based on a lot of variables in the x.
+
+349
+00:32:36,790 --> 00:32:41,350
+So that's the first um separation. Then you split to the training and testing.
+
+350
+00:32:41,770 --> 00:32:46,000
+So we have x and y and each of them is going to be split right.
+
+351
+00:32:46,150 --> 00:32:50,080
+So this is the function um, the one that you've adopted from the top.
+
+352
+00:32:50,080 --> 00:32:55,330
+So it's split into training and testing. Which one is can be only one x or no.
+
+353
+00:32:55,330 --> 00:33:03,850
+We have x and y both of them. And it chose to go with 80% for uh to uh training.
+
+354
+00:33:04,270 --> 00:33:08,679
+And then it says test size is 0.2. Means is 20% of the data.
+
+355
+00:33:08,680 --> 00:33:12,280
+Is the testing point random tested 42 is a random number.
+
+356
+00:33:12,280 --> 00:33:18,879
+You don't need to you can you always use this or any other integer is for um, the um randomization terms.
+
+357
+00:33:18,880 --> 00:33:23,110
+Um, because it randomly is going to split to 80 and 40, uh 80 and 20.
+
+358
+00:33:23,110 --> 00:33:27,370
+Right. The last part is going to spit out uh shape of the X train.
+
+359
+00:33:27,370 --> 00:33:32,079
+And we're going to have a chance to check how many rows and columns it should be properly done.
+
+360
+00:33:32,080 --> 00:33:36,489
+And it's pretty much obvious that it's going to be like that. So, uh, we're going to do it one by one.
+
+361
+00:33:36,490 --> 00:33:45,430
+Let's accept and run it and you get the result. Okay. Shape of X train is going to be 36,000 rows in the X for training.
+
+362
+00:33:45,430 --> 00:33:49,150
+And 9000 rows are kept for testing.
+
+363
+00:33:49,300 --> 00:33:52,900
+And they have 22 columns. If you remember we had a total of 22.
+
+364
+00:33:53,350 --> 00:34:00,340
+Um, and one column is not there because that's the Y train and Y test, right?
+
+365
+00:34:00,550 --> 00:34:10,390
+Again, the 36,000 goes with this one, um, which are both of them for training and and also testing is 9000 remains as the X's and Y's.
+
+366
+00:34:10,630 --> 00:34:16,510
+You don't see anything here. But that means that there's only one which is the, um, your target variable there.
+
+367
+00:34:16,540 --> 00:34:24,009
+Excellent. Let's go. Split the data set. Um, we did this with it is said that's more than the training based on logistic regression.
+
+368
+00:34:24,010 --> 00:34:29,350
+So from the same math from scikit learn, it imports logistic regression.
+
+369
+00:34:29,470 --> 00:34:34,360
+Again if you want uh, I will come back to and and explain a couple of codes more if you want to.
+
+370
+00:34:34,510 --> 00:34:37,690
+But you can always press on explain to get a sense of that.
+
+371
+00:34:38,020 --> 00:34:48,160
+So it brings in logistic regression and it develops a model how this develops uh, and it pushes that a model and then say okay fit do the fit.
+
+372
+00:34:48,430 --> 00:34:52,630
+Oh look at the y um, target variable.
+
+373
+00:34:52,660 --> 00:35:01,360
+Look at many axes here and try to fit a model that explain Y's with all this X's with the best way possible.
+
+374
+00:35:01,360 --> 00:35:06,510
+We don't need to know how, but that's the way it does. Let's run it.
+
+375
+00:35:06,930 --> 00:35:08,480
+I going run it. Develop tomorrow.
+
+376
+00:35:08,490 --> 00:35:14,700
+It doesn't show you anything here, but you're going to see in the next part that we're going to start testing, right.
+
+377
+00:35:15,120 --> 00:35:18,749
+Um, so let's wait for it. Um, so it's done.
+
+378
+00:35:18,750 --> 00:35:26,879
+So there is a model that is being trained and it has fitted, um, y on X is all X is on the Y, and we'll see how it goes.
+
+379
+00:35:26,880 --> 00:35:31,230
+Okay. Now is the time for evaluation for evaluation of the model.
+
+380
+00:35:31,440 --> 00:35:35,130
+Now we want to see the prediction. How do we evaluate. So what we do.
+
+381
+00:35:35,160 --> 00:35:39,030
+You remember that we kept 20% of the data as the test data okay.
+
+382
+00:35:39,270 --> 00:35:44,070
+So we get their x port which is the X of the test.
+
+383
+00:35:44,520 --> 00:35:52,260
+We give it to our model and say hey model predicts device and put it recorded in y produced.
+
+384
+00:35:52,410 --> 00:36:00,330
+So this function comes and put all the x's of the test part that day that the the train it has not been used in,
+
+385
+00:36:00,540 --> 00:36:05,170
+in the training and asked the model to the model that it evolved to predict the what.
+
+386
+00:36:05,220 --> 00:36:10,350
+And then you get the boy and compare the with the Y test, which is the real one.
+
+387
+00:36:10,350 --> 00:36:16,590
+Right. Um, real decisions that we made in the past in those, uh, part in that part of the data set.
+
+388
+00:36:16,800 --> 00:36:21,270
+So Aladdin it is spits out the first ten predicted loan statuses.
+
+389
+00:36:21,450 --> 00:36:24,840
+It also shows the first set. Just want to show us, uh, okay.
+
+390
+00:36:24,900 --> 00:36:29,340
+Let's do that. So it shows this this is my prediction for the first ten.
+
+391
+00:36:29,490 --> 00:36:33,840
+I mean I would either include this or you can delete it, but it's okay. Um, so what is the next.
+
+392
+00:36:34,050 --> 00:36:37,740
+Now we want to see what is a good prediction or not.
+
+393
+00:36:38,040 --> 00:36:42,810
+But anyways we have all the I think it was 9000. How many was 9000 rows.
+
+394
+00:36:43,050 --> 00:36:46,170
+Now we have created and we want to go and predict. Excellent.
+
+395
+00:36:46,620 --> 00:36:51,060
+We want to do the prediction. Um, let me make it simple.
+
+396
+00:36:51,510 --> 00:36:55,290
+Um, for you all do to make it simple after and I'll tell you why.
+
+397
+00:36:55,500 --> 00:36:59,490
+But these are some of the functions is important.
+
+398
+00:36:59,880 --> 00:37:07,050
+Um, I don't want all of them, but let me make it simple and the transform and let me do it later.
+
+399
+00:37:07,050 --> 00:37:11,220
+I'm worried that it kind of make a mess with our, uh, with our.
+
+400
+00:37:11,340 --> 00:37:14,600
+We are changing because this is the last stage. I'll come back and change it after.
+
+401
+00:37:14,610 --> 00:37:20,399
+Actually, it's good because I can. I can show you how to change the codes, but it brings in a lot of, uh, functions.
+
+402
+00:37:20,400 --> 00:37:23,730
+But let's focus only on this one. Accuracy score. That's what I need.
+
+403
+00:37:23,910 --> 00:37:27,719
+How accurate is my prediction? How does it work? Calculate accuracy.
+
+404
+00:37:27,720 --> 00:37:34,020
+So accuracy is you have compare y test and y prediction.
+
+405
+00:37:34,020 --> 00:37:37,890
+So your y prediction is what you predicted based on the model you develop.
+
+406
+00:37:38,280 --> 00:37:41,910
+And y test is the real Y that you in the past that was the decision on.
+
+407
+00:37:41,920 --> 00:37:50,489
+We assumed that was a good decision. So we're going to compare it. Um, uh 100% means the prediction of our model is exactly as we predicted.
+
+408
+00:37:50,490 --> 00:37:53,670
+Ourself as humans or department has made those decisions.
+
+409
+00:37:53,940 --> 00:37:58,200
+And then is um, they do the, uh, prediction.
+
+410
+00:37:58,500 --> 00:38:02,790
+Uh, let's just skip the precision and the other ones, um, and run it.
+
+411
+00:38:02,790 --> 00:38:10,769
+And then we look at this number and the rest of them, I'll explain it to you after, uh, but I want you to just see this.
+
+412
+00:38:10,770 --> 00:38:15,179
+Oh, that's a very good number is 80.89%.
+
+413
+00:38:15,180 --> 00:38:18,360
+Let's say 90% is the accuracy.
+
+414
+00:38:18,840 --> 00:38:23,340
+Um, then we ask it because it's almost done. But I want to make sense of this.
+
+415
+00:38:23,520 --> 00:38:26,520
+You don't need to interpret this. I'm going to talk about these later.
+
+416
+00:38:26,520 --> 00:38:30,569
+These are important. But it gives you a summary. Uh, this look at the summary.
+
+417
+00:38:30,570 --> 00:38:33,450
+But it says the data set was split into this and that.
+
+418
+00:38:33,550 --> 00:38:39,840
+Since we went through this, the model achieved an accuracy of almost 90%, which is which is a big deal.
+
+419
+00:38:40,080 --> 00:38:44,790
+Let me ask you a question. Um, number one, before that, let me tell you.
+
+420
+00:38:44,790 --> 00:38:48,000
+Imagine you run this and you don't like it if you want to change it, okay.
+
+421
+00:38:48,240 --> 00:38:52,490
+You want to come here. You remember. Explain the code. You may transform code.
+
+422
+00:38:52,560 --> 00:38:57,090
+You don't want to change it, but give it a feedback. I need to simplify.
+
+423
+00:38:58,940 --> 00:39:03,200
+This and only half accuracy score.
+
+424
+00:39:04,450 --> 00:39:07,600
+Revise it. Okay, let's do it.
+
+425
+00:39:08,320 --> 00:39:11,980
+Let's see if age revises that.
+
+426
+00:39:12,370 --> 00:39:15,460
+And it gives us with green and red. Okay.
+
+427
+00:39:15,470 --> 00:39:19,620
+Excellent. These are the ones that is highlighted by red means that I'm going to delete that.
+
+428
+00:39:19,900 --> 00:39:26,200
+The ones that are green means that I'm going to add that right. Some of them that are not colored means they're going to stay as it should only print.
+
+429
+00:39:26,410 --> 00:39:30,170
+The accuracy remains. And as you may see, I'm going to go and rerun it.
+
+430
+00:39:30,190 --> 00:39:34,420
+You see that it becomes a smaller. And then we have the same number. So the accuracy is this.
+
+431
+00:39:35,760 --> 00:39:39,000
+Tell me what the accuracy means.
+
+432
+00:39:49,310 --> 00:39:58,660
+Okay, so it tells us what is the accuracy in the context of a classification model like the one we built to predict loan status accuracy?
+
+433
+00:39:58,670 --> 00:40:05,450
+I'm reading here actually season metric that tells you the proportion of total predictions that are correct,
+
+434
+00:40:05,480 --> 00:40:16,850
+which means almost 90% of the prediction of this model was accurate was exactly similar to what our deportment back in time sat down and decided on.
+
+435
+00:40:17,000 --> 00:40:20,150
+That's right. So that's quite important. And that's the explanation of that.
+
+436
+00:40:20,340 --> 00:40:21,620
+Okay, I'll stop here.
+

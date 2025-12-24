@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Outlier Detection Quiz - Data Quality Issues</title>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --color-neutral-50: #fafafa;
+            --color-neutral-100: #f5f5f5;
+            --color-neutral-200: #e5e5e5;
+            --color-neutral-300: #d4d4d4;
+            --color-neutral-400: #a3a3a3;
+            --color-neutral-500: #737373;
+            --color-neutral-600: #525252;
+            --color-neutral-700: #404040;
+            --color-neutral-800: #262626;
+            --color-neutral-900: #171717;
+
+            --color-valid: #22c55e;
+            --color-valid-light: #dcfce7;
+            --color-error: #ef4444;
+            --color-error-light: #fee2e2;
+            --color-primary: #171717;
+            --color-accent: #bfe5e7;
+            --color-accent-dark: #5a9ea1;
+            --color-correct: #c0d1cd;
+            --color-correct-bg: #f0f5f4;
+            --color-incorrect: #f0ede0;
+            --color-incorrect-bg: #faf9f5;
+        }
+
+        body {
+            font-family: 'Geist', -apple-system, sans-serif;
+            background: white;
+            color: var(--color-neutral-900);
+            padding: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .header h3 {
+            color: var(--color-neutral-900);
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: var(--color-neutral-600);
+            font-size: 0.875rem;
+        }
+
+        /* Progress bar */
+        .progress-container {
+            margin-bottom: 1.5rem;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.8rem;
+            color: var(--color-neutral-600);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: var(--color-neutral-200);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--color-accent);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        /* Scenario card */
+        .scenario-card {
+            background: var(--color-neutral-50);
+            border: 1px solid var(--color-neutral-200);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .scenario-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .scenario-number {
+            background: var(--color-accent-dark);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .scenario-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-neutral-900);
+        }
+
+        /* Data display */
+        .data-display {
+            background: white;
+            border: 1px solid var(--color-neutral-200);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .data-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--color-neutral-100);
+        }
+
+        .data-row:last-child {
+            border-bottom: none;
+        }
+
+        .data-label {
+            color: var(--color-neutral-600);
+            font-size: 0.85rem;
+        }
+
+        .data-value {
+            font-weight: 600;
+            color: var(--color-neutral-800);
+            font-size: 0.85rem;
+        }
+
+        .highlight-value {
+            background: #fef3c7;
+            padding: 0.125rem 0.5rem;
+            border-radius: 4px;
+            color: #92400e;
+        }
+
+        /* Context box */
+        .context-box {
+            background: #f5fafa;
+            border-left: 3px solid var(--color-accent);
+            padding: 0.75rem 1rem;
+            margin-bottom: 1rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .context-box p {
+            font-size: 0.85rem;
+            color: var(--color-neutral-700);
+        }
+
+        .context-box strong {
+            color: var(--color-neutral-900);
+        }
+
+        /* Choice buttons */
+        .choice-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .choice-btn {
+            padding: 1rem;
+            border: 2px solid var(--color-neutral-200);
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .choice-btn:hover:not(:disabled) {
+            border-color: var(--color-neutral-400);
+            background: var(--color-neutral-50);
+        }
+
+        .choice-btn:focus {
+            outline: 2px solid #3182ce;
+            outline-offset: 2px;
+        }
+
+        .choice-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .choice-btn.valid {
+            border-color: var(--color-valid);
+        }
+
+        .choice-btn.valid:hover:not(:disabled) {
+            background: var(--color-valid-light);
+        }
+
+        .choice-btn.error {
+            border-color: var(--color-error);
+        }
+
+        .choice-btn.error:hover:not(:disabled) {
+            background: var(--color-error-light);
+        }
+
+        .choice-btn.selected.correct {
+            background: var(--color-correct-bg);
+            border-color: var(--color-correct);
+        }
+
+        .choice-btn.selected.incorrect {
+            background: var(--color-incorrect-bg);
+            border-color: var(--color-incorrect);
+        }
+
+        .choice-btn .icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .choice-btn .label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--color-neutral-800);
+        }
+
+        .choice-btn .desc {
+            font-size: 0.75rem;
+            color: var(--color-neutral-500);
+            margin-top: 0.25rem;
+        }
+
+        /* Feedback */
+        .feedback {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .feedback.visible {
+            display: block;
+        }
+
+        .feedback.correct {
+            background: var(--color-correct-bg);
+            border-left: 4px solid var(--color-correct);
+            border-top: none;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .feedback.incorrect {
+            background: var(--color-incorrect-bg);
+            border-left: 4px solid var(--color-incorrect);
+            border-top: none;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .feedback-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .feedback.correct .feedback-header {
+            color: var(--color-neutral-900);
+        }
+
+        .feedback.incorrect .feedback-header {
+            color: var(--color-neutral-900);
+        }
+
+        .feedback p {
+            font-size: 0.85rem;
+            color: var(--color-neutral-700);
+            line-height: 1.5;
+        }
+
+        /* Navigation */
+        .nav-buttons {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 1rem;
+        }
+
+        .next-btn {
+            display: none;
+            padding: 0.75rem 1.5rem;
+            background: var(--color-neutral-900);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .next-btn:hover {
+            background: var(--color-neutral-700);
+        }
+
+        .next-btn:focus {
+            outline: 2px solid #3182ce;
+            outline-offset: 2px;
+        }
+
+        .next-btn.visible {
+            display: block;
+        }
+
+        /* Results panel */
+        .results-panel {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+            background: var(--color-neutral-50);
+            border: 1px solid var(--color-neutral-200);
+            border-radius: 12px;
+        }
+
+        .results-panel.active {
+            display: block;
+        }
+
+        .results-score {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--color-neutral-900);
+            margin-bottom: 0.5rem;
+        }
+
+        .results-panel h3 {
+            color: var(--color-neutral-900);
+            margin-bottom: 1rem;
+        }
+
+        .results-panel p {
+            color: var(--color-neutral-600);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .results-breakdown {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .breakdown-item {
+            text-align: center;
+        }
+
+        .breakdown-item .count {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .breakdown-item .label {
+            font-size: 0.8rem;
+            color: var(--color-neutral-500);
+        }
+
+        .breakdown-item.correct .count {
+            color: var(--color-accent-dark);
+        }
+
+        .breakdown-item.incorrect .count {
+            color: var(--color-neutral-500);
+        }
+
+        .reset-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: white;
+            color: var(--color-neutral-700);
+            border: 1px solid var(--color-neutral-300);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        .reset-btn:hover {
+            background: var(--color-neutral-50);
+            border-color: var(--color-neutral-400);
+        }
+
+        /* Screen reader only */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            body { padding: 1rem; }
+            .choice-buttons { grid-template-columns: 1fr; }
+            .results-breakdown { flex-direction: column; gap: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="header">
+            <h3>Outlier Detection Quiz</h3>
+            <p>For each value, decide: legitimate outlier or data quality error?</p>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-info">
+                <span>Question <span id="currentQ">1</span> of 6</span>
+                <span>Score: <span id="score">0</span>/6</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <div id="scenarioContainer"></div>
+
+        <div class="results-panel" id="resultsPanel">
+            <div class="results-score" id="finalScore">0/6</div>
+            <h3 id="resultsTitle">Quiz Complete!</h3>
+            <p id="resultsMessage">You've completed the outlier detection quiz.</p>
+
+            <div class="results-breakdown">
+                <div class="breakdown-item correct">
+                    <div class="count" id="correctCount">0</div>
+                    <div class="label">Correct</div>
+                </div>
+                <div class="breakdown-item incorrect">
+                    <div class="count" id="incorrectCount">0</div>
+                    <div class="label">Incorrect</div>
+                </div>
+            </div>
+
+            <p><strong>Key Insight:</strong> Data cleaning requires judgment. Removing outliers affects who gets included in your model—and who gets left out.</p>
+
+            <button class="reset-btn" onclick="resetQuiz()">Try Again</button>
+        </div>
+    </div>
+
+    <div role="status" aria-live="polite" class="sr-only" id="announcements"></div>
+
+    <script>
+        const scenarios = [
+            {
+                id: 1,
+                title: "Applicant Age: 140 years",
+                data: [
+                    { label: "Variable", value: "person_age" },
+                    { label: "Value", value: "140", highlight: true },
+                    { label: "Dataset mean", value: "27.7 years" },
+                    { label: "Dataset max", value: "144 years" },
+                    { label: "Valid range", value: "18-122 years (oldest verified human)" }
+                ],
+                context: "This loan applicant is recorded as 140 years old. The oldest verified human lived to 122 years. Consider whether this value could exist in reality.",
+                answer: "error",
+                feedbackCorrect: "Correct! This is a data quality error. No human has ever been verified to live past 122 years. This value likely resulted from a data entry error (perhaps typing 140 instead of 40) or system glitch. Including this record would distort age-based patterns in the model.",
+                feedbackIncorrect: "Not quite. This is a data quality error, not a legitimate outlier. The oldest verified human lived to 122 years—140 is biologically impossible. Always check if 'extreme' values are actually possible."
+            },
+            {
+                id: 2,
+                title: "Applicant Age: 22 years",
+                data: [
+                    { label: "Variable", value: "person_age" },
+                    { label: "Value", value: "22", highlight: true },
+                    { label: "Dataset mean", value: "27.7 years" },
+                    { label: "Dataset min", value: "20 years" },
+                    { label: "Percentile", value: "15th percentile" }
+                ],
+                context: "This applicant is 22 years old, below the dataset average of 27.7. Young adults frequently apply for starter loans. Should this be flagged as unusual?",
+                answer: "valid",
+                feedbackCorrect: "Correct! This is a legitimate value. A 22-year-old loan applicant is perfectly normal—many young professionals take out loans for cars, education, or starting businesses. Removing young applicants would bias your model against early-career individuals.",
+                feedbackIncorrect: "Actually, this is a legitimate value. Being younger than average doesn't make a value an error. At 22, someone could be a recent college graduate seeking their first car loan. Flagging normal young applicants as 'outliers' would create age bias."
+            },
+            {
+                id: 3,
+                title: "Annual Income: $250,000",
+                data: [
+                    { label: "Variable", value: "person_income" },
+                    { label: "Value", value: "$250,000", highlight: true },
+                    { label: "Dataset mean", value: "$66,074" },
+                    { label: "Dataset max", value: "$6,000,000" },
+                    { label: "Percentile", value: "98th percentile" }
+                ],
+                context: "This applicant reports $250K annual income, well above the $66K average. High earners do exist in the population. Is this suspicious?",
+                answer: "valid",
+                feedbackCorrect: "Correct! This is a legitimate outlier. $250K is a high income but entirely plausible for doctors, lawyers, executives, or tech professionals. High-income applicants are valuable customers for lenders. Removing them would bias predictions toward lower-income patterns.",
+                feedbackIncorrect: "This is actually legitimate. While $250K is well above average, many professionals earn this amount. Removing high earners because they're 'unusual' would create socioeconomic bias in your model and miss valuable customer segments."
+            },
+            {
+                id: 4,
+                title: "Employment Experience: 125,000 years",
+                data: [
+                    { label: "Variable", value: "person_emp_exp" },
+                    { label: "Value", value: "125,000 years", highlight: true },
+                    { label: "Dataset mean", value: "4.8 years" },
+                    { label: "Dataset max", value: "125,000 years" },
+                    { label: "Context", value: "Human work life ~50 years max" }
+                ],
+                context: "This record shows 125,000 years of employment experience. Even the longest careers span only 50-60 years. What could explain this value?",
+                answer: "error",
+                feedbackCorrect: "Correct! This is clearly a data quality error. 125,000 years of experience is physically impossible—it exceeds human civilization's age. This likely resulted from a unit conversion error (maybe months stored as years) or corrupted data. Keep it and you'll severely skew employment-based predictions.",
+                feedbackIncorrect: "This is definitely an error. No human could have 125,000 years of experience—that's longer than homo sapiens have existed! This is likely a unit error or data corruption. Such extreme errors must be investigated and corrected or removed."
+            },
+            {
+                id: 5,
+                title: "Credit Score: 300",
+                data: [
+                    { label: "Variable", value: "credit_score" },
+                    { label: "Value", value: "300", highlight: true },
+                    { label: "Dataset mean", value: "632" },
+                    { label: "Valid range", value: "300-850 (FICO)" },
+                    { label: "Rating", value: "Very Poor" }
+                ],
+                context: "This applicant has a 300 credit score—the minimum possible FICO score. This indicates severe credit problems but is technically within the valid range.",
+                answer: "valid",
+                feedbackCorrect: "Correct! This is a legitimate (if unfortunate) value. 300 is the minimum FICO score and represents severe credit issues, but it's a real score that real people have. Excluding low-credit applicants from your training data would bias the model and potentially discriminate against financially vulnerable populations.",
+                feedbackIncorrect: "This is actually legitimate. While 300 is the worst possible credit score, it's still a valid score. Real people have scores this low due to bankruptcies or severe delinquencies. Treating poor credit as 'errors' rather than valid data points creates bias against disadvantaged applicants."
+            },
+            {
+                id: 6,
+                title: "Loan Status: 2",
+                data: [
+                    { label: "Variable", value: "loan_status" },
+                    { label: "Value", value: "2", highlight: true },
+                    { label: "Expected values", value: "0 (Paid) or 1 (Default)" },
+                    { label: "Dataset unique values", value: "0, 1, 2" },
+                    { label: "Rows with value 2", value: "47 records" }
+                ],
+                context: "The target variable loan_status should be binary (0=Paid, 1=Default), but 47 records have value '2'. This could represent an undocumented third category or an error.",
+                answer: "error",
+                feedbackCorrect: "Correct! This is a data quality error. Binary classification requires exactly two classes. The value '2' breaks this assumption—it could mean 'pending,' a data merge issue, or simple corruption. These 47 records need investigation: either reclassify them as 0/1 based on business rules, or exclude them from training.",
+                feedbackIncorrect: "This is an error that needs resolution. For binary classification (default vs. paid), having a third value '2' is problematic. You can't train a binary model on non-binary targets. These records need business review to determine if '2' means something specific or is simply corrupted data."
+            }
+        ];
+
+        let currentScenario = 0;
+        let score = 0;
+        let answered = [];
+
+        function renderScenario() {
+            const container = document.getElementById('scenarioContainer');
+            const scenario = scenarios[currentScenario];
+
+            const dataRows = scenario.data.map(d => `
+                <div class="data-row">
+                    <span class="data-label">${d.label}</span>
+                    <span class="data-value ${d.highlight ? 'highlight-value' : ''}">${d.value}</span>
+                </div>
+            `).join('');
+
+            container.innerHTML = `
+                <div class="scenario-card">
+                    <div class="scenario-header">
+                        <div class="scenario-number">${scenario.id}</div>
+                        <div class="scenario-title">${scenario.title}</div>
+                    </div>
+
+                    <div class="data-display">
+                        ${dataRows}
+                    </div>
+
+                    <div class="context-box">
+                        <p>${scenario.context}</p>
+                    </div>
+
+                    <div class="choice-buttons">
+                        <button class="choice-btn valid" onclick="selectAnswer('valid')" id="btnValid">
+                            <div class="icon">&#10003;</div>
+                            <div class="label">Legitimate Outlier</div>
+                            <div class="desc">Unusual but valid value</div>
+                        </button>
+                        <button class="choice-btn error" onclick="selectAnswer('error')" id="btnError">
+                            <div class="icon">&#10007;</div>
+                            <div class="label">Data Quality Error</div>
+                            <div class="desc">Impossible or corrupted</div>
+                        </button>
+                    </div>
+
+                    <div class="feedback" id="feedback"></div>
+
+                    <div class="nav-buttons">
+                        <button class="next-btn" id="nextBtn" onclick="nextScenario()">
+                            ${currentScenario < 5 ? 'Next Question' : 'See Results'}
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('currentQ').textContent = currentScenario + 1;
+            document.getElementById('progressFill').style.width = `${(currentScenario / 6) * 100}%`;
+        }
+
+        function selectAnswer(choice) {
+            const scenario = scenarios[currentScenario];
+            const isCorrect = choice === scenario.answer;
+
+            // Disable buttons
+            document.getElementById('btnValid').disabled = true;
+            document.getElementById('btnError').disabled = true;
+
+            // Mark selected button
+            const selectedBtn = choice === 'valid' ? document.getElementById('btnValid') : document.getElementById('btnError');
+            selectedBtn.classList.add('selected', isCorrect ? 'correct' : 'incorrect');
+
+            // Show correct answer if wrong
+            if (!isCorrect) {
+                const correctBtn = scenario.answer === 'valid' ? document.getElementById('btnValid') : document.getElementById('btnError');
+                correctBtn.classList.add('selected', 'correct');
+            }
+
+            // Update score
+            if (isCorrect) {
+                score++;
+                document.getElementById('score').textContent = score;
+            }
+            answered.push({ scenario: currentScenario, correct: isCorrect });
+
+            // Show feedback
+            const feedback = document.getElementById('feedback');
+            feedback.className = `feedback visible ${isCorrect ? 'correct' : 'incorrect'}`;
+            feedback.innerHTML = `
+                <div class="feedback-header">
+                    ${isCorrect ? '&#10003; Correct!' : '&#10007; Incorrect'}
+                </div>
+                <p>${isCorrect ? scenario.feedbackCorrect : scenario.feedbackIncorrect}</p>
+            `;
+
+            // Show next button
+            document.getElementById('nextBtn').classList.add('visible');
+
+            // Update progress
+            document.getElementById('progressFill').style.width = `${((currentScenario + 1) / 6) * 100}%`;
+
+            announce(isCorrect ? 'Correct answer!' : 'Incorrect. Read the feedback for explanation.');
+        }
+
+        function nextScenario() {
+            currentScenario++;
+
+            if (currentScenario >= 6) {
+                showResults();
+            } else {
+                renderScenario();
+            }
+        }
+
+        function showResults() {
+            document.getElementById('scenarioContainer').innerHTML = '';
+            document.querySelector('.progress-container').style.display = 'none';
+
+            const panel = document.getElementById('resultsPanel');
+            panel.classList.add('active');
+
+            document.getElementById('finalScore').textContent = `${score}/6`;
+            document.getElementById('correctCount').textContent = score;
+            document.getElementById('incorrectCount').textContent = 6 - score;
+
+            let title, message;
+            if (score === 6) {
+                title = 'Perfect Score!';
+                message = 'Excellent! You perfectly distinguished between legitimate outliers and data quality errors.';
+            } else if (score >= 4) {
+                title = 'Great Job!';
+                message = 'You have a solid understanding of data quality issues. Review the scenarios you missed to strengthen your judgment.';
+            } else {
+                title = 'Keep Learning!';
+                message = 'Data quality assessment takes practice. Remember: check if values are physically possible, not just statistically unusual.';
+            }
+
+            document.getElementById('resultsTitle').textContent = title;
+            document.getElementById('resultsMessage').textContent = message;
+
+            announce(`Quiz complete. Your score: ${score} out of 6.`);
+        }
+
+        function resetQuiz() {
+            currentScenario = 0;
+            score = 0;
+            answered = [];
+
+            document.getElementById('score').textContent = '0';
+            document.getElementById('resultsPanel').classList.remove('active');
+            document.querySelector('.progress-container').style.display = 'block';
+
+            renderScenario();
+            announce('Quiz reset. Starting from question 1.');
+        }
+
+        function announce(message) {
+            const announcer = document.getElementById('announcements');
+            announcer.textContent = message;
+            setTimeout(() => { announcer.textContent = ''; }, 1000);
+        }
+
+        // Initialize
+        renderScenario();
+    </script>
+</body>
+</html>

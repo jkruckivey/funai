@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Learning Outcomes Map</title>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --color-neutral-50: #fafafa;
+            --color-neutral-100: #f5f5f5;
+            --color-neutral-200: #e5e5e5;
+            --color-neutral-300: #d4d4d4;
+            --color-neutral-400: #a3a3a3;
+            --color-neutral-500: #737373;
+            --color-neutral-600: #525252;
+            --color-neutral-700: #404040;
+            --color-neutral-800: #262626;
+            --color-neutral-900: #171717;
+
+            --color-accent: #bfe5e7;
+            --color-accent-dark: #5a9ea1;
+            --color-clo: #6b9085;
+            --color-module: #5a9ea1;
+        }
+
+        body {
+            font-family: 'Geist', -apple-system, sans-serif;
+            background: white;
+            color: var(--color-neutral-900);
+            padding: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .header h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--color-neutral-900);
+            margin-bottom: 0.25rem;
+        }
+
+        .header p {
+            font-size: 0.875rem;
+            color: var(--color-neutral-600);
+        }
+
+        /* Main layout */
+        .map-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .column {
+            background: var(--color-neutral-50);
+            border: 1px solid var(--color-neutral-200);
+            border-radius: 8px;
+            padding: 1.25rem;
+        }
+
+        .column h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--color-neutral-900);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: white;
+        }
+
+        .badge-clo { background: var(--color-clo); }
+        .badge-module { background: var(--color-module); }
+
+        /* Items */
+        .item-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .item {
+            background: white;
+            border: 2px solid var(--color-neutral-200);
+            border-radius: 6px;
+            padding: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .item:hover {
+            border-color: var(--color-neutral-400);
+            background: var(--color-neutral-50);
+        }
+
+        .item:focus {
+            outline: 2px solid #3182ce;
+            outline-offset: 2px;
+        }
+
+        .item.active {
+            border-color: var(--color-accent-dark);
+            box-shadow: 0 2px 8px rgba(90, 158, 161, 0.2);
+        }
+
+        .item.highlighted {
+            border-color: var(--color-clo);
+            background: #f0f5f4;
+        }
+
+        .item.dimmed {
+            opacity: 0.4;
+        }
+
+        .item-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        .item-code {
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .clo-item .item-code {
+            background: var(--color-clo);
+            color: white;
+        }
+
+        .module-item .item-code {
+            background: var(--color-module);
+            color: white;
+        }
+
+        .item-text {
+            font-size: 0.8rem;
+            color: var(--color-neutral-700);
+            line-height: 1.4;
+        }
+
+        /* Connection badges */
+        .connections {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.25rem;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid var(--color-neutral-200);
+        }
+
+        .connection-badge {
+            padding: 0.1rem 0.35rem;
+            border-radius: 3px;
+            font-size: 0.6rem;
+            font-weight: 600;
+        }
+
+        .clo-item .connection-badge {
+            background: var(--color-module);
+            color: white;
+        }
+
+        .module-item .connection-badge {
+            background: var(--color-clo);
+            color: white;
+        }
+
+        /* Time badge */
+        .time-badge {
+            background: var(--color-neutral-100);
+            color: var(--color-neutral-600);
+            padding: 0.1rem 0.35rem;
+            border-radius: 3px;
+            font-size: 0.6rem;
+            font-weight: 500;
+            margin-left: auto;
+        }
+
+        /* Legend */
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            padding: 0.75rem;
+            background: var(--color-neutral-50);
+            border-radius: 8px;
+            font-size: 0.8rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--color-neutral-600);
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+        }
+
+        .legend-dot.clo { background: var(--color-clo); }
+        .legend-dot.module { background: var(--color-module); }
+
+        /* Help text */
+        .help-text {
+            background: #f5fafa;
+            border-left: 3px solid var(--color-accent);
+            padding: 0.75rem 1rem;
+            margin-top: 1rem;
+            border-radius: 0 8px 8px 0;
+            text-align: center;
+        }
+
+        .help-text p {
+            color: var(--color-neutral-600);
+            font-size: 0.8rem;
+        }
+
+        .help-text strong {
+            color: var(--color-neutral-900);
+        }
+
+        /* Screen reader */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        @media (max-width: 768px) {
+            .map-container {
+                grid-template-columns: 1fr;
+            }
+            body { padding: 1rem; }
+            .legend { flex-direction: column; gap: 0.5rem; align-items: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h3>Course Learning Outcomes Map</h3>
+            <p>Click any learning outcome or module to see how they connect</p>
+        </div>
+
+        <div class="map-container">
+            <div class="column">
+                <h4><span class="badge badge-clo">CLO</span> Course Learning Outcomes</h4>
+                <div class="item-list" id="clo-list"></div>
+            </div>
+
+            <div class="column">
+                <h4><span class="badge badge-module">Module</span> Course Modules</h4>
+                <div class="item-list" id="module-list"></div>
+            </div>
+        </div>
+
+        <div class="legend">
+            <div class="legend-item">
+                <span class="legend-dot clo"></span>
+                <span>Course Learning Outcomes (CLOs)</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-dot module"></span>
+                <span>Course Modules</span>
+            </div>
+        </div>
+
+        <div class="help-text">
+            <p><strong>How to use:</strong> Click a CLO to see which modules address it, or click a module to see which CLOs it supports.</p>
+        </div>
+    </div>
+
+    <div role="status" aria-live="polite" class="sr-only" id="announcements"></div>
+
+    <script>
+        const clos = [
+            {
+                code: 'CLO 1',
+                text: 'Describe fundamentals of AI and ML, including supervised, unsupervised, and reinforcement learning',
+                modules: ['M1', 'M2', 'M3']
+            },
+            {
+                code: 'CLO 2',
+                text: 'Apply hands-on understanding of ML development through guided no-code replication',
+                modules: ['M1', 'M3']
+            },
+            {
+                code: 'CLO 3',
+                text: 'Explain the ML development process and evaluate how bias emerges at each stage',
+                modules: ['M1', 'M3']
+            },
+            {
+                code: 'CLO 4',
+                text: 'Analyze how AI transforms work, creativity, decision-making, and automation vs. augmentation',
+                modules: ['M4']
+            },
+            {
+                code: 'CLO 5',
+                text: 'Evaluate managerial challenges of AI implementation and cross-functional coordination',
+                modules: ['M5']
+            },
+            {
+                code: 'CLO 6',
+                text: 'Recognize ethical risks and societal harms of AI',
+                modules: ['M3', 'M6']
+            }
+        ];
+
+        const modules = [
+            {
+                code: 'M1',
+                name: 'AI Systems',
+                text: 'What is AI and its types - Build your first ML model in Google Colab',
+                time: '2 hrs',
+                clos: ['CLO 1', 'CLO 2', 'CLO 3']
+            },
+            {
+                code: 'M2',
+                name: 'ML Techniques',
+                text: 'Supervised, unsupervised, and reinforcement learning',
+                time: '1.5 hrs',
+                clos: ['CLO 1']
+            },
+            {
+                code: 'M3',
+                name: 'ML Development & Bias',
+                text: 'COMPAS case study - 9 types of bias and fairness definitions',
+                time: '2 hrs',
+                clos: ['CLO 1', 'CLO 2', 'CLO 3', 'CLO 6']
+            },
+            {
+                code: 'M4',
+                name: 'AI, Work & Creativity',
+                text: 'Automation vs. augmentation frameworks',
+                time: '1.5 hrs',
+                clos: ['CLO 4']
+            },
+            {
+                code: 'M5',
+                name: 'Executing & Governing AI',
+                text: 'Implementation challenges and governance frameworks',
+                time: '2 hrs',
+                clos: ['CLO 5']
+            },
+            {
+                code: 'M6',
+                name: 'AI Harms & Snake Oil',
+                text: 'Ethical risks and evaluating AI claims',
+                time: '1 hr',
+                clos: ['CLO 6']
+            }
+        ];
+
+        const cloList = document.getElementById('clo-list');
+        const moduleList = document.getElementById('module-list');
+        let activeItem = null;
+        let activeType = null;
+
+        // Render CLOs
+        clos.forEach((clo, index) => {
+            const div = document.createElement('div');
+            div.className = 'item clo-item';
+            div.setAttribute('tabindex', '0');
+            div.setAttribute('role', 'button');
+            div.setAttribute('aria-label', `${clo.code}: ${clo.text}. Addressed by modules ${clo.modules.join(', ')}`);
+            div.dataset.code = clo.code;
+            div.dataset.connections = JSON.stringify(clo.modules);
+
+            const connectionBadges = clo.modules.map(m => `<span class="connection-badge">${m}</span>`).join('');
+
+            div.innerHTML = `
+                <div class="item-header">
+                    <span class="item-code">${clo.code}</span>
+                    <span class="item-text">${clo.text}</span>
+                </div>
+                <div class="connections">${connectionBadges}</div>
+            `;
+
+            div.onclick = () => handleClick(clo.code, 'clo', clo.modules);
+            div.onkeydown = (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleClick(clo.code, 'clo', clo.modules);
+                }
+            };
+
+            cloList.appendChild(div);
+        });
+
+        // Render Modules
+        modules.forEach((mod, index) => {
+            const div = document.createElement('div');
+            div.className = 'item module-item';
+            div.setAttribute('tabindex', '0');
+            div.setAttribute('role', 'button');
+            div.setAttribute('aria-label', `${mod.code} ${mod.name}: ${mod.text}. Addresses ${mod.clos.join(', ')}`);
+            div.dataset.code = mod.code;
+            div.dataset.connections = JSON.stringify(mod.clos);
+
+            const connectionBadges = mod.clos.map(c => `<span class="connection-badge">${c}</span>`).join('');
+
+            div.innerHTML = `
+                <div class="item-header">
+                    <span class="item-code">${mod.code}</span>
+                    <span class="item-text"><strong>${mod.name}:</strong> ${mod.text}</span>
+                    <span class="time-badge">${mod.time}</span>
+                </div>
+                <div class="connections">${connectionBadges}</div>
+            `;
+
+            div.onclick = () => handleClick(mod.code, 'module', mod.clos);
+            div.onkeydown = (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleClick(mod.code, 'module', mod.clos);
+                }
+            };
+
+            moduleList.appendChild(div);
+        });
+
+        function handleClick(code, type, connections) {
+            const allItems = document.querySelectorAll('.item');
+
+            // If clicking the same item, deselect
+            if (activeItem === code && activeType === type) {
+                allItems.forEach(item => {
+                    item.classList.remove('active', 'highlighted', 'dimmed');
+                });
+                activeItem = null;
+                activeType = null;
+                announce('Selection cleared');
+                return;
+            }
+
+            // Clear previous state
+            allItems.forEach(item => {
+                item.classList.remove('active', 'highlighted', 'dimmed');
+            });
+
+            // Set active item
+            activeItem = code;
+            activeType = type;
+
+            // Highlight the clicked item
+            const clickedItem = document.querySelector(`.item[data-code="${code}"]`);
+            if (clickedItem) clickedItem.classList.add('active');
+
+            // Highlight connected items and dim others
+            allItems.forEach(item => {
+                const itemCode = item.dataset.code;
+                if (itemCode === code) return;
+
+                if (type === 'clo') {
+                    // Clicked a CLO - highlight connected modules
+                    if (item.classList.contains('module-item')) {
+                        if (connections.includes(itemCode)) {
+                            item.classList.add('highlighted');
+                        } else {
+                            item.classList.add('dimmed');
+                        }
+                    } else {
+                        item.classList.add('dimmed');
+                    }
+                } else {
+                    // Clicked a Module - highlight connected CLOs
+                    if (item.classList.contains('clo-item')) {
+                        if (connections.includes(itemCode)) {
+                            item.classList.add('highlighted');
+                        } else {
+                            item.classList.add('dimmed');
+                        }
+                    } else {
+                        item.classList.add('dimmed');
+                    }
+                }
+            });
+
+            const connectionText = connections.join(', ');
+            if (type === 'clo') {
+                announce(`${code} selected. Addressed by modules: ${connectionText}`);
+            } else {
+                announce(`Module ${code} selected. Supports: ${connectionText}`);
+            }
+        }
+
+        function announce(message) {
+            const announcer = document.getElementById('announcements');
+            announcer.textContent = message;
+            setTimeout(() => { announcer.textContent = ''; }, 1000);
+        }
+    </script>
+</body>
+</html>
