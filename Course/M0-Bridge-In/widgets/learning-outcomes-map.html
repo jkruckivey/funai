@@ -312,73 +312,73 @@
             {
                 code: 'CLO 1',
                 text: 'Describe fundamentals of AI and ML, including supervised, unsupervised, and reinforcement learning',
-                modules: ['M1', 'M2', 'M3']
+                modules: ['AI Systems', 'ML Techniques', 'ML Development & Bias']
             },
             {
                 code: 'CLO 2',
                 text: 'Apply hands-on understanding of ML development through guided no-code replication',
-                modules: ['M1', 'M3']
+                modules: ['AI Systems', 'ML Development & Bias']
             },
             {
                 code: 'CLO 3',
                 text: 'Explain the ML development process and evaluate how bias emerges at each stage',
-                modules: ['M1', 'M3']
+                modules: ['AI Systems', 'ML Development & Bias']
             },
             {
                 code: 'CLO 4',
                 text: 'Analyze how AI transforms work, creativity, decision-making, and automation vs. augmentation',
-                modules: ['M4']
+                modules: ['AI, Work & Creativity']
             },
             {
                 code: 'CLO 5',
                 text: 'Evaluate managerial challenges of AI implementation and cross-functional coordination',
-                modules: ['M5']
+                modules: ['Executing & Governing AI']
             },
             {
                 code: 'CLO 6',
                 text: 'Recognize ethical risks and societal harms of AI',
-                modules: ['M3', 'M6']
+                modules: ['ML Development & Bias', 'AI Harms & Snake Oil']
             }
         ];
 
         const modules = [
             {
-                code: 'M1',
+                code: 'AI Systems',
                 name: 'AI Systems',
                 text: 'What is AI and its types - Build your first ML model in Google Colab',
                 time: '2 hrs',
                 clos: ['CLO 1', 'CLO 2', 'CLO 3']
             },
             {
-                code: 'M2',
+                code: 'ML Techniques',
                 name: 'ML Techniques',
                 text: 'Supervised, unsupervised, and reinforcement learning',
                 time: '1.5 hrs',
                 clos: ['CLO 1']
             },
             {
-                code: 'M3',
+                code: 'ML Development & Bias',
                 name: 'ML Development & Bias',
                 text: 'COMPAS case study - 9 types of bias and fairness definitions',
                 time: '2 hrs',
                 clos: ['CLO 1', 'CLO 2', 'CLO 3', 'CLO 6']
             },
             {
-                code: 'M4',
+                code: 'AI, Work & Creativity',
                 name: 'AI, Work & Creativity',
                 text: 'Automation vs. augmentation frameworks',
                 time: '1.5 hrs',
                 clos: ['CLO 4']
             },
             {
-                code: 'M5',
+                code: 'Executing & Governing AI',
                 name: 'Executing & Governing AI',
                 text: 'Implementation challenges and governance frameworks',
                 time: '2 hrs',
                 clos: ['CLO 5']
             },
             {
-                code: 'M6',
+                code: 'AI Harms & Snake Oil',
                 name: 'AI Harms & Snake Oil',
                 text: 'Ethical risks and evaluating AI claims',
                 time: '1 hr',
@@ -428,7 +428,7 @@
             div.className = 'item module-item';
             div.setAttribute('tabindex', '0');
             div.setAttribute('role', 'button');
-            div.setAttribute('aria-label', `${mod.code} ${mod.name}: ${mod.text}. Addresses ${mod.clos.join(', ')}`);
+            div.setAttribute('aria-label', `${mod.name}: ${mod.text}. Addresses ${mod.clos.join(', ')}`);
             div.dataset.code = mod.code;
             div.dataset.connections = JSON.stringify(mod.clos);
 
@@ -436,7 +436,6 @@
 
             div.innerHTML = `
                 <div class="item-header">
-                    <span class="item-code">${mod.code}</span>
                     <span class="item-text"><strong>${mod.name}:</strong> ${mod.text}</span>
                     <span class="time-badge">${mod.time}</span>
                 </div>
@@ -513,9 +512,9 @@
 
             const connectionText = connections.join(', ');
             if (type === 'clo') {
-                announce(`${code} selected. Addressed by modules: ${connectionText}`);
+                announce(`${code} selected. Addressed by: ${connectionText}`);
             } else {
-                announce(`Module ${code} selected. Supports: ${connectionText}`);
+                announce(`${code} selected. Supports: ${connectionText}`);
             }
         }
 

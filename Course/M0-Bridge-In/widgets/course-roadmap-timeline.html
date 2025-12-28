@@ -182,20 +182,6 @@
             outline-offset: -2px;
         }
 
-        .module-number {
-            background: var(--color-neutral-900);
-            color: white;
-            width: 36px;
-            height: 36px;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-            font-weight: 600;
-            flex-shrink: 0;
-        }
-
         .module-info {
             flex: 1;
         }
@@ -373,15 +359,6 @@
             font-size: 0.85rem;
         }
 
-        .week-module-badge {
-            background: var(--color-neutral-900);
-            color: white;
-            padding: 0.15rem 0.5rem;
-            border-radius: 4px;
-            font-size: 0.7rem;
-            font-weight: 600;
-        }
-
         .week-module-name {
             flex: 1;
             color: var(--color-neutral-700);
@@ -472,7 +449,6 @@
     <script>
         const modules = [
             {
-                number: 'M1',
                 title: 'AI Systems',
                 subtitle: 'What is AI and Its Types',
                 time: '2 hrs',
@@ -489,7 +465,6 @@
                 why: 'Hands-on experience reveals where bias enters ML development'
             },
             {
-                number: 'M2',
                 title: 'ML Techniques',
                 subtitle: 'Supervised, Unsupervised, Reinforcement Learning',
                 time: '1.5 hrs',
@@ -504,7 +479,6 @@
                 why: 'Understand which ML type fits different business problems'
             },
             {
-                number: 'M3',
                 title: 'ML Development & Bias',
                 subtitle: 'COMPAS Algorithm Case Study',
                 time: '2 hrs',
@@ -519,7 +493,6 @@
                 why: 'Critical lens for evaluating fairness in high-stakes AI systems'
             },
             {
-                number: 'M4',
                 title: 'AI, Work & Creativity',
                 subtitle: 'Automation vs. Augmentation',
                 time: '1.5 hrs',
@@ -534,7 +507,6 @@
                 why: 'Strategic decisions about AI deployment affect competitiveness and culture'
             },
             {
-                number: 'M5',
                 title: 'Executing & Governing AI',
                 subtitle: 'Implementation Challenges',
                 time: '2 hrs',
@@ -549,7 +521,6 @@
                 why: 'AI success requires organizational readiness, not just technical capability'
             },
             {
-                number: 'M6',
                 title: 'AI Harms & Snake Oil',
                 subtitle: 'Ethical Risks and Evaluation',
                 time: '1 hr',
@@ -570,24 +541,24 @@
                 week: 'Week 1',
                 time: '~3.5 hours',
                 modules: [
-                    { number: 'M1', name: 'AI Systems', time: '2 hrs' },
-                    { number: 'M2', name: 'ML Techniques', time: '1.5 hrs' }
+                    { name: 'AI Systems', time: '2 hrs' },
+                    { name: 'ML Techniques', time: '1.5 hrs' }
                 ]
             },
             {
                 week: 'Week 2',
                 time: '~3.5 hours',
                 modules: [
-                    { number: 'M3', name: 'ML Development & Bias', time: '2 hrs' },
-                    { number: 'M4', name: 'AI, Work & Creativity', time: '1.5 hrs' }
+                    { name: 'ML Development & Bias', time: '2 hrs' },
+                    { name: 'AI, Work & Creativity', time: '1.5 hrs' }
                 ]
             },
             {
                 week: 'Week 3',
                 time: '~3 hours',
                 modules: [
-                    { number: 'M5', name: 'Executing & Governing AI', time: '2 hrs' },
-                    { number: 'M6', name: 'AI Harms & Snake Oil', time: '1 hr' }
+                    { name: 'Executing & Governing AI', time: '2 hrs' },
+                    { name: 'AI Harms & Snake Oil', time: '1 hr' }
                 ]
             }
         ];
@@ -608,8 +579,7 @@
                 : '';
 
             card.innerHTML = `
-                <div class="module-header" tabindex="0" role="button" aria-expanded="false" aria-label="${mod.number} ${mod.title}: ${mod.subtitle}. ${mod.time}. Click to expand details.">
-                    <div class="module-number">${mod.number}</div>
+                <div class="module-header" tabindex="0" role="button" aria-expanded="false" aria-label="${mod.title}: ${mod.subtitle}. ${mod.time}. Click to expand details.">
                     <div class="module-info">
                         <div class="module-title">${mod.title}</div>
                         <div class="module-subtitle">${mod.subtitle}</div>
@@ -661,7 +631,6 @@
 
             const modulesHTML = week.modules.map(m => `
                 <div class="week-module-item">
-                    <span class="week-module-badge">${m.number}</span>
                     <span class="week-module-name">${m.name}</span>
                     <span class="week-module-time">${m.time}</span>
                 </div>

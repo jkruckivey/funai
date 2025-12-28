@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI/ML Concept Network Map</title>
+    <title>AI/ML Concept Map</title>
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -19,675 +20,763 @@
             --color-neutral-700: #404040;
             --color-neutral-800: #262626;
             --color-neutral-900: #171717;
-
-            --color-accent: #bfe5e7;
-            --color-accent-dark: #5a9ea1;
-
-            --color-m1: #5a9ea1;
-            --color-m2: #6b9085;
-            --color-m3: #8b7355;
-            --color-m4: #7a8599;
-            --color-m5: #997a85;
-            --color-m6: #85997a;
         }
 
         body {
             font-family: 'Geist', -apple-system, sans-serif;
             background: white;
             color: var(--color-neutral-900);
-            padding: 1.5rem;
+            padding: 24px;
             line-height: 1.6;
         }
 
         .container {
-            max-width: 1100px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
-        .header {
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
             text-align: center;
-            margin-bottom: 1rem;
+            margin-bottom: 8px;
         }
 
-        .header h3 {
-            font-size: 1.25rem;
+        .subtitle {
+            text-align: center;
+            color: var(--color-neutral-600);
+            margin-bottom: 24px;
+            font-size: 0.95rem;
+        }
+
+        /* Skip Link */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--color-neutral-900);
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 4px;
+            z-index: 100;
+        }
+
+        .skip-link:focus {
+            top: 8px;
+            left: 8px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .search-wrapper {
+            flex: 1;
+            min-width: 200px;
+            position: relative;
+        }
+
+        .search-label {
+            position: absolute;
+            left: -10000px;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 10px 16px;
+            border: 1px solid var(--color-neutral-300);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.95rem;
+        }
+
+        .search-box:focus {
+            outline: 2px solid #3182ce;
+            outline-offset: 2px;
+        }
+
+        .reset-btn {
+            padding: 10px 24px;
+            background: var(--color-neutral-900);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .reset-btn:hover {
+            background: var(--color-neutral-700);
+        }
+
+        .reset-btn:focus {
+            outline: 2px solid #3182ce;
+            outline-offset: 2px;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 24px;
+            background: var(--color-neutral-50);
+            border: 1px solid var(--color-neutral-200);
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        #graph-container {
+            background: white;
+            border: 1px solid var(--color-neutral-300);
+            border-radius: 8px;
+            position: relative;
+            height: 600px;
+        }
+
+        #definition-panel {
+            background: white;
+            border: 1px solid var(--color-neutral-300);
+            border-radius: 8px;
+            padding: 20px;
+            overflow-y: auto;
+            height: 600px;
+        }
+
+        .panel-empty {
+            color: var(--color-neutral-400);
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .panel-content {
+            display: none;
+        }
+
+        .panel-content.active {
+            display: block;
+        }
+
+        .panel-label {
+            font-size: 1.3rem;
             font-weight: 700;
             color: var(--color-neutral-900);
-            margin-bottom: 0.25rem;
+            margin-bottom: 12px;
         }
 
-        .header p {
-            font-size: 0.875rem;
+        .panel-type {
+            display: inline-block;
+            padding: 4px 12px;
+            background: var(--color-neutral-100);
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
             color: var(--color-neutral-600);
         }
 
-        /* Search */
-        .search-container {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 1rem;
+        .panel-section {
+            margin-bottom: 16px;
         }
 
-        .search-input {
-            width: 300px;
-            padding: 0.5rem 1rem;
-            border: 1px solid var(--color-neutral-300);
+        .panel-section-title {
+            font-weight: 600;
+            color: var(--color-neutral-700);
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .panel-section-content {
+            color: var(--color-neutral-600);
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+
+        .connected-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .connected-btn {
+            width: 100%;
+            text-align: left;
+            padding: 8px 12px;
+            background: var(--color-neutral-50);
+            border: 1px solid var(--color-neutral-200);
             border-radius: 6px;
-            font-size: 0.875rem;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.85rem;
             font-family: inherit;
+            color: var(--color-neutral-900);
         }
 
-        .search-input:focus {
+        .connected-btn:hover {
+            background: var(--color-neutral-100);
+            border-color: var(--color-neutral-300);
+        }
+
+        .connected-btn:focus {
             outline: 2px solid #3182ce;
             outline-offset: 2px;
-            border-color: #3182ce;
         }
 
-        /* Legend */
         .legend {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 0.75rem;
-            margin-bottom: 1rem;
-            padding: 0.75rem;
-            background: var(--color-neutral-50);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            margin-bottom: 16px;
+            padding: 16px;
+            background: white;
+            border: 1px solid var(--color-neutral-200);
             border-radius: 8px;
         }
 
         .legend-item {
             display: flex;
             align-items: center;
-            gap: 0.375rem;
-            font-size: 0.75rem;
-            color: var(--color-neutral-600);
+            gap: 8px;
+            font-size: 0.85rem;
         }
 
-        .legend-dot {
-            width: 10px;
-            height: 10px;
+        .legend-color {
+            width: 16px;
+            height: 16px;
             border-radius: 50%;
         }
 
-        /* Cluster grid */
-        .clusters-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1rem;
-            margin-bottom: 1rem;
+        svg {
+            width: 100%;
+            height: 100%;
         }
 
-        .cluster {
-            background: var(--color-neutral-50);
-            border: 1px solid var(--color-neutral-200);
-            border-radius: 8px;
-            padding: 1rem;
-        }
-
-        .cluster-header {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 0.75rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid var(--color-neutral-200);
-        }
-
-        .cluster-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-        }
-
-        .cluster-title {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--color-neutral-800);
-        }
-
-        .cluster-module {
-            font-size: 0.7rem;
-            color: var(--color-neutral-500);
-            margin-left: auto;
-        }
-
-        /* Concept tags */
-        .concepts-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.375rem;
-        }
-
-        .concept-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.25rem;
-            padding: 0.35rem 0.6rem;
-            background: white;
-            border: 1px solid var(--color-neutral-200);
-            border-radius: 20px;
-            font-size: 0.75rem;
-            color: var(--color-neutral-700);
+        .node {
             cursor: pointer;
-            transition: all 0.2s ease;
-            position: relative;
         }
 
-        .concept-tag:hover {
-            border-color: var(--color-neutral-400);
-            background: var(--color-neutral-50);
-            transform: translateY(-1px);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        .node circle {
+            stroke: white;
+            stroke-width: 2px;
         }
 
-        .concept-tag:focus {
-            outline: 2px solid #3182ce;
+        .node circle:focus {
+            outline: 3px solid #3182ce;
             outline-offset: 2px;
         }
 
-        .concept-tag.active {
-            border-color: var(--color-accent-dark);
-            background: var(--color-accent);
-            color: var(--color-neutral-900);
+        .node.dimmed circle {
+            opacity: 0.2;
         }
 
-        .concept-tag.dimmed {
-            opacity: 0.3;
+        .node.dimmed text {
+            opacity: 0.2;
         }
 
-        .concept-tag.search-match {
-            border-color: var(--color-accent-dark);
-            background: #fff9db;
+        .node.focused circle {
+            stroke: #3182ce;
+            stroke-width: 4px;
         }
 
-        .concept-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            flex-shrink: 0;
-        }
-
-        /* Tooltip */
-        .tooltip {
-            display: none;
-            position: fixed;
-            background: var(--color-neutral-900);
-            color: white;
-            padding: 0.75rem 1rem;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            max-width: 320px;
-            z-index: 1000;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        .node text {
+            font-family: 'Geist', sans-serif;
+            font-size: 10px;
+            font-weight: 500;
             pointer-events: none;
+            text-anchor: middle;
         }
 
-        .tooltip.visible {
-            display: block;
+        .link {
+            stroke: #e2e8f0;
+            stroke-width: 2px;
+            stroke-opacity: 0.3;
         }
 
-        .tooltip-title {
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+        .link.dimmed {
+            stroke-opacity: 0.1;
         }
 
-        .tooltip-module {
-            font-size: 0.65rem;
-            background: rgba(255,255,255,0.2);
-            padding: 0.1rem 0.4rem;
-            border-radius: 3px;
+        .link.highlighted {
+            stroke-opacity: 0.8;
+            stroke-width: 3px;
         }
 
-        .tooltip-definition {
-            color: var(--color-neutral-300);
-            line-height: 1.4;
-        }
-
-        .tooltip-related {
-            margin-top: 0.5rem;
-            padding-top: 0.5rem;
-            border-top: 1px solid var(--color-neutral-700);
-            font-size: 0.7rem;
-            color: var(--color-neutral-400);
-        }
-
-        /* View toggle */
-        .view-toggle {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 1rem;
-        }
-
-        .toggle-btn {
-            padding: 0.5rem 1rem;
-            background: white;
-            border: 1px solid var(--color-neutral-300);
-            font-size: 0.8rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .toggle-btn:first-child {
-            border-radius: 6px 0 0 6px;
-        }
-
-        .toggle-btn:last-child {
-            border-radius: 0 6px 6px 0;
-            border-left: none;
-        }
-
-        .toggle-btn.active {
-            background: var(--color-neutral-900);
-            color: white;
-            border-color: var(--color-neutral-900);
-        }
-
-        .toggle-btn:focus {
-            outline: 2px solid #3182ce;
-            outline-offset: 2px;
-        }
-
-        /* List view */
-        .list-view {
-            display: none;
-        }
-
-        .list-view.active {
-            display: block;
-        }
-
-        .cluster-grid.hidden {
-            display: none;
-        }
-
-        .list-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 0.75rem;
-            padding: 0.75rem;
-            border-bottom: 1px solid var(--color-neutral-100);
-        }
-
-        .list-item:last-child {
-            border-bottom: none;
-        }
-
-        .list-term {
-            font-weight: 600;
-            min-width: 150px;
-            font-size: 0.85rem;
-        }
-
-        .list-def {
-            color: var(--color-neutral-600);
-            font-size: 0.85rem;
-            flex: 1;
-        }
-
-        .list-module-tag {
-            font-size: 0.65rem;
-            background: var(--color-neutral-100);
-            color: var(--color-neutral-600);
-            padding: 0.15rem 0.4rem;
-            border-radius: 3px;
-            white-space: nowrap;
-        }
-
-        /* Help text */
-        .help-text {
-            background: #f5fafa;
-            border-left: 3px solid var(--color-accent);
-            padding: 0.75rem 1rem;
-            margin-top: 1rem;
-            border-radius: 0 8px 8px 0;
-            text-align: center;
-        }
-
-        .help-text p {
-            color: var(--color-neutral-600);
-            font-size: 0.8rem;
-        }
-
-        /* Screen reader */
+        /* Screen reader only content */
         .sr-only {
             position: absolute;
+            left: -10000px;
             width: 1px;
             height: 1px;
-            padding: 0;
-            margin: -1px;
             overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border-width: 0;
+        }
+
+        @media (max-width: 1024px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+
+            #definition-panel {
+                height: auto;
+                max-height: 400px;
+            }
         }
 
         @media (max-width: 768px) {
-            body { padding: 1rem; }
-            .clusters-grid { grid-template-columns: 1fr; }
-            .legend { gap: 0.5rem; }
-            .search-input { width: 100%; }
+            body { padding: 16px; }
+            h1 { font-size: 1.5rem; }
+            #graph-container { height: 450px; }
         }
     </style>
 </head>
 <body>
+    <a href="#definition-panel" class="skip-link">Skip to concept details</a>
+
     <div class="container">
-        <div class="header">
-            <h3>AI/ML Concept Network Map</h3>
-            <p>Explore key terms you'll master throughout this course</p>
+        <h1>AI/ML Concept Map</h1>
+        <p class="subtitle">Interactive visualization of AI fundamentals, ML techniques, bias, and business applications</p>
+
+        <div class="legend" role="region" aria-label="Legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background: #6b9085;" role="img" aria-label="Green circle"></div>
+                <span>Course Outcomes</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #5a9ea1;" role="img" aria-label="Teal circle"></div>
+                <span>Module Outcomes</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #9b8aac;" role="img" aria-label="Purple circle"></div>
+                <span>Key Concepts</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #c5c0a8;" role="img" aria-label="Sand circle"></div>
+                <span>Case Studies & Applications</span>
+            </div>
         </div>
 
-        <div class="search-container">
-            <input type="text" class="search-input" id="search" placeholder="Search concepts..." aria-label="Search concepts">
+        <div class="controls" role="search">
+            <div class="search-wrapper">
+                <label for="search" class="search-label">Search concepts</label>
+                <input
+                    type="search"
+                    class="search-box"
+                    id="search"
+                    placeholder="Search concepts, bias types, ML techniques..."
+                    aria-describedby="search-instructions">
+                <div id="search-instructions" class="sr-only">
+                    Type to filter concepts by name or definition. Results update as you type.
+                </div>
+            </div>
+            <button class="reset-btn" id="reset" aria-label="Reset view and clear all filters">Reset View</button>
         </div>
 
-        <div class="view-toggle">
-            <button class="toggle-btn active" data-view="grid" aria-pressed="true">Cluster View</button>
-            <button class="toggle-btn" data-view="list" aria-pressed="false">List View</button>
-        </div>
+        <div class="layout">
+            <div id="graph-container" role="application" aria-label="Interactive concept map">
+                <div class="sr-only" role="status" aria-live="polite" aria-atomic="true" id="graph-instructions">
+                    Interactive force-directed graph showing relationships between AI/ML concepts.
+                    Click or press Enter on any node to view details.
+                    Use Tab key to navigate between nodes.
+                </div>
+            </div>
 
-        <div class="legend">
-            <div class="legend-item"><span class="legend-dot" style="background: var(--color-m1)"></span>Module 1-2: ML Fundamentals</div>
-            <div class="legend-item"><span class="legend-dot" style="background: var(--color-m1)"></span>Module 1: Data Processing</div>
-            <div class="legend-item"><span class="legend-dot" style="background: var(--color-m3)"></span>Module 3: Bias & Fairness</div>
-            <div class="legend-item"><span class="legend-dot" style="background: var(--color-m4)"></span>Module 4: AI at Work</div>
-            <div class="legend-item"><span class="legend-dot" style="background: var(--color-m5)"></span>Module 5-6: Implementation & Ethics</div>
-        </div>
+            <div id="definition-panel" role="region" aria-live="polite" aria-atomic="true" tabindex="-1">
+                <div class="panel-empty" id="panel-empty">
+                    Click any node to explore concepts and connections
+                </div>
 
-        <div class="clusters-grid" id="clusters-grid"></div>
+                <div class="panel-content" id="panel-content">
+                    <div class="panel-label" id="panel-label"></div>
+                    <div class="panel-type" id="panel-type"></div>
 
-        <div class="list-view" id="list-view"></div>
+                    <div class="panel-section">
+                        <div class="panel-section-title">Definition</div>
+                        <div class="panel-section-content" id="panel-definition"></div>
+                    </div>
 
-        <div class="help-text">
-            <p><strong>How to use:</strong> Hover over any concept for its definition. Click to highlight related terms. Use the search to find specific concepts.</p>
+                    <div class="panel-section" id="panel-extra" style="display: none;">
+                        <div class="panel-section-title" id="panel-extra-title"></div>
+                        <div class="panel-section-content" id="panel-extra-content"></div>
+                    </div>
+
+                    <div class="panel-section">
+                        <div class="panel-section-title" id="connected-title">Connected To</div>
+                        <div id="panel-connected" role="list" aria-labelledby="connected-title"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="tooltip" id="tooltip"></div>
-    <div role="status" aria-live="polite" class="sr-only" id="announcements"></div>
+    <!-- Screen reader announcements -->
+    <div role="status" aria-live="polite" aria-atomic="true" class="sr-only" id="announcements"></div>
 
     <script>
-        const clusters = [
-            {
-                name: 'ML Fundamentals',
-                modules: 'M1-M2',
-                color: '#5a9ea1',
-                concepts: [
-                    { term: 'Machine Learning', def: 'Systems that learn patterns from data to make predictions without explicit programming', module: 'M1', related: ['Artificial Intelligence', 'Training Data', 'Model Evaluation'] },
-                    { term: 'Artificial Intelligence', def: 'Broad field of creating systems that can perform tasks requiring human intelligence', module: 'M1', related: ['Machine Learning', 'Deep Learning'] },
-                    { term: 'Supervised Learning', def: 'ML where the model learns from labeled data with known correct answers', module: 'M2', related: ['Training Data', 'Target Variable', 'Unsupervised Learning'] },
-                    { term: 'Unsupervised Learning', def: 'ML where the model finds patterns in data without labeled examples', module: 'M2', related: ['Supervised Learning', 'Reinforcement Learning'] },
-                    { term: 'Reinforcement Learning', def: 'ML where an agent learns by trial and error, receiving rewards for good actions', module: 'M2', related: ['Supervised Learning', 'Unsupervised Learning'] },
-                    { term: 'Training Data', def: 'Dataset used to teach the model patterns and relationships', module: 'M1', related: ['Testing Data', 'Features', 'Target Variable'] },
-                    { term: 'Testing Data', def: 'Separate dataset used to evaluate model performance on unseen examples', module: 'M1', related: ['Training Data', 'Model Evaluation', 'Accuracy'] },
-                    { term: 'Features (X)', def: 'Input variables used to make predictions (e.g., age, income, credit score)', module: 'M1', related: ['Target Variable', 'Training Data'] },
-                    { term: 'Target Variable (y)', def: 'The outcome the model is trying to predict (e.g., loan approval)', module: 'M1', related: ['Features', 'Supervised Learning'] },
-                    { term: 'Accuracy', def: 'Percentage of correct predictions out of total predictions made', module: 'M1', related: ['Model Evaluation', 'Fairness Metrics'] },
-                    { term: 'Model Evaluation', def: 'Process of measuring how well a trained model performs on new data', module: 'M1', related: ['Testing Data', 'Accuracy'] }
-                ]
-            },
-            {
-                name: 'Data Processing',
-                modules: 'M1',
-                color: '#5a9ea1',
-                concepts: [
-                    { term: 'Pandas DataFrames', def: 'Python data structure for organizing data in rows and columns, like a spreadsheet', module: 'M1', related: ['Google Colab', 'Exploratory Data Analysis'] },
-                    { term: 'Google Colab', def: 'Free cloud-based notebook for writing and running Python code in your browser', module: 'M1', related: ['Pandas DataFrames'] },
-                    { term: 'One-Hot Encoding', def: 'Converting categorical variables (like "yes/no") into binary columns (0s and 1s)', module: 'M1', related: ['Standardization', 'Features'] },
-                    { term: 'Standardization', def: 'Scaling numerical features to have mean=0 and standard deviation=1', module: 'M1', related: ['One-Hot Encoding', 'Features'] },
-                    { term: 'Outliers', def: 'Data points that are unusually far from other observations', module: 'M1', related: ['Data Quality', 'Exploratory Data Analysis'] },
-                    { term: 'Data Quality', def: 'Accuracy, completeness, and consistency of data used for ML', module: 'M1', related: ['Missing Values', 'Outliers', 'Measurement Bias'] },
-                    { term: 'Missing Values', def: 'Empty or null entries in a dataset that need handling before training', module: 'M1', related: ['Data Quality', 'Exploratory Data Analysis'] },
-                    { term: 'Exploratory Data Analysis', def: 'Initial investigation of data to discover patterns and anomalies', module: 'M1', related: ['Pandas DataFrames', 'Data Quality'] }
-                ]
-            },
-            {
-                name: 'Bias & Fairness',
-                modules: 'M3',
-                color: '#8b7355',
-                concepts: [
-                    { term: 'Algorithmic Bias', def: 'Systematic errors in ML systems that create unfair outcomes for certain groups', module: 'M3', related: ['Fairness Metrics', 'Historical Bias', 'COMPAS Algorithm'] },
-                    { term: 'Measurement Bias', def: 'Bias from how data is collected or variables are defined', module: 'M3', related: ['Data Quality', 'Representation Bias'] },
-                    { term: 'Representation Bias', def: 'When training data doesn\'t reflect the full population the model will serve', module: 'M3', related: ['Measurement Bias', 'Aggregation Bias'] },
-                    { term: 'Aggregation Bias', def: 'When a single model is applied to groups that should be modeled separately', module: 'M3', related: ['Representation Bias', 'Evaluation Bias'] },
-                    { term: 'Historical Bias', def: 'Bias embedded in data from past discriminatory practices or decisions', module: 'M3', related: ['Algorithmic Bias', 'Outcome Fairness'] },
-                    { term: 'Evaluation Bias', def: 'Bias in how model performance is measured across different groups', module: 'M3', related: ['Fairness Metrics', 'Accuracy'] },
-                    { term: 'Outcome Fairness', def: 'Equal outcomes across groups (e.g., same approval rates)', module: 'M3', related: ['Procedure Fairness', 'Fairness Metrics'] },
-                    { term: 'Procedure Fairness', def: 'Same process applied to all (e.g., same accuracy rate for all groups)', module: 'M3', related: ['Outcome Fairness', 'COMPAS Algorithm'] },
-                    { term: 'COMPAS Algorithm', def: 'Recidivism prediction tool analyzed in famous ProPublica bias investigation', module: 'M3', related: ['Algorithmic Bias', 'Procedure Fairness'] },
-                    { term: 'Fairness Metrics', def: 'Quantitative measures of whether ML outcomes are equitable', module: 'M3', related: ['Outcome Fairness', 'Accuracy'] }
-                ]
-            },
-            {
-                name: 'AI at Work',
-                modules: 'M4',
-                color: '#7a8599',
-                concepts: [
-                    { term: 'Automation', def: 'Using AI to replace human tasks entirely', module: 'M4', related: ['Augmentation', 'Decision-Making'] },
-                    { term: 'Augmentation', def: 'Using AI to enhance human capabilities rather than replace them', module: 'M4', related: ['Automation', 'Human-AI Collaboration'] },
-                    { term: 'Decision-Making', def: 'How AI transforms business choices from intuition to data-driven processes', module: 'M4', related: ['Automation', 'Creativity'] },
-                    { term: 'Creativity', def: 'How AI assists or transforms creative work and innovation', module: 'M4', related: ['Augmentation', 'Generative AI'] },
-                    { term: 'Human-AI Collaboration', def: 'Partnership models where humans and AI systems work together', module: 'M4', related: ['Augmentation', 'AI Governance'] }
-                ]
-            },
-            {
-                name: 'Implementation & Ethics',
-                modules: 'M5-M6',
-                color: '#997a85',
-                concepts: [
-                    { term: 'AI Governance', def: 'Policies and processes for responsible AI deployment and oversight', module: 'M5', related: ['Implementation Challenges', 'Ethical Risks'] },
-                    { term: 'Cross-Functional Coordination', def: 'Collaboration between IT, legal, operations, and ethics teams for AI projects', module: 'M5', related: ['AI Governance', 'Implementation Challenges'] },
-                    { term: 'Implementation Challenges', def: 'Organizational barriers to successful AI deployment', module: 'M5', related: ['AI Governance', 'Cross-Functional Coordination'] },
-                    { term: 'Ethical Risks', def: 'Potential harms from AI including discrimination, privacy violations, and manipulation', module: 'M6', related: ['AI Harms', 'Algorithmic Bias'] },
-                    { term: 'AI Harms', def: 'Negative consequences of AI systems on individuals and society', module: 'M6', related: ['Ethical Risks', 'AI Snake Oil'] },
-                    { term: 'Predictive AI', def: 'AI that forecasts future outcomes based on historical patterns', module: 'M6', related: ['Generative AI', 'Machine Learning'] },
-                    { term: 'Generative AI', def: 'AI that creates new content (text, images, code) rather than just predicting', module: 'M6', related: ['Predictive AI', 'Creativity'] },
-                    { term: 'AI Snake Oil', def: 'Overhyped or misleading AI claims that don\'t deliver promised value', module: 'M6', related: ['AI Harms', 'Ethical Risks'] }
-                ]
-            }
+        // Data
+        const nodes = [
+            // CLOs (Layer 1)
+            { id: 'clo1', label: 'CLO 1: AI/ML Fundamentals', type: 'clo', definition: 'Describe fundamentals of AI and ML, including supervised, unsupervised, and reinforcement learning.', color: '#6b9085' },
+            { id: 'clo2', label: 'CLO 2: Hands-on ML', type: 'clo', definition: 'Apply hands-on understanding of ML development through guided no-code replication.', color: '#6b9085' },
+            { id: 'clo3', label: 'CLO 3: Bias in ML', type: 'clo', definition: 'Explain the ML development process and evaluate how bias emerges at each stage.', color: '#6b9085' },
+            { id: 'clo4', label: 'CLO 4: AI & Work', type: 'clo', definition: 'Analyze how AI transforms work, creativity, decision-making, and automation vs. augmentation.', color: '#6b9085' },
+            { id: 'clo5', label: 'CLO 5: AI Implementation', type: 'clo', definition: 'Evaluate managerial challenges of AI implementation and cross-functional coordination.', color: '#6b9085' },
+            { id: 'clo6', label: 'CLO 6: AI Ethics', type: 'clo', definition: 'Recognize ethical risks and societal harms of AI.', color: '#6b9085' },
+
+            // MLOs (Layer 2) - AI Systems
+            { id: 'mlo-colab', label: 'Navigate Google Colab', type: 'mlo', definition: 'Navigate Google Colab environment and execute Python code cells.', module: 'AI Systems', color: '#5a9ea1' },
+            { id: 'mlo-data', label: 'Explore Datasets', type: 'mlo', definition: 'Load and explore datasets using pandas DataFrames.', module: 'AI Systems', color: '#5a9ea1' },
+            { id: 'mlo-quality', label: 'Data Quality Issues', type: 'mlo', definition: 'Identify data quality issues including outliers, missing values, and data types.', module: 'AI Systems', color: '#5a9ea1' },
+            { id: 'mlo-preprocess', label: 'Preprocess Data', type: 'mlo', definition: 'Preprocess data using one-hot encoding and standardization.', module: 'AI Systems', color: '#5a9ea1' },
+            { id: 'mlo-model', label: 'Build ML Model', type: 'mlo', definition: 'Build and evaluate a logistic regression model with 80/20 train-test split.', module: 'AI Systems', color: '#5a9ea1' },
+            { id: 'mlo-accuracy', label: 'Interpret Accuracy', type: 'mlo', definition: 'Interpret model accuracy and understand its business implications.', module: 'AI Systems', color: '#5a9ea1' },
+
+            // MLOs - ML Techniques
+            { id: 'mlo-supervised', label: 'Supervised Learning', type: 'mlo', definition: 'Identify when supervised learning applies (labeled data, prediction tasks).', module: 'ML Techniques', color: '#5a9ea1' },
+            { id: 'mlo-unsupervised', label: 'Unsupervised Learning', type: 'mlo', definition: 'Identify when unsupervised learning applies (pattern discovery, clustering).', module: 'ML Techniques', color: '#5a9ea1' },
+            { id: 'mlo-reinforcement', label: 'Reinforcement Learning', type: 'mlo', definition: 'Identify when reinforcement learning applies (trial-and-error, rewards).', module: 'ML Techniques', color: '#5a9ea1' },
+
+            // Concepts (Layer 3) - ML Fundamentals
+            { id: 'ml', label: 'Machine Learning', type: 'concept', definition: 'Systems that learn patterns from data to make predictions without explicit programming.', color: '#9b8aac' },
+            { id: 'ai', label: 'Artificial Intelligence', type: 'concept', definition: 'Broad field of creating systems that can perform tasks requiring human intelligence.', color: '#9b8aac' },
+            { id: 'training-data', label: 'Training Data', type: 'concept', definition: 'Dataset used to teach the model patterns and relationships (80% of data).', color: '#9b8aac' },
+            { id: 'testing-data', label: 'Testing Data', type: 'concept', definition: 'Separate dataset used to evaluate model performance on unseen examples (20% of data).', color: '#9b8aac' },
+            { id: 'features', label: 'Features (X)', type: 'concept', definition: 'Input variables used to make predictions (e.g., age, income, credit score).', color: '#9b8aac' },
+            { id: 'target', label: 'Target Variable (y)', type: 'concept', definition: 'The outcome the model is trying to predict (e.g., loan_status).', color: '#9b8aac' },
+            { id: 'accuracy', label: 'Accuracy', type: 'concept', definition: 'Percentage of correct predictions out of total predictions made.', color: '#9b8aac' },
+
+            // Concepts - Data Processing
+            { id: 'pandas', label: 'Pandas DataFrames', type: 'concept', definition: 'Python data structure for organizing data in rows and columns.', color: '#9b8aac' },
+            { id: 'colab', label: 'Google Colab', type: 'concept', definition: 'Free cloud-based notebook for writing and running Python code.', color: '#9b8aac' },
+            { id: 'one-hot', label: 'One-Hot Encoding', type: 'concept', definition: 'Converting categorical variables into binary columns (0s and 1s).', color: '#9b8aac' },
+            { id: 'standardization', label: 'Standardization', type: 'concept', definition: 'Scaling numerical features to have mean=0 and standard deviation=1.', color: '#9b8aac' },
+            { id: 'outliers', label: 'Outliers', type: 'concept', definition: 'Data points unusually far from other observations (e.g., age=140).', color: '#9b8aac' },
+            { id: 'missing-values', label: 'Missing Values', type: 'concept', definition: 'Empty entries in a dataset that need handling before training.', color: '#9b8aac' },
+
+            // Concepts - Bias & Fairness
+            { id: 'algo-bias', label: 'Algorithmic Bias', type: 'concept', definition: 'Systematic errors in ML systems that create unfair outcomes for certain groups.', color: '#9b8aac' },
+            { id: 'measurement-bias', label: 'Measurement Bias', type: 'concept', definition: 'Bias from how data is collected or variables are defined.', color: '#9b8aac' },
+            { id: 'representation-bias', label: 'Representation Bias', type: 'concept', definition: 'When training data doesn\'t reflect the full population the model will serve.', color: '#9b8aac' },
+            { id: 'historical-bias', label: 'Historical Bias', type: 'concept', definition: 'Bias embedded in data from past discriminatory practices.', color: '#9b8aac' },
+            { id: 'outcome-fairness', label: 'Outcome Fairness', type: 'concept', definition: 'Equal outcomes across groups (e.g., same approval rates).', color: '#9b8aac' },
+            { id: 'procedure-fairness', label: 'Procedure Fairness', type: 'concept', definition: 'Same process applied to all (e.g., same accuracy for all groups).', color: '#9b8aac' },
+
+            // Concepts - AI at Work
+            { id: 'automation', label: 'Automation', type: 'concept', definition: 'Using AI to replace human tasks entirely.', color: '#9b8aac' },
+            { id: 'augmentation', label: 'Augmentation', type: 'concept', definition: 'Using AI to enhance human capabilities rather than replace them.', color: '#9b8aac' },
+            { id: 'human-ai', label: 'Human-AI Collaboration', type: 'concept', definition: 'Partnership models where humans and AI systems work together.', color: '#9b8aac' },
+
+            // Concepts - Implementation & Ethics
+            { id: 'governance', label: 'AI Governance', type: 'concept', definition: 'Policies and processes for responsible AI deployment and oversight.', color: '#9b8aac' },
+            { id: 'cross-functional', label: 'Cross-Functional Teams', type: 'concept', definition: 'Collaboration between IT, legal, operations, and ethics teams.', color: '#9b8aac' },
+            { id: 'predictive-ai', label: 'Predictive AI', type: 'concept', definition: 'AI that forecasts future outcomes based on historical patterns.', color: '#9b8aac' },
+            { id: 'generative-ai', label: 'Generative AI', type: 'concept', definition: 'AI that creates new content (text, images, code).', color: '#9b8aac' },
+            { id: 'snake-oil', label: 'AI Snake Oil', type: 'concept', definition: 'Overhyped AI claims that don\'t deliver promised value.', color: '#9b8aac' },
+
+            // Applications (Layer 4)
+            { id: 'compas', label: 'COMPAS Case Study', type: 'application', definition: 'Real recidivism prediction algorithm analyzed in famous ProPublica bias investigation.', context: 'ML Development & Bias: Analyze competing definitions of fairness', color: '#c5c0a8' },
+            { id: 'loan-model', label: 'Loan Prediction Model', type: 'application', definition: 'Hands-on ML project: Build logistic regression model predicting loan approval.', context: 'AI Systems: 45,000 applications, 89% accuracy, identify bias in predictions', color: '#c5c0a8' },
+            { id: 'hiring-algo', label: 'Hiring Algorithms', type: 'application', definition: 'Resume screening tools that can perpetuate historical discrimination.', context: 'Real-world example of algorithmic bias in employment decisions', color: '#c5c0a8' },
+            { id: 'medical-ai', label: 'Medical Diagnosis AI', type: 'application', definition: 'AI systems for healthcare that may perform differently across patient groups.', context: 'High-stakes AI application where accuracy varies by demographics', color: '#c5c0a8' }
         ];
 
-        const clustersGrid = document.getElementById('clusters-grid');
-        const listView = document.getElementById('list-view');
-        const tooltip = document.getElementById('tooltip');
-        const searchInput = document.getElementById('search');
+        const edges = [
+            // CLO to MLO connections
+            { source: 'clo1', target: 'mlo-supervised' },
+            { source: 'clo1', target: 'mlo-unsupervised' },
+            { source: 'clo1', target: 'mlo-reinforcement' },
+            { source: 'clo2', target: 'mlo-colab' },
+            { source: 'clo2', target: 'mlo-data' },
+            { source: 'clo2', target: 'mlo-preprocess' },
+            { source: 'clo2', target: 'mlo-model' },
+            { source: 'clo3', target: 'mlo-quality' },
+            { source: 'clo3', target: 'mlo-accuracy' },
 
-        let activeConceptTerm = null;
+            // MLO to Concept connections - AI Systems
+            { source: 'mlo-colab', target: 'colab' },
+            { source: 'mlo-colab', target: 'pandas' },
+            { source: 'mlo-data', target: 'pandas' },
+            { source: 'mlo-data', target: 'features' },
+            { source: 'mlo-data', target: 'target' },
+            { source: 'mlo-quality', target: 'outliers' },
+            { source: 'mlo-quality', target: 'missing-values' },
+            { source: 'mlo-preprocess', target: 'one-hot' },
+            { source: 'mlo-preprocess', target: 'standardization' },
+            { source: 'mlo-model', target: 'training-data' },
+            { source: 'mlo-model', target: 'testing-data' },
+            { source: 'mlo-model', target: 'ml' },
+            { source: 'mlo-accuracy', target: 'accuracy' },
 
-        // Build cluster view
-        clusters.forEach(cluster => {
-            const clusterDiv = document.createElement('div');
-            clusterDiv.className = 'cluster';
+            // MLO to Concept connections - ML Techniques
+            { source: 'mlo-supervised', target: 'ml' },
+            { source: 'mlo-supervised', target: 'training-data' },
+            { source: 'mlo-unsupervised', target: 'ml' },
+            { source: 'mlo-reinforcement', target: 'ml' },
 
-            const conceptTags = cluster.concepts.map(c => `
-                <span class="concept-tag"
-                      tabindex="0"
-                      data-term="${c.term}"
-                      data-def="${c.def}"
-                      data-module="${c.module}"
-                      data-related='${JSON.stringify(c.related)}'
-                      role="button"
-                      aria-label="${c.term}: ${c.def}">
-                    <span class="concept-dot" style="background: ${cluster.color}"></span>
-                    ${c.term}
-                </span>
-            `).join('');
+            // Concept interconnections
+            { source: 'ml', target: 'ai' },
+            { source: 'training-data', target: 'testing-data' },
+            { source: 'features', target: 'target' },
+            { source: 'one-hot', target: 'standardization' },
+            { source: 'algo-bias', target: 'measurement-bias' },
+            { source: 'algo-bias', target: 'representation-bias' },
+            { source: 'algo-bias', target: 'historical-bias' },
+            { source: 'outcome-fairness', target: 'procedure-fairness' },
+            { source: 'automation', target: 'augmentation' },
+            { source: 'augmentation', target: 'human-ai' },
+            { source: 'predictive-ai', target: 'generative-ai' },
 
-            clusterDiv.innerHTML = `
-                <div class="cluster-header">
-                    <span class="cluster-dot" style="background: ${cluster.color}"></span>
-                    <span class="cluster-title">${cluster.name}</span>
-                    <span class="cluster-module">${cluster.modules}</span>
-                </div>
-                <div class="concepts-container">${conceptTags}</div>
-            `;
+            // Concept to Application connections
+            { source: 'algo-bias', target: 'compas' },
+            { source: 'outcome-fairness', target: 'compas' },
+            { source: 'procedure-fairness', target: 'compas' },
+            { source: 'historical-bias', target: 'compas' },
+            { source: 'ml', target: 'loan-model' },
+            { source: 'accuracy', target: 'loan-model' },
+            { source: 'training-data', target: 'loan-model' },
+            { source: 'algo-bias', target: 'hiring-algo' },
+            { source: 'representation-bias', target: 'hiring-algo' },
+            { source: 'algo-bias', target: 'medical-ai' },
+            { source: 'accuracy', target: 'medical-ai' },
 
-            clustersGrid.appendChild(clusterDiv);
-        });
+            // CLO connections to ethics/implementation concepts
+            { source: 'clo4', target: 'automation' },
+            { source: 'clo4', target: 'augmentation' },
+            { source: 'clo5', target: 'governance' },
+            { source: 'clo5', target: 'cross-functional' },
+            { source: 'clo6', target: 'algo-bias' },
+            { source: 'clo6', target: 'snake-oil' }
+        ];
 
-        // Build list view
-        let listHTML = '<div style="background: var(--color-neutral-50); border-radius: 8px; padding: 1rem;">';
-        clusters.forEach(cluster => {
-            listHTML += `<h4 style="font-size: 0.9rem; margin: 1rem 0 0.5rem; color: var(--color-neutral-800);">${cluster.name} (${cluster.modules})</h4>`;
-            cluster.concepts.forEach(c => {
-                listHTML += `
-                    <div class="list-item">
-                        <span class="list-term">${c.term}</span>
-                        <span class="list-def">${c.def}</span>
-                        <span class="list-module-tag">${c.module}</span>
-                    </div>
-                `;
-            });
-        });
-        listHTML += '</div>';
-        listView.innerHTML = listHTML;
-
-        // Tooltip handling
-        document.querySelectorAll('.concept-tag').forEach(tag => {
-            tag.addEventListener('mouseenter', showTooltip);
-            tag.addEventListener('mouseleave', hideTooltip);
-            tag.addEventListener('focus', showTooltip);
-            tag.addEventListener('blur', hideTooltip);
-            tag.addEventListener('click', handleTagClick);
-            tag.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    handleTagClick(e);
-                }
-            });
-        });
-
-        function showTooltip(e) {
-            const tag = e.target.closest('.concept-tag');
-            if (!tag) return;
-
-            const term = tag.dataset.term;
-            const def = tag.dataset.def;
-            const module = tag.dataset.module;
-            const related = JSON.parse(tag.dataset.related || '[]');
-
-            let relatedHTML = '';
-            if (related.length > 0) {
-                relatedHTML = `<div class="tooltip-related">Related: ${related.join(', ')}</div>`;
-            }
-
-            tooltip.innerHTML = `
-                <div class="tooltip-title">
-                    ${term}
-                    <span class="tooltip-module">${module}</span>
-                </div>
-                <div class="tooltip-definition">${def}</div>
-                ${relatedHTML}
-            `;
-
-            const rect = tag.getBoundingClientRect();
-            const tooltipRect = tooltip.getBoundingClientRect();
-
-            let left = rect.left + rect.width / 2 - 160;
-            let top = rect.bottom + 8;
-
-            // Keep tooltip in viewport
-            if (left < 10) left = 10;
-            if (left + 320 > window.innerWidth) left = window.innerWidth - 330;
-            if (top + 150 > window.innerHeight) top = rect.top - 8 - 120;
-
-            tooltip.style.left = left + 'px';
-            tooltip.style.top = top + 'px';
-            tooltip.classList.add('visible');
-        }
-
-        function hideTooltip() {
-            tooltip.classList.remove('visible');
-        }
-
-        function handleTagClick(e) {
-            const tag = e.target.closest('.concept-tag');
-            if (!tag) return;
-
-            const term = tag.dataset.term;
-            const related = JSON.parse(tag.dataset.related || '[]');
-            const allTags = document.querySelectorAll('.concept-tag');
-
-            // Toggle off if clicking same tag
-            if (activeConceptTerm === term) {
-                allTags.forEach(t => t.classList.remove('active', 'dimmed'));
-                activeConceptTerm = null;
-                announce('Selection cleared');
-                return;
-            }
-
-            activeConceptTerm = term;
-
-            allTags.forEach(t => {
-                const tagTerm = t.dataset.term;
-                t.classList.remove('active', 'dimmed');
-
-                if (tagTerm === term) {
-                    t.classList.add('active');
-                } else if (related.includes(tagTerm)) {
-                    // Related - keep visible
-                } else {
-                    t.classList.add('dimmed');
-                }
-            });
-
-            announce(`${term} selected. Related concepts: ${related.join(', ')}`);
-        }
-
-        // Search functionality
-        searchInput.addEventListener('input', (e) => {
-            const query = e.target.value.toLowerCase().trim();
-            const allTags = document.querySelectorAll('.concept-tag');
-
-            if (!query) {
-                allTags.forEach(t => {
-                    t.classList.remove('search-match', 'dimmed');
-                });
-                return;
-            }
-
-            allTags.forEach(t => {
-                const term = t.dataset.term.toLowerCase();
-                const def = t.dataset.def.toLowerCase();
-
-                if (term.includes(query) || def.includes(query)) {
-                    t.classList.add('search-match');
-                    t.classList.remove('dimmed');
-                } else {
-                    t.classList.remove('search-match');
-                    t.classList.add('dimmed');
-                }
-            });
-        });
-
-        // View toggle
-        document.querySelectorAll('.toggle-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.toggle-btn').forEach(b => {
-                    b.classList.remove('active');
-                    b.setAttribute('aria-pressed', 'false');
-                });
-                btn.classList.add('active');
-                btn.setAttribute('aria-pressed', 'true');
-
-                const view = btn.dataset.view;
-                if (view === 'grid') {
-                    clustersGrid.classList.remove('hidden');
-                    listView.classList.remove('active');
-                } else {
-                    clustersGrid.classList.add('hidden');
-                    listView.classList.add('active');
-                }
-            });
-        });
-
+        // Utility: Announce to screen readers
         function announce(message) {
             const announcer = document.getElementById('announcements');
             announcer.textContent = message;
-            setTimeout(() => { announcer.textContent = ''; }, 1000);
+            setTimeout(() => {
+                announcer.textContent = '';
+            }, 1000);
         }
+
+        // Visualization
+        const width = document.getElementById('graph-container').clientWidth;
+        const height = 600;
+
+        const svg = d3.select('#graph-container')
+            .append('svg')
+            .attr('width', width)
+            .attr('height', height)
+            .attr('role', 'img')
+            .attr('aria-label', 'Force-directed graph showing relationships between AI/ML concepts');
+
+        const simulation = d3.forceSimulation(nodes)
+            .force('link', d3.forceLink(edges).id(d => d.id).distance(100))
+            .force('charge', d3.forceManyBody().strength(-300))
+            .force('center', d3.forceCenter(width / 2, height / 2))
+            .force('collision', d3.forceCollide().radius(40))
+            .force('x', d3.forceX(width / 2).strength(0.05))
+            .force('y', d3.forceY(height / 2).strength(0.05));
+
+        const link = svg.append('g')
+            .attr('aria-hidden', 'true')
+            .selectAll('line')
+            .data(edges)
+            .join('line')
+            .attr('class', 'link');
+
+        const node = svg.append('g')
+            .selectAll('g')
+            .data(nodes)
+            .join('g')
+            .attr('class', 'node')
+            .call(d3.drag()
+                .on('start', dragStarted)
+                .on('drag', dragged)
+                .on('end', dragEnded));
+
+        node.append('circle')
+            .attr('r', d => d.type === 'clo' ? 28 : d.type === 'mlo' ? 22 : d.type === 'concept' ? 16 : 18)
+            .attr('fill', d => d.color)
+            .attr('tabindex', 0)
+            .attr('role', 'button')
+            .attr('aria-label', d => `${d.label}. ${d.type}. Press Enter to view details.`);
+
+        node.append('text')
+            .text(d => {
+                const parts = d.label.split(':');
+                return parts.length > 1 ? parts[1].trim().substring(0, 15) : d.label.substring(0, 15);
+            })
+            .attr('dy', d => d.type === 'clo' ? 38 : d.type === 'mlo' ? 32 : 26)
+            .attr('aria-hidden', 'true')
+            .style('fill', '#171717');
+
+        // Click handler
+        node.on('click', (event, d) => {
+            showDefinition(d);
+            highlightConnections(d);
+        });
+
+        // Keyboard handler
+        node.selectAll('circle').on('keydown', (event, d) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                showDefinition(d);
+                highlightConnections(d);
+            }
+        });
+
+        simulation.on('tick', () => {
+            link
+                .attr('x1', d => d.source.x)
+                .attr('y1', d => d.source.y)
+                .attr('x2', d => d.target.x)
+                .attr('y2', d => d.target.y);
+
+            node.attr('transform', d => `translate(${d.x},${d.y})`);
+        });
+
+        function dragStarted(event, d) {
+            if (!event.active) simulation.alphaTarget(0.3).restart();
+            d.fx = d.x;
+            d.fy = d.y;
+        }
+
+        function dragged(event, d) {
+            d.fx = event.x;
+            d.fy = event.y;
+        }
+
+        function dragEnded(event, d) {
+            if (!event.active) simulation.alphaTarget(0);
+            d.fx = null;
+            d.fy = null;
+        }
+
+        function showDefinition(d) {
+            document.getElementById('panel-empty').style.display = 'none';
+            const panelContent = document.getElementById('panel-content');
+            panelContent.classList.add('active');
+
+            document.getElementById('panel-label').textContent = d.label;
+
+            let typeLabel = d.type;
+            if (d.type === 'clo') typeLabel = 'Course Learning Outcome';
+            else if (d.type === 'mlo') typeLabel = 'Module Learning Outcome';
+            else if (d.type === 'concept') typeLabel = 'Key Concept';
+            else if (d.type === 'application') typeLabel = 'Case Study';
+
+            document.getElementById('panel-type').textContent = typeLabel;
+            document.getElementById('panel-definition').textContent = d.definition;
+
+            const extraSection = document.getElementById('panel-extra');
+            const extraTitle = document.getElementById('panel-extra-title');
+            const extraContent = document.getElementById('panel-extra-content');
+
+            if (d.module) {
+                extraSection.style.display = 'block';
+                extraTitle.textContent = 'Module';
+                extraContent.textContent = d.module;
+            } else if (d.context) {
+                extraSection.style.display = 'block';
+                extraTitle.textContent = 'Context';
+                extraContent.textContent = d.context;
+            } else {
+                extraSection.style.display = 'none';
+            }
+
+            const connected = edges.filter(e => e.source.id === d.id || e.target.id === d.id)
+                .map(e => e.source.id === d.id ? e.target : e.source);
+
+            const connectedContainer = document.getElementById('panel-connected');
+            connectedContainer.innerHTML = '';
+
+            if (connected.length === 0) {
+                const noConnections = document.createElement('p');
+                noConnections.textContent = 'No direct connections';
+                noConnections.style.color = 'var(--color-neutral-400)';
+                connectedContainer.appendChild(noConnections);
+            } else {
+                connected.forEach(n => {
+                    const btn = document.createElement('button');
+                    btn.className = 'connected-btn';
+                    btn.textContent = n.label;
+                    btn.setAttribute('aria-label', `View details for ${n.label}`);
+                    btn.onclick = () => {
+                        showDefinition(n);
+                        highlightConnections(n);
+                    };
+                    connectedContainer.appendChild(btn);
+                });
+            }
+
+            // Focus management
+            document.getElementById('definition-panel').focus();
+
+            // Announce to screen reader
+            announce(`Viewing ${d.label}. ${connected.length} connected concepts.`);
+        }
+
+        function highlightConnections(d) {
+            const connectedIds = edges.filter(e => e.source.id === d.id || e.target.id === d.id)
+                .flatMap(e => [e.source.id, e.target.id]);
+
+            connectedIds.push(d.id);
+
+            node.classed('dimmed', n => !connectedIds.includes(n.id));
+            node.classed('focused', n => n.id === d.id);
+            link.classed('dimmed', true);
+            link.classed('highlighted', e => e.source.id === d.id || e.target.id === d.id);
+        }
+
+        document.getElementById('reset').addEventListener('click', () => {
+            node.classed('dimmed', false);
+            node.classed('focused', false);
+            link.classed('dimmed', false);
+            link.classed('highlighted', false);
+
+            document.getElementById('panel-empty').style.display = 'block';
+            document.getElementById('panel-content').classList.remove('active');
+
+            document.getElementById('search').value = '';
+
+            announce('View reset. All filters cleared.');
+        });
+
+        document.getElementById('search').addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+
+            if (!query) {
+                node.classed('dimmed', false);
+                link.classed('dimmed', false);
+                announce('Search cleared. Showing all concepts.');
+                return;
+            }
+
+            const matches = nodes.filter(n =>
+                n.label.toLowerCase().includes(query) ||
+                n.definition.toLowerCase().includes(query)
+            ).map(n => n.id);
+
+            node.classed('dimmed', n => !matches.includes(n.id));
+            link.classed('dimmed', true);
+
+            announce(`${matches.length} concepts match your search for "${query}".`);
+        });
+
+        // Window resize handler
+        window.addEventListener('resize', () => {
+            const newWidth = document.getElementById('graph-container').clientWidth;
+            svg.attr('width', newWidth);
+            simulation.force('center', d3.forceCenter(newWidth / 2, height / 2));
+            simulation.alpha(0.3).restart();
+        });
     </script>
 </body>
 </html>
