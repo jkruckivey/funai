@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>SME Video Segmentation Guide - FUNAI</title>
+<style>
+body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; line-height: 1.5; max-width: 8.5in; margin: 1in auto; }
+h1 { font-size: 18pt; color: #2e5a5c; border-bottom: 2px solid #2e5a5c; padding-bottom: 8px; }
+h2 { font-size: 14pt; color: #2e5a5c; margin-top: 24px; }
+h3 { font-size: 12pt; color: #404040; margin-top: 20px; background: #f5f5f5; padding: 8px 12px; border-left: 4px solid #5a9ea1; }
+table { border-collapse: collapse; width: 100%; margin: 12px 0; }
+th, td { border: 1px solid #d4d4d4; padding: 8px 12px; text-align: left; }
+th { background: #5a9ea1; color: white; font-weight: 600; }
+tr:nth-child(even) { background: #fafafa; }
+.meta-table th { background: #f5f5f5; color: #404040; width: 180px; }
+.meta-table td { background: white; }
+strong { color: #2e5a5c; }
+.description { background: #f9fafa; padding: 12px; border-radius: 4px; margin: 8px 0; }
+.cut-points { background: #fff8e6; padding: 12px; border-radius: 4px; margin: 8px 0; border-left: 4px solid #d4a012; }
+.cut-points code { background: #fef3cd; padding: 2px 6px; border-radius: 3px; font-family: Consolas, monospace; font-size: 10pt; }
+hr { border: none; border-top: 1px solid #e5e5e5; margin: 24px 0; }
+</style>
+</head>
+<body>
+
+<h1>SME Video Segmentation Guide</h1>
+<p><strong>Course:</strong> Fundamentals of AI for Business (FUNAI)<br>
+<strong>Source Video:</strong> Professor Rahrovani's Google Colab Walkthrough<br>
+<strong>Source Transcript:</strong> Video Project 14_Captions_English (United States).txt<br>
+<strong>Total Source Duration:</strong> ~40 minutes<br>
+<strong>Output:</strong> 7 video segments for Module 1 (AI Systems)</p>
+
+<hr>
+
+<h2>Overview</h2>
+<p>This document provides editing instructions for segmenting Professor Rahrovani's recorded Google Colab walkthrough into 7 individual videos. Each segment covers a distinct phase of the ML development process and aligns with specific Module Learning Outcomes (MLOs).</p>
+<p><strong>Editing Tool Recommendation:</strong> Adobe Premiere Pro<br>
+<strong>Export Settings:</strong> H.264 MP4, 1080p, 8-12 Mbps bitrate, AAC 256kbps audio</p>
+
+<hr>
+
+<h2>Video Segments</h2>
+
+<h3>VIDEO #4 IO - Self-Paced - FUNAI - M1, V2 (Getting Started with Google Colab)</h3>
+
+<table class="meta-table">
+<tr><th>File Name</th><td>m1-video-01-colab-intro.mp4</td></tr>
+<tr><th>Duration</th><td>2:01</td></tr>
+<tr><th>Storyboard Location</th><td>AI Systems module, Element 5</td></tr>
+<tr><th>MLO Addressed</th><td>MLO 1: Navigate Google Colab environment and execute Python code cells</td></tr>
+</table>
+
+<p><strong>Video Title (for Panopto/LMS):</strong> Getting Started with Google Colab</p>
+
+<div class="description">
+<strong>Video Description:</strong><br>
+Professor Rahrovani introduces Google Colab, a free cloud-based Python environment. Learn how to create a new notebook, understand the interface layout, and prepare your workspace for machine learning development. No software installation required - everything runs in your browser.
+</div>
+
+<div class="cut-points">
+<strong>Transcript Cut Points:</strong><br>
+<strong>START at:</strong> <code>"So what? I'm gonna start, um. So you see my screen?"</code><br>
+<strong>END before:</strong> <code>"So when we create a new interactive Python notebook, as I just did"</code>
+</div>
+
+<hr>
+
+<h3>VIDEO #5 IO - Self-Paced - FUNAI - M1, V3 (Loading the Loan Dataset)</h3>
+
+<table class="meta-table">
+<tr><th>File Name</th><td>m1-video-02-load-data.mp4</td></tr>
+<tr><th>Duration</th><td>3:01</td></tr>
+<tr><th>Storyboard Location</th><td>AI Systems module, Element 7</td></tr>
+<tr><th>MLO Addressed</th><td>MLO 2: Load and explore datasets using pandas DataFrames</td></tr>
+</table>
+
+<p><strong>Video Title (for Panopto/LMS):</strong> Loading the Loan Dataset</p>
+
+<div class="description">
+<strong>Video Description:</strong><br>
+Learn how to load real-world data into Google Colab. Professor Rahrovani demonstrates uploading a CSV file containing 45,000 loan applications and importing it into a pandas DataFrame - the foundation for all our machine learning work.
+</div>
+
+<div class="cut-points">
+<strong>Transcript Cut Points:</strong><br>
+<strong>START at:</strong> <code>"So when we create a new interactive Python notebook, as I just did, you have a kind of a blank"</code><br>
+<strong>END before:</strong> <code>"Uh, and it gives you the option of accepting but not running"</code>
+</div>
+
+<hr>
+
+<h3>VIDEO #6 IO - Self-Paced - FUNAI - M1, V4 (Exploring the Data Structure)</h3>
+
+<table class="meta-table">
+<tr><th>File Name</th><td>m1-video-03-explore-data.mp4</td></tr>
+<tr><th>Duration</th><td>4:21</td></tr>
+<tr><th>Storyboard Location</th><td>AI Systems module, Element 9</td></tr>
+<tr><th>MLO Addressed</th><td>MLO 2: Load and explore datasets using pandas DataFrames</td></tr>
+</table>
+
+<p><strong>Video Title (for Panopto/LMS):</strong> Exploring the Data Structure</p>
+
+<div class="description">
+<strong>Video Description:</strong><br>
+Your first look at the loan dataset. Professor Rahrovani uses df.head() to examine the first rows, identifying the 14 columns including person_age, person_income, loan_amount, and the target variable loan_status. This exploratory phase is where you begin to understand what patterns might exist in the data.
+</div>
+
+<div class="cut-points">
+<strong>Transcript Cut Points:</strong><br>
+<strong>START at:</strong> <code>"Uh, and it gives you the option of accepting but not running or accepting and running"</code><br>
+<strong>END before:</strong> <code>"What if if I want to know more. So describe."</code>
+</div>
+
+<hr>
+
+<h3>VIDEO #7 IO - Self-Paced - FUNAI - M1, V5 (Understanding Data Types and Statistics)</h3>
+
+<table class="meta-table">
+<tr><th>File Name</th><td>m1-video-04-describe-data.mp4</td></tr>
+<tr><th>Duration</th><td>4:42</td></tr>
+<tr><th>Storyboard Location</th><td>AI Systems module, Element 13</td></tr>
+<tr><th>MLO Addressed</th><td>MLO 3: Identify data quality issues (outliers, missing values, data types)</td></tr>
+</table>
+
+<p><strong>Video Title (for Panopto/LMS):</strong> Understanding Data Types and Statistics</p>
+
+<div class="description">
+<strong>Video Description:</strong><br>
+Dive deeper into the dataset using df.shape, df.info(), and df.describe(). Professor Rahrovani shows how to identify which columns are numerical vs. categorical, check for missing values, and spot potential data quality issues like suspiciously high ages (140 years!) that will need addressing.
+</div>
+
+<div class="cut-points">
+<strong>Transcript Cut Points:</strong><br>
+<strong>START at:</strong> <code>"What if if I want to know more. So describe."</code><br>
+<strong>END before:</strong> <code>"So what about if I want to get some visualization"</code>
+</div>
+
+<hr>
+
+<h3>VIDEO #8 IO - Self-Paced - FUNAI - M1, V6 (Visualizing Data Distributions)</h3>
+
+<table class="meta-table">
+<tr><th>File Name</th><td>m1-video-05-visualization.mp4</td></tr>
+<tr><th>Duration</th><td>7:42</td></tr>
+<tr><th>Storyboard Location</th><td>AI Systems module, Element 15</td></tr>
+<tr><th>MLO Addressed</th><td>MLO 3: Identify data quality issues (outliers, missing values, data types)</td></tr>
+</table>
+
+<p><strong>Video Title (for Panopto/LMS):</strong> Visualizing Data Distributions</p>
+
+<div class="description">
+<strong>Video Description:</strong><br>
+See the data come alive through visualizations. Professor Rahrovani creates histograms and plots to understand how variables are distributed across the 45,000 loan applications. Visual analysis reveals patterns that statistics alone might miss - including the outliers that could bias our model.
+</div>
+
+<div class="cut-points">
+<strong>Transcript Cut Points:</strong><br>
+<strong>START at:</strong> <code>"So what about if I want to get some visualization and data"</code><br>
+<strong>END before:</strong> <code>"We have a lot of categorical variable. Let us a little bit clean the data"</code>
+</div>
+
+<hr>
+
+<h3>VIDEO #9 IO - Self-Paced - FUNAI - M1, V7 (Preprocessing for Machine Learning)</h3>
+
+<table class="meta-table">
+<tr><th>File Name</th><td>m1-video-06-preprocessing.mp4</td></tr>
+<tr><th>Duration</th><td>6:43</td></tr>
+<tr><th>Storyboard Location</th><td>AI Systems module, Element 19</td></tr>
+<tr><th>MLO Addressed</th><td>MLO 4: Preprocess data using one-hot encoding and standardization</td></tr>
+</table>
+
+<p><strong>Video Title (for Panopto/LMS):</strong> Preprocessing for Machine Learning</p>
+
+<div class="description">
+<strong>Video Description:</strong><br>
+Raw data can't go directly into a machine learning model. Professor Rahrovani demonstrates two essential preprocessing techniques: one-hot encoding (converting categorical variables like "yes/no" into 0s and 1s) and standardization (scaling numerical features so no single variable dominates). These choices shape what the model can learn.
+</div>
+
+<div class="cut-points">
+<strong>Transcript Cut Points:</strong><br>
+<strong>START at:</strong> <code>"We have a lot of categorical variable. Let us a little bit clean the data"</code><br>
+<strong>END before:</strong> <code>"Before we dive into developing the model, which is the beef"</code>
+</div>
+
+<hr>
+
+<h3>VIDEO #10 IO - Self-Paced - FUNAI - M1, V8 (Building and Evaluating the Model)</h3>
+
+<table class="meta-table">
+<tr><th>File Name</th><td>m1-video-07-model-building.mp4</td></tr>
+<tr><th>Duration</th><td>11:51</td></tr>
+<tr><th>Storyboard Location</th><td>AI Systems module, Element 23</td></tr>
+<tr><th>MLO Addressed</th><td>MLO 5: Build and evaluate a logistic regression model with 80/20 train-test split</td></tr>
+</table>
+
+<p><strong>Video Title (for Panopto/LMS):</strong> Building and Evaluating the Model</p>
+
+<div class="description">
+<strong>Video Description:</strong><br>
+The culmination of the module: Professor Rahrovani builds a logistic regression model to predict loan approval. Learn how to split data into training (80%) and testing (20%) sets, train the model on historical patterns, and evaluate its accuracy on unseen data. The model achieves 89% accuracy - but what does that really mean, and whose predictions might be wrong?
+</div>
+
+<div class="cut-points">
+<strong>Transcript Cut Points:</strong><br>
+<strong>START at:</strong> <code>"Before we dive into developing the model, which is the beef"</code><br>
+<strong>END at:</strong> <code>"Okay, I'll stop here."</code>
+</div>
+
+<hr>
+
+<h2>Quick Reference Table</h2>
+
+<table>
+<tr>
+<th>Video</th>
+<th>File Name</th>
+<th>Duration</th>
+<th>Element</th>
+<th>MLO</th>
+</tr>
+<tr><td>#4 M1, V2</td><td>m1-video-01-colab-intro.mp4</td><td>2:01</td><td>5</td><td>MLO 1</td></tr>
+<tr><td>#5 M1, V3</td><td>m1-video-02-load-data.mp4</td><td>3:01</td><td>7</td><td>MLO 2</td></tr>
+<tr><td>#6 M1, V4</td><td>m1-video-03-explore-data.mp4</td><td>4:21</td><td>9</td><td>MLO 2</td></tr>
+<tr><td>#7 M1, V5</td><td>m1-video-04-describe-data.mp4</td><td>4:42</td><td>13</td><td>MLO 3</td></tr>
+<tr><td>#8 M1, V6</td><td>m1-video-05-visualization.mp4</td><td>7:42</td><td>15</td><td>MLO 3</td></tr>
+<tr><td>#9 M1, V7</td><td>m1-video-06-preprocessing.mp4</td><td>6:43</td><td>19</td><td>MLO 4</td></tr>
+<tr><td>#10 M1, V8</td><td>m1-video-07-model-building.mp4</td><td>11:51</td><td>23</td><td>MLO 5</td></tr>
+</table>
+
+<p><strong>Total Duration:</strong> ~40 minutes</p>
+
+<hr>
+
+<h2>Storyboard Integration</h2>
+
+<p>Each video segment corresponds to a specific element in the M1-AI-Systems storyboard:</p>
+
+<table>
+<tr>
+<th>Video</th>
+<th>Watch Element</th>
+<th>Followed By</th>
+</tr>
+<tr><td>#4</td><td>Element 5</td><td>Element 6: Colab Practice (Do)</td></tr>
+<tr><td>#5</td><td>Element 7</td><td>Element 8: Load Data Practice (Do)</td></tr>
+<tr><td>#6</td><td>Element 9</td><td>Element 10: Explore Data Practice (Do)</td></tr>
+<tr><td>#7</td><td>Element 13</td><td>Element 14: Data Types Practice (Do)</td></tr>
+<tr><td>#8</td><td>Element 15</td><td>Element 16: Visualization Practice (Do)</td></tr>
+<tr><td>#9</td><td>Element 19</td><td>Element 20: Preprocessing Practice (Do)</td></tr>
+<tr><td>#10</td><td>Element 23</td><td>Element 24: Model Building Practice (Do)</td></tr>
+</table>
+
+<hr>
+
+<h2>Export Checklist</h2>
+
+<p>For each video segment:</p>
+<ul>
+<li>Set in-point at START transcript marker</li>
+<li>Set out-point at END transcript marker</li>
+<li>Export with naming convention: m1-video-0X-[topic].mp4</li>
+<li>Verify audio levels are consistent</li>
+<li>Check that no content is cut mid-sentence</li>
+<li>Upload to Panopto with Video Title</li>
+<li>Add Video Description to LMS element</li>
+<li>Generate/upload VTT captions</li>
+</ul>
+
+<hr>
+
+<p><strong>Document Version:</strong> 1.0<br>
+<strong>Last Updated:</strong> December 2024<br>
+<strong>Course:</strong> Fundamentals of AI for Business (FUNAI)<br>
+<strong>Module:</strong> M1 - AI Systems</p>
+
+</body>
+</html>
