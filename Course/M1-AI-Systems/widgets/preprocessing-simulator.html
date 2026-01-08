@@ -20,23 +20,18 @@
             --color-neutral-800: #262626;
             --color-neutral-900: #171717;
 
-            --color-primary: #171717;
-            --color-primary-dark: #404040;
-            --color-accent: #bfe5e7;
-            --color-accent-dark: #5a9ea1;
+            /* Semantic Colors */
             --color-success: #22c55e;
-            --color-success-light: #dcfce7;
+            --color-success-light: #86efac;
+            --color-error: #ef4444;
+            --color-error-light: #fca5a5;
             --color-warning: #f59e0b;
             --color-warning-light: #fcd34d;
-            --color-correct: #c0d1cd;
-            --color-correct-bg: #f0f5f4;
-            --color-incorrect: #f0ede0;
-            --color-incorrect-bg: #faf9f5;
         }
 
         body {
             font-family: 'Geist', -apple-system, sans-serif;
-            background: white;
+            background: var(--color-neutral-50);
             color: var(--color-neutral-900);
             padding: 1.5rem;
             line-height: 1.6;
@@ -85,12 +80,12 @@
         }
 
         .progress-step.active {
-            background: var(--color-accent-dark);
+            background: var(--color-neutral-900);
             color: white;
         }
 
         .progress-step.completed {
-            background: var(--color-accent-dark);
+            background: var(--color-neutral-700);
             color: white;
         }
 
@@ -181,11 +176,11 @@
         }
 
         .col-encoded {
-            background: var(--color-accent);
+            background: var(--color-neutral-200);
         }
 
         .col-standardized {
-            background: #fce7f3;
+            background: var(--color-neutral-300);
         }
 
         /* Legend */
@@ -212,8 +207,8 @@
 
         .legend-color.categorical { background: var(--color-warning-light); }
         .legend-color.numerical { background: var(--color-success-light); }
-        .legend-color.encoded { background: var(--color-accent); }
-        .legend-color.standardized { background: #fce7f3; }
+        .legend-color.encoded { background: var(--color-neutral-200); }
+        .legend-color.standardized { background: var(--color-neutral-300); }
 
         /* Action button */
         .action-btn {
@@ -346,13 +341,13 @@
         }
 
         .quiz-option.correct {
-            border-color: var(--color-correct);
-            background: var(--color-correct-bg);
+            border-color: var(--color-success);
+            background: rgba(34, 197, 94, 0.1);
         }
 
         .quiz-option.incorrect {
-            border-color: var(--color-incorrect);
-            background: var(--color-incorrect-bg);
+            border-color: var(--color-error);
+            background: rgba(239, 68, 68, 0.1);
         }
 
         .quiz-option input {
@@ -375,13 +370,13 @@
         }
 
         .quiz-feedback.correct {
-            background: var(--color-correct-bg);
+            background: rgba(34, 197, 94, 0.1);
             color: var(--color-neutral-900);
             display: block;
         }
 
         .quiz-feedback.incorrect {
-            background: var(--color-incorrect-bg);
+            background: rgba(239, 68, 68, 0.1);
             color: var(--color-neutral-900);
             display: block;
         }
@@ -395,8 +390,8 @@
             display: none;
             text-align: center;
             padding: 2rem;
-            background: var(--color-correct-bg);
-            border: 2px solid var(--color-correct);
+            background: rgba(34, 197, 94, 0.1);
+            border: 2px solid var(--color-success);
             border-radius: 12px;
         }
 
